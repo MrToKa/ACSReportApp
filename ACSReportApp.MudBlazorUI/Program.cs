@@ -1,11 +1,14 @@
 using ACSReportApp.Data;
 using ACSReportApp.Models;
+using ACSReportApp.Services;
 using ACSReportApp.MudBlazorUI.Components;
 using ACSReportApp.MudBlazorUI.Components.Account;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using MudBlazor.Services;
+using ACSReportApp.Services.Contracts;
+using ACSReportApp.Data.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -20,6 +23,8 @@ builder.Services.AddCascadingAuthenticationState();
 builder.Services.AddScoped<IdentityUserAccessor>();
 builder.Services.AddScoped<IdentityRedirectManager>();
 builder.Services.AddScoped<AuthenticationStateProvider, IdentityRevalidatingAuthenticationStateProvider>();
+builder.Services.AddScoped<IACSReportAppDbRepository, ACSReportAppDbRepository>();
+builder.Services.AddScoped<IProjectService, ProjectService>();
 
 builder.Services.AddAuthentication(options =>
     {

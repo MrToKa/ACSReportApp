@@ -13,7 +13,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ACSReportApp.Services", "AC
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ACSReportApp.Console", "ACSReportApp.Console\ACSReportApp.Console.csproj", "{FCEDAA05-9944-4BA4-AB19-AC43226CB2B8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ACSReportApp.MudBlazorUI", "ACSReportApp.MudBlazorUI\ACSReportApp.MudBlazorUI.csproj", "{D1F87DB6-3572-44CE-A07A-8678F07CB2A8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ACSReportApp.MudBlazorUI", "ACSReportApp.MudBlazorUI\ACSReportApp.MudBlazorUI.csproj", "{D1F87DB6-3572-44CE-A07A-8678F07CB2A8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

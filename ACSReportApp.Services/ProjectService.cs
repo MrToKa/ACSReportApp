@@ -60,9 +60,25 @@ namespace ACSReportApp.Services
             return projects.ToListAsync();            
         }
 
-        public Task<ProjectServiceModel> UpdateProjectAsync(ProjectServiceModel project, Guid projectId)
+        public async Task<ProjectServiceModel> UpdateProjectAsync(ProjectServiceModel project, Guid projectId)
         {
-            throw new NotImplementedException();
+            var projectToUpdate = await this.repo.All<Project>()
+                .FirstOrDefaultAsync(p => p.Id == projectId);
+
+            projectToUpdate.Number = project.Number;
+            projectToUpdate.Name = project.Name;
+            projectToUpdate.Description = project.Description;
+
+            await this.repo.SaveChangesAsync();
+
+            return new ProjectServiceModel()
+            {
+                Id = projectToUpdate.Id,
+                Number = projectToUpdate.Number,
+                Name = projectToUpdate.Name,
+                Description = projectToUpdate.Description,
+                DateCreated = projectToUpdate.DateCreated
+            };
         }
     }
 }

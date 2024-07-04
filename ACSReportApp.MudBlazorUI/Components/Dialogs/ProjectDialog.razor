@@ -1,0 +1,43 @@
+﻿@using ACSReportApp.Services.Contracts
+@using ACSReportApp.Services.Models
+
+@inject IProjectService ProjectService
+@inject ISnackbar Snackbar
+
+<MudDialog>
+    <TitleContent>
+        <MudText Typo="Typo.h6">
+            <MudIcon Icon="@Icons.Material.Filled.Save" Class="mr-3 mb-n1" />
+            Update project data?
+        </MudText>
+    </TitleContent>
+
+    <DialogContent>
+        <MudTextField Value="@Project.Number" Label="Server ID" ReadOnly="false" />
+        <MudTextField Value="@Project.Name" Label="Server Name" ReadOnly="false" />
+        <MudTextField Value="@Project.Description" Label="Location" ReadOnly="false" />
+    </DialogContent>
+
+    <DialogActions>
+        <MudButton OnClick="Cancel">Cancel</MudButton>
+        <MudButton Color="Color.Error" OnClick="SaveChanges">Update project</MudButton>
+    </DialogActions>
+</MudDialog>
+@code {
+    [CascadingParameter]
+    private MudDialogInstance MudDialog { get; set; }
+
+    [Parameter]
+    public ProjectServiceModel Project { get; set; } = new ProjectServiceModel();
+
+    private void Cancel() => MudDialog.Cancel();
+
+    private void SaveChanges()
+    {
+        //In a real world scenario this bool would probably be a service to delete the item from api/database
+        ProjectService.UpdateProjectAsync(Project, Project.Id);
+
+        Snackbar.Add("Project Updated", Severity.Success);
+        MudDialog.Close(DialogResult.Ok(Project.Id));
+    }
+}
