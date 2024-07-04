@@ -1,0 +1,26 @@
+﻿@ACSReportApp_HostAddress = https://localhost:7151
+
+GET {{ACSReportApp_HostAddress}}/project/getproject/fa93a9fe-2fbb-41eb-acca-c3bfb8bf48cb
+
+###
+
+GET {{ACSReportApp_HostAddress}}/home/error/{id}
+
+###
+
+GET {{ACSReportApp_HostAddress}}/home
+
+###
+
+GET {{ACSReportApp_HostAddress}}/home/privacy/
+
+###
+
+GET {{ACSReportApp_HostAddress}}/project/getproject/{id}
+
+###
+
+GET {{ACSReportApp_HostAddress}}/Project/GetProjects
+
+###
+

@@ -1,0 +1,55 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.10.35013.160
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ACSReportApp", "ACSReportApp\ACSReportApp.csproj", "{7507F9D4-F65B-4EFE-8B52-E93205B00CD5}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ACSReportApp.Data", "ACSReportApp.Data\ACSReportApp.Data.csproj", "{8CA3CC5C-5884-49F6-8D28-67B344453AB3}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ACSReportApp.Models", "ACSReportApp.Models\ACSReportApp.Models.csproj", "{6939ED59-F96F-49CD-9559-BE0A92441C1C}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ACSReportApp.Services", "ACSReportApp.Services\ACSReportApp.Services.csproj", "{8958A80D-1CC6-4BC0-8F8D-E505A5C52C47}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ACSReportApp.Console", "ACSReportApp.Console\ACSReportApp.Console.csproj", "{FCEDAA05-9944-4BA4-AB19-AC43226CB2B8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ACSReportApp.MudBlazorUI", "ACSReportApp.MudBlazorUI\ACSReportApp.MudBlazorUI.csproj", "{D1F87DB6-3572-44CE-A07A-8678F07CB2A8}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{7507F9D4-F65B-4EFE-8B52-E93205B00CD5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7507F9D4-F65B-4EFE-8B52-E93205B00CD5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7507F9D4-F65B-4EFE-8B52-E93205B00CD5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7507F9D4-F65B-4EFE-8B52-E93205B00CD5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8CA3CC5C-5884-49F6-8D28-67B344453AB3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8CA3CC5C-5884-49F6-8D28-67B344453AB3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8CA3CC5C-5884-49F6-8D28-67B344453AB3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8CA3CC5C-5884-49F6-8D28-67B344453AB3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6939ED59-F96F-49CD-9559-BE0A92441C1C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6939ED59-F96F-49CD-9559-BE0A92441C1C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6939ED59-F96F-49CD-9559-BE0A92441C1C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6939ED59-F96F-49CD-9559-BE0A92441C1C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8958A80D-1CC6-4BC0-8F8D-E505A5C52C47}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8958A80D-1CC6-4BC0-8F8D-E505A5C52C47}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8958A80D-1CC6-4BC0-8F8D-E505A5C52C47}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8958A80D-1CC6-4BC0-8F8D-E505A5C52C47}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FCEDAA05-9944-4BA4-AB19-AC43226CB2B8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FCEDAA05-9944-4BA4-AB19-AC43226CB2B8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FCEDAA05-9944-4BA4-AB19-AC43226CB2B8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FCEDAA05-9944-4BA4-AB19-AC43226CB2B8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D1F87DB6-3572-44CE-A07A-8678F07CB2A8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D1F87DB6-3572-44CE-A07A-8678F07CB2A8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D1F87DB6-3572-44CE-A07A-8678F07CB2A8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D1F87DB6-3572-44CE-A07A-8678F07CB2A8}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {5306C466-BE7E-4E21-8FC3-E2C2D6897AB8}
+	EndGlobalSection
+EndGlobal

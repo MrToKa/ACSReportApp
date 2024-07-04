@@ -1,0 +1,29 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+	<PropertyGroup>
+		<TargetFramework>net8.0</TargetFramework>
+		<Nullable>enable</Nullable>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<UserSecretsId>aspnet-ACSReportApp.MudBlazorUI-d4f47ce0-6aa8-4310-8c88-eec406eec85a</UserSecretsId>
+	</PropertyGroup>
+
+
+	<ItemGroup>
+		<PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="8.*" />
+		<PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="8.*" />
+		<PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="8.0.6" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="8.0.6" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="8.0.6" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="8.*" />
+		<PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="8.0.2" />
+		<PackageReference Include="MudBlazor" Version="7.*" />
+		<PackageReference Include="Extensions.MudBlazor.StaticInput" Version="2.*" />
+	</ItemGroup>
+
+
+	<ItemGroup>
+		<ProjectReference Include="..\ACSReportApp.Data\ACSReportApp.Data.csproj" />
+		<ProjectReference Include="..\ACSReportApp.Services\ACSReportApp.Services.csproj" />
+	</ItemGroup>
+
+</Project>

@@ -1,0 +1,34 @@
+﻿@model IEnumerable<ProjectServiceModel>
+
+@{
+    ViewBag.Title = "All Projects";
+}
+
+<div class="text-center row">
+    <table class="table-striped">
+        <thead>
+            <tr>
+                <th scope="col">Project Number</th>
+                <th scope="col">Project Name</th>
+                <th scope="col">Project Description</th>
+                <th scope="col">Project DateCreated</th>
+            </tr>
+        </thead>
+        @foreach (var project in Model)
+        {
+            <tbody>
+                <tr>
+                    <td>@project.Number</td>
+                    <td>@project.Name</td>
+                    <td>@project.Description</td>
+                    <td>@project.DateCreated</td>
+                    <td>
+                        <form>
+                            <button class="btn btn-success" asp-action="Details" asp-controller="Project" asp-route-id="@project.Id" type="submit">Detailed information</button>
+                        </form>
+                    </td>
+                </tr>
+            </tbody>
+        }
+    </table>
+</div>
