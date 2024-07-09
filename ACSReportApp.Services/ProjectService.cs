@@ -20,9 +20,29 @@ namespace ACSReportApp.Services
             throw new NotImplementedException();
         }
 
-        public Task<ProjectServiceModel> DeleteProjectAsync(Guid projectId)
+        public async Task<ProjectServiceModel> DeleteProjectAsync(Guid projectId)
         {
-            throw new NotImplementedException();
+            var project = await this.repo.All<Project>()
+                .FirstOrDefaultAsync(p => p.Id == projectId);
+
+            if (project == null)
+            {
+                throw new ArgumentException("Project not found.");
+            }
+
+            project.IsDeleted = true;
+            project.DeletedOn = DateTime.UtcNow;
+            
+            await this.repo.SaveChangesAsync();
+
+            return new ProjectServiceModel()
+            {
+                Id = project.Id,
+                Number = project.Number,
+                Name = project.Name,
+                Description = project.Description,
+                DateCreated = project.DateCreated
+            };
         }
 
         public async Task<ProjectServiceModel> GetProjectAsync(Guid projectId)
@@ -41,13 +61,14 @@ namespace ACSReportApp.Services
                 Number = project.Number,
                 Name = project.Name,
                 Description = project.Description,
-                DateCreated = project.DateCreated                
+                DateCreated = project.DateCreated
             };
         }
 
         public Task<List<ProjectServiceModel>> GetProjectsAsync()
         {
             var projects = this.repo.All<Project>()
+                .Where(p => p.IsDeleted == false)
                 .Select(p => new ProjectServiceModel()
                 {
                     Id = p.Id,
@@ -55,9 +76,10 @@ namespace ACSReportApp.Services
                     Name = p.Name,
                     Description = p.Description,
                     DateCreated = p.DateCreated
-                });
+                })
+                .OrderBy(p => p.Number);
 
-            return projects.ToListAsync();            
+            return projects.ToListAsync();
         }
 
         public async Task<ProjectServiceModel> UpdateProjectAsync(ProjectServiceModel project, Guid projectId)

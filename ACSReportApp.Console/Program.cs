@@ -2,7 +2,10 @@
 using ACSReportApp.Models;
 
 var context = new ACSReportAppDbContext();
+context.Database.EnsureDeleted();
+Console.WriteLine("Database deleted!");
 context.Database.EnsureCreated();
+Console.WriteLine("Database created!");
 
 context.Projects.Add(new Project
 {
@@ -10,6 +13,24 @@ context.Projects.Add(new Project
     Name = "Test Project",
     Description = "Test Description",
     Contractor = "Test Contractor",
+    DateCreated = DateTime.UtcNow,
+});
+
+context.Projects.Add(new Project
+{
+    Number = "P000002",
+    Name = "Test Project 2",
+    Description = "Test Description 2",
+    Contractor = "Test Contractor 2",
+    DateCreated = DateTime.UtcNow,
+});
+
+context.Projects.Add(new Project
+{
+    Number = "P000003",
+    Name = "Test Project 3",
+    Description = "Test Description 3",
+    Contractor = "Test Contractor 3",
     DateCreated = DateTime.UtcNow,
 });
 
