@@ -14,6 +14,7 @@
 
 <PageTitle>Projects</PageTitle>
 
+<MudPaper Elevation="0" Class="pa-4" >
 @if (Elements == null || Elements.Count == 0)
 {
     <MudAlert Severity="Severity.Info">No projects found.</MudAlert>
@@ -21,12 +22,13 @@
 else
 {
     <MudDataGrid T="ProjectServiceModel" Items="@Elements.Take(20)" ReadOnly=false
-                 Bordered="true" Dense="true">
+                     Bordered="true" Outlined="true" Dense="true" Filterable="true" FilterMode="@DataGridFilterMode.ColumnFilterMenu"
+            Virtualize="true" FixedHeader="true">
         <Columns>
-            <PropertyColumn Property="x => x.Number" Title="Project number" Editable="false" />
+            <PropertyColumn Property="x => x.Number" Title="Project number" />
             <PropertyColumn Property="x => x.Name" />
             <PropertyColumn Property="x => x.Description" />
-            <PropertyColumn Property="x => x.DateCreated" Title="Date of creation" />
+            <PropertyColumn Property="x => x.DateCreated" Title="Date of creation" Filterable="false" />
             <TemplateColumn Title="Actions" CellClass="d-flex justify-end">
                 <CellTemplate>
                     <MudTooltip Text="Details">
@@ -43,6 +45,7 @@ else
         </Columns>
     </MudDataGrid>
 }
+</MudPaper>
 
 @code {
     private List<ProjectServiceModel> Elements = new List<ProjectServiceModel>();
