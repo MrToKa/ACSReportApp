@@ -18,7 +18,6 @@ namespace ACSReportApp.Data
 
         private string BuildConnectionString()
         {
-            // Connection string (could also be obtained from NpgsqlConnectionStringBuilder)
             var configuration = new ConfigurationBuilder()
                 .AddJsonFile(@"C:\Users\todor.chankov\source\repos\ACSReportApp\ACSReportApp\appsettings.json")
                 .Build();

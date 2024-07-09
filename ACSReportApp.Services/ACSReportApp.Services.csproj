@@ -12,6 +12,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="EFCore.NamingConventions" Version="8.0.3" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\ACSReportApp.Data\ACSReportApp.Data.csproj" />
     <ProjectReference Include="..\ACSReportApp.Models\ACSReportApp.Models.csproj" />
   </ItemGroup>

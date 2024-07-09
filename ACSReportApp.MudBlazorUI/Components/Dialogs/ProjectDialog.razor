@@ -13,31 +13,57 @@
     </TitleContent>
 
     <DialogContent>
-        <MudTextField Value="@Project.Number" Label="Server ID" ReadOnly="false" />
-        <MudTextField Value="@Project.Name" Label="Server Name" ReadOnly="false" />
-        <MudTextField Value="@Project.Description" Label="Location" ReadOnly="false" />
+        <MudTextField @bind-Value="Project.Number" Label="Project Number" ReadOnly="false" />
+        <MudTextField @bind-Value="Project.Name" Label="Project Name" ReadOnly="false" />
+        <MudTextField @bind-Value="Project.Description" Label="Project Description" ReadOnly="false" />
     </DialogContent>
 
     <DialogActions>
         <MudButton OnClick="Cancel">Cancel</MudButton>
-        <MudButton Color="Color.Error" OnClick="SaveChanges">Update project</MudButton>
+        <MudButton Color="Color.Success" OnClick="SaveChanges">Update project</MudButton>
     </DialogActions>
 </MudDialog>
+
 @code {
     [CascadingParameter]
     private MudDialogInstance MudDialog { get; set; }
 
     [Parameter]
-    public ProjectServiceModel Project { get; set; } = new ProjectServiceModel();
+    public Guid ProjectId { get; set; }
+
+    private ProjectServiceModel Project { get; set; } = new ProjectServiceModel();
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadProject();
+    }
+
+    private async Task LoadProject()
+    {
+        try
+        {
+            Project = await ProjectService.GetProjectAsync(ProjectId);
+        }
+        catch (Exception ex)
+        {
+            Snackbar.Add($"Error loading project: {ex.Message}", Severity.Error);
+            MudDialog.Cancel();
+        }
+    }
 
     private void Cancel() => MudDialog.Cancel();
 
-    private void SaveChanges()
+    private async Task SaveChanges()
     {
-        //In a real world scenario this bool would probably be a service to delete the item from api/database
-        ProjectService.UpdateProjectAsync(Project, Project.Id);
-
-        Snackbar.Add("Project Updated", Severity.Success);
-        MudDialog.Close(DialogResult.Ok(Project.Id));
+        try
+        {
+            await ProjectService.UpdateProjectAsync(Project, Project.Id);
+            Snackbar.Add("Project Updated", Severity.Success);
+            MudDialog.Close(DialogResult.Ok(true));
+        }
+        catch (Exception ex)
+        {
+            Snackbar.Add($"Error updating project: {ex.Message}", Severity.Error);
+        }
     }
 }

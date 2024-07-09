@@ -16,13 +16,14 @@
 <MudDataGrid T="ProjectServiceModel" Items="@Elements.Take(20)" ReadOnly=false EditMode="@(_isCellEditMode ? DataGridEditMode.Cell : DataGridEditMode.Form)"
              Bordered="true" Dense="true" EditTrigger="@(_editTriggerRowClick ? DataGridEditTrigger.OnRowClick : DataGridEditTrigger.Manual)">
     <Columns>
-        <PropertyColumn Property="x => x.Number" Title="Number" Editable="false" />
+        <PropertyColumn Property="x => x.Id" Title="Id" Editable="false" Hidden="true" />
+        <PropertyColumn Property="x => x.Number" Title="Project Number" Editable="false" />
         <PropertyColumn Property="x => x.Name" />
         <PropertyColumn Property="x => x.Description" />
         <PropertyColumn Property="x => x.DateCreated" />
         <TemplateColumn Hidden="@(_isCellEditMode || _editTriggerRowClick)" CellClass="d-flex justify-end">
             <CellTemplate>
-                <MudIconButton Size="@Size.Small" Icon="@Icons.Material.Outlined.Edit" OnClick="@context.Actions.StartEditingItemAsync" />
+                <MudIconButton Size="@Size.Small" Icon="@Icons.Material.Outlined.Edit" OnClick="@(() => OpenDialogAsync(context.Item.Id))" />
             </CellTemplate>
         </TemplateColumn>
     </Columns>
@@ -46,13 +47,28 @@
 
     protected override async Task OnInitializedAsync()
     {
-        Elements = await ProjectService.GetProjectsAsync();
+        ReloadDataAsync();
     }
 
-    private Task OpenDialogAsync()
+    private async Task OpenDialogAsync(Guid id)
     {
-        var options = new DialogOptions { CloseOnEscapeKey = true };
+        DialogParameters parameters = new DialogParameters
+            {
+                { "ProjectId", id }
+            };
 
-        return DialogService.ShowAsync<ProjectDialog>("Called dialog");
+        var dialogResult = await DialogService.ShowAsync<ProjectDialog>("", parameters);
+        var result = await dialogResult.Result;
+
+        if (!result.Canceled)
+        {
+            ReloadDataAsync();
+        }
+    }
+
+    private async Task ReloadDataAsync()
+    {
+        Elements = await ProjectService.GetProjectsAsync();
+        StateHasChanged();
     }
 }
