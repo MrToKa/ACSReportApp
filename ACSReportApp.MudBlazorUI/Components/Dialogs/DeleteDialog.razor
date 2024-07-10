@@ -13,7 +13,7 @@
     </DialogContent>
     <DialogActions>
         <MudButton OnClick="Cancel">Cancel</MudButton>
-        <MudButton Color="Color.Error" Variant="Variant.Filled" OnClick="Submit">Delete Project!</MudButton>
+        <MudButton Color="Color.Error" Variant="Variant.Filled" OnClick="Submit">DELETE!</MudButton>
     </DialogActions>
 </MudDialog>
 
@@ -27,11 +27,14 @@
     [Parameter]
     public string Title { get; set; } 
 
+    [Parameter]
+    public string Result { get; set; }
+
     private void Cancel() => MudDialog.Cancel();
 
     private void Submit()
     {
-        Snackbar.Add("Project Deleted!", Severity.Success);
+        Snackbar.Add($"{Result}", Severity.Success);
         MudDialog.Close(DialogResult.Ok(true));
     }
 }

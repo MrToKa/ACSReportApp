@@ -65,9 +65,9 @@ namespace ACSReportApp.Services
             };
         }
 
-        public Task<List<ProjectServiceModel>> GetProjectsAsync()
+        public async Task<List<ProjectServiceModel>> GetProjectsAsync()
         {
-            var projects = this.repo.All<Project>()
+            var projects = await this.repo.All<Project>()
                 .Where(p => p.IsDeleted == false)
                 .Select(p => new ProjectServiceModel()
                 {
@@ -77,9 +77,10 @@ namespace ACSReportApp.Services
                     Description = p.Description,
                     DateCreated = p.DateCreated
                 })
-                .OrderBy(p => p.Number);
+                .OrderBy(p => p.Number)
+                .ToListAsync();
 
-            return projects.ToListAsync();
+            return projects;
         }
 
         public async Task<ProjectServiceModel> UpdateProjectAsync(ProjectServiceModel project, Guid projectId)

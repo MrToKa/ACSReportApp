@@ -1,0 +1,171 @@
+﻿@page "/cabletypes"
+
+@using ACSReportApp.MudBlazorUI.Components.Dialogs
+@using ACSReportApp.Services.Contracts
+@using ACSReportApp.Services.Models
+
+@inject ICableTypeService CableTypeService
+@inject IDialogService DialogService
+
+<PageTitle>Cable Types</PageTitle>
+
+<h2 style="text-align: center;">Cable Types</h2>
+
+<MudPaper Elevation="0" Class="pa-4">
+    @if (Elements == null || Elements.Count == 0)
+    {
+        <MudAlert Severity="Severity.Info">No cables found.</MudAlert>
+    }
+    else
+    {
+        <MudDataGrid T="CableTypeServiceModel" @ref="grid" Items="@Elements" ReadOnly=false
+                     Bordered="true" Outlined="true" Dense="true" Filterable="true" FilterMode="@DataGridFilterMode.ColumnFilterMenu"
+                     Virtualize="true" FixedHeader="true" DragDropColumnReordering="true" ColumnResizeMode="ResizeMode.Container" Hideable="true">
+            <Columns>
+                <PropertyColumn Property="x => x.Type" Title="Cable type" />
+                <PropertyColumn Property="x => x.Description" Hidden="true" />
+                <PropertyColumn Property="x => x.Purpose" Hidden="true" />
+                <PropertyColumn Property="x => FormatVoltage(x.Voltage)" />
+                <PropertyColumn Property="x => String.Join(' ',
+                                               x.Pairs,
+                                               x.Conductors,
+                                               (char)x.Delimiter,
+                                               x.CrossSection,
+                                               x.GroundingDelimiter == null ? string.Empty : ((char)x.GroundingDelimiter),
+                                               x.PEConductors,
+                                               x.PEDelimiter == null ? string.Empty : ((char)x.PEDelimiter),
+                                               x.PECrossSection)"
+                                Title="Cross section" />
+                <PropertyColumn Property="x => FormatDiameter(x.Diameter)" />
+                <PropertyColumn Property="x => FormatShield(x.Shield)" />
+                <PropertyColumn Property="x => FormatBendingRadius(x.BendingRadius)" />
+                <PropertyColumn Property="x => FormatWpK(x.WeightPerKm)" Title="Weight per km" />
+                <PropertyColumn Property="x => x.Manufacturer" Hidden="true" />
+                <PropertyColumn Property="x => x.PartNumber" Title="Part number" Hidden="true" />
+
+                <TemplateColumn Title="Actions" CellClass="d-flex justify-end">
+                    <CellTemplate>
+                        <MudTooltip Text="Edit">
+                            <MudIconButton Size="@Size.Small" Icon="@Icons.Material.Outlined.Edit" OnClick="@(() => OpenDialogAsync(context.Item.Id))" />
+                        </MudTooltip>
+                        <MudTooltip Text="Delete">
+                            <MudIconButton Size="@Size.Small" Icon="@Icons.Material.Outlined.Delete" OnClick="@(() => DeleteCableTypeAsync(context.Item.Id))" />
+                        </MudTooltip>
+                    </CellTemplate>
+                </TemplateColumn>
+            </Columns>
+            <PagerContent>
+                <MudDataGridPager T="CableTypeServiceModel" />
+            </PagerContent>
+        </MudDataGrid>
+
+    }
+
+    <div class="d-flex flex-wrap mt-4 gap-1">
+        <MudButton OnClick="@(() => HideColumnsAsync(false))" Variant="Variant.Filled" Color="Color.Primary">Show All Columns</MudButton>
+    </div>
+
+</MudPaper>
+
+@code {
+    public MudDataGrid<CableTypeServiceModel> grid = null;
+
+    private List<CableTypeServiceModel> Elements = new List<CableTypeServiceModel>();
+
+    private string FormatBendingRadius(double? radius)
+    {
+        if (radius == null)
+        {
+            return string.Empty;
+        }
+        return $"{radius} [mm]";
+    }
+
+    private string FormatShield(bool shield)
+    {
+        return shield ? "Yes" : "No";
+    }
+
+    private string FormatVoltage(double? voltage)
+    {
+        if (voltage == null)
+        {
+            return string.Empty;
+        }
+        return $"{voltage} [V]";
+    }
+
+    private string FormatWpK(double wpk)
+    {
+        return $"{wpk} [kg/km]";
+    }
+
+    private string FormatDiameter(double? diameter)
+    {
+        if (diameter == null)
+        {
+            return string.Empty;
+        }
+        return $"{diameter} [mm²]";
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        await ReloadDataAsync();
+    }
+
+    private async Task ReloadDataAsync()
+    {
+        Elements = await CableTypeService.GetCablesTypesAsync();
+        StateHasChanged();
+    }
+
+    private async Task HideColumnsAsync(bool hide)
+    {
+        foreach (var column in grid.RenderedColumns)
+        {
+            await column.ShowAsync();
+        };
+    }
+
+    private async Task OpenDialogAsync(int id)
+    {
+        DialogParameters parameters = new DialogParameters<CableTypeDialog>
+            {
+                { "CableTypeId", id }
+            };
+
+        DialogOptions options = new DialogOptions
+        {
+            MaxWidth = MaxWidth.Large,
+            FullWidth = true
+        };
+
+        var dialogResult = await DialogService.ShowAsync<CableTypeDialog>("", parameters, options);
+        var result = await dialogResult.Result;
+
+        if (!result.Canceled)
+        {
+            await ReloadDataAsync();
+        }
+    }
+
+    private async Task DeleteCableTypeAsync(int cableTypeId)
+    {
+        DialogParameters paremeters = new DialogParameters<DeleteDialog>
+            {
+                { x => x.Title , "Delete Cable Type?" },
+                { x => x.Content, "Are you sure you want to delete this cable type?" },
+                { x => x.Result, "Cable type was deleted!" }
+            };
+
+        var dialogResult = await DialogService.ShowAsync<DeleteDialog>("", paremeters);
+        var result = await dialogResult.Result;
+
+        if (!result.Canceled)
+        {
+            await CableTypeService.DeleteCableTypeAsync(cableTypeId);
+            await ReloadDataAsync();
+        }
+    }
+}

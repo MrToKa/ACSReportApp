@@ -1,8 +1,8 @@
 ﻿using ACSReportApp.Models.Enums;
 
-namespace ACSReportApp.Models
+namespace ACSReportApp.Services.Models
 {
-    public class CableType
+    public class CableTypeServiceModel 
     {
         public int Id { get; set; }
 
@@ -16,7 +16,7 @@ namespace ACSReportApp.Models
 
         public int? Pairs { get; set; }
 
-        public int Conductors { get; set; } 
+        public int Conductors { get; set; }
 
         public CableDelimiter? Delimiter { get; set; }
 
@@ -41,7 +41,5 @@ namespace ACSReportApp.Models
         public string Manufacturer { get; set; } = null!;
 
         public string? PartNumber { get; set; }
-
-        public bool IsDeleted { get; set; } = false;
     }
 }

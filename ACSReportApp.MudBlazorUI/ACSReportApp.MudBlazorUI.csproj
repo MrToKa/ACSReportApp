@@ -7,7 +7,6 @@
 		<UserSecretsId>aspnet-ACSReportApp.MudBlazorUI-d4f47ce0-6aa8-4310-8c88-eec406eec85a</UserSecretsId>
 	</PropertyGroup>
 
-
 	<ItemGroup>
 		<PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="8.*" />
 		<PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="8.*" />
@@ -24,6 +23,11 @@
 	<ItemGroup>
 		<ProjectReference Include="..\ACSReportApp.Data\ACSReportApp.Data.csproj" />
 		<ProjectReference Include="..\ACSReportApp.Services\ACSReportApp.Services.csproj" />
+	</ItemGroup>
+
+
+	<ItemGroup>
+	  <None Include="Components\Pages\CableTypes.razor" />
 	</ItemGroup>
 
 </Project>

@@ -20,7 +20,7 @@
 
     <DialogActions>
         <MudButton OnClick="Cancel">Cancel</MudButton>
-        <MudButton Color="Color.Success" Variant="Variant.Filled" OnClick="SaveChanges">Update project</MudButton>
+        <MudButton Color="Color.Success" Variant="Variant.Filled" OnClick="SaveChanges">Update!</MudButton>
     </DialogActions>
 </MudDialog>
 
@@ -58,7 +58,7 @@
         try
         {
             await ProjectService.UpdateProjectAsync(Project, Project.Id);
-            Snackbar.Add("Project Updated", Severity.Success);
+            Snackbar.Add("Project was updated", Severity.Success);
             MudDialog.Close(DialogResult.Ok(true));
         }
         catch (Exception ex)
