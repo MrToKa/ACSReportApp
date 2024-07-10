@@ -29,7 +29,7 @@
                 <PropertyColumn Property="x => String.Join(' ',
                                                x.Pairs,
                                                x.Conductors,
-                                               (char)x.Delimiter,
+                                               x.Delimiter == null ? string.Empty : ((char)x.Delimiter),
                                                x.CrossSection,
                                                x.GroundingDelimiter == null ? string.Empty : ((char)x.GroundingDelimiter),
                                                x.PEConductors,
@@ -63,6 +63,7 @@
 
     <div class="d-flex flex-wrap mt-4 gap-1">
         <MudButton OnClick="@(() => HideColumnsAsync(false))" Variant="Variant.Filled" Color="Color.Primary">Show All Columns</MudButton>
+        <MudButton OnClick="@(() => AddNewCableTypeAsync())" Variant="Variant.Filled" Color="Color.Primary">Add New Cable Type</MudButton>
     </div>
 
 </MudPaper>
@@ -126,6 +127,28 @@
         {
             await column.ShowAsync();
         };
+    }
+
+    private async Task AddNewCableTypeAsync()
+    {
+        DialogParameters parameters = new DialogParameters<CableTypeDialog>
+            {
+                { "CableTypeId", 0 }
+            };
+
+        DialogOptions options = new DialogOptions
+        {
+            MaxWidth = MaxWidth.Large,
+            FullWidth = true
+        };
+
+        var dialogResult = await DialogService.ShowAsync<CableTypeDialog>("", parameters, options);
+        var result = await dialogResult.Result;
+
+        if (!result.Canceled)
+        {
+            await ReloadDataAsync();
+        }
     }
 
     private async Task OpenDialogAsync(int id)
