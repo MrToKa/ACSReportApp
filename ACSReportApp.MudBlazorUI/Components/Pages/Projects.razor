@@ -13,37 +13,37 @@
 
 <PageTitle>Projects</PageTitle>
 
-<MudPaper Elevation="0" Class="pa-4" >
-@if (Elements == null || Elements.Count == 0)
-{
-    <MudAlert Severity="Severity.Info">No projects found.</MudAlert>
-}
-else
-{
-    <MudDataGrid T="ProjectServiceModel" Items="@Elements.Take(20)" ReadOnly=false
+<MudPaper Elevation="0" Class="pa-4">
+    @if (Elements == null || Elements.Count == 0)
+    {
+        <MudAlert Severity="Severity.Info">No projects found.</MudAlert>
+    }
+    else
+    {
+        <MudDataGrid T="ProjectServiceModel" Items="@Elements.Take(20)" ReadOnly=false
                      Bordered="true" Outlined="true" Dense="true" Filterable="true" FilterMode="@DataGridFilterMode.ColumnFilterMenu"
-            Virtualize="true" FixedHeader="true">
-        <Columns>
-            <PropertyColumn Property="x => x.Number" Title="Project number" />
-            <PropertyColumn Property="x => x.Name" />
-            <PropertyColumn Property="x => x.Description" />
-            <PropertyColumn Property="x => x.DateCreated" Title="Date of creation" Filterable="false" />
-            <TemplateColumn Title="Actions" CellClass="d-flex justify-end">
-                <CellTemplate>
-                    <MudTooltip Text="Details">
-                        <MudIconButton Size="@Size.Small" Icon="@Icons.Material.Filled.Visibility" />
-                    </MudTooltip>
-                    <MudTooltip Text="Edit">
-                        <MudIconButton Size="@Size.Small" Icon="@Icons.Material.Outlined.Edit" OnClick="@(() => OpenDialogAsync(context.Item.Id))" />
-                    </MudTooltip>
-                    <MudTooltip Text="Delete">
-                        <MudIconButton Size="@Size.Small" Icon="@Icons.Material.Outlined.Delete" OnClick="@(() => DeleteProjectAsync(context.Item.Id))" />
-                    </MudTooltip>
-                </CellTemplate>
-            </TemplateColumn>
-        </Columns>
-    </MudDataGrid>
-}
+                     Virtualize="true" FixedHeader="true">
+            <Columns>
+                <PropertyColumn Property="x => x.Number" Title="Project number" />
+                <PropertyColumn Property="x => x.Name" />
+                <PropertyColumn Property="x => x.Description" Filterable="false" />
+                <PropertyColumn Property="x => x.DateCreated" Title="Date of creation" Filterable="false" />
+                <TemplateColumn Title="Actions" CellClass="d-flex justify-end">
+                    <CellTemplate>
+                        <MudTooltip Text="Details">
+                            <MudIconButton Href="@($"projectdetails?projectId={context.Item.Id}")" Size="@Size.Small" Icon="@Icons.Material.Filled.Visibility" />
+                        </MudTooltip>
+                        <MudTooltip Text="Edit">
+                            <MudIconButton Size="@Size.Small" Icon="@Icons.Material.Outlined.Edit" OnClick="@(() => OpenDialogAsync(context.Item.Id))" />
+                        </MudTooltip>
+                        <MudTooltip Text="Delete">
+                            <MudIconButton Size="@Size.Small" Icon="@Icons.Material.Outlined.Delete" OnClick="@(() => DeleteProjectAsync(context.Item.Id))" />
+                        </MudTooltip>
+                    </CellTemplate>
+                </TemplateColumn>
+            </Columns>
+        </MudDataGrid>
+    }
 </MudPaper>
 
 @code {

@@ -1,0 +1,65 @@
+﻿@page "/projectdetails"
+
+@using ACSReportApp.Services.Contracts
+@using ACSReportApp.Services.Models
+
+@inject IProjectService ProjectService
+
+<style>
+    .bordered-item {
+        border: 1px solid #000000;
+        padding: 10px;
+        box-sizing: border-box;
+    }
+
+    .bordered-container {
+        border: 1px solid #000000;
+        margin: -1px;
+    }
+</style>
+
+<h1 style="text-align: center; margin: 5px;">Project Details</h1>
+
+<MudPaper Class="d-flex justify-space-between flex-grow-1 gap-4 ma-4 pa-4" Elevation="0">
+    <MudGrid Class="d-flex justify-space-around flex-grow-1">
+        <MudItem xs="5" sm="3" Class="border-solid border-2 mud-border-primary ma-1 pa-1 rounded-xl">
+            <MudText Align="Align.Center" Typo="Typo.h6">Project number</MudText>
+            <MudText Align="Align.Center" Typo="Typo.body1">@CurrentProject.Number</MudText>
+        </MudItem>
+        <MudItem xs="5" sm="3" Class="border-solid border-2 mud-border-primary ma-1 pa-1 rounded-xl">
+            <MudText Align="Align.Center" Typo="Typo.h6">Name</MudText>
+            <MudText Align="Align.Center" Typo="Typo.body1">@CurrentProject.Name</MudText>
+        </MudItem>
+        <MudItem xs="5" sm="3" Class="border-solid border-2 mud-border-primary ma-1 pa-1 rounded-xl">
+            <MudText Align="Align.Center" Typo="Typo.h6">Description</MudText>
+            <MudText Align="Align.Center" Typo="Typo.body1">@CurrentProject.Description</MudText>
+        </MudItem>
+        <MudItem xs="5" sm="3" Class="border-solid border-2 mud-border-primary ma-1 pa-1 rounded-xl">
+            <MudText Align="Align.Center" Typo="Typo.h6">Date of creation</MudText>
+            <MudText Align="Align.Center" Typo="Typo.body1">@CurrentProject.DateCreated</MudText>
+        </MudItem>
+    </MudGrid>
+</MudPaper>
+
+<MudPaper Class="d-flex justify-space-around flex-grow-1 gap-4 ma-4 pa-4" Elevation="0">
+    <MudButton Variant="Variant.Filled" Color="Color.Primary">Show project cables list</MudButton>
+    <MudButton Variant="Variant.Filled" Color="Color.Primary">Show project trays list</MudButton>
+    <MudButton Variant="Variant.Filled" Color="Color.Primary">Show project consumers list</MudButton>
+    <MudButton Variant="Variant.Filled" Color="Color.Primary">Show project instruments list</MudButton>
+</MudPaper>
+
+
+
+
+@code {
+    [Parameter]
+    [SupplyParameterFromQuery(Name = "projectId")]
+    public Guid ProjectId { get; set; }
+
+    private ProjectServiceModel CurrentProject = new ProjectServiceModel();
+
+    protected override async Task OnInitializedAsync()
+    {
+        CurrentProject = await ProjectService.GetProjectAsync(ProjectId);
+    }
+}

@@ -39,16 +39,16 @@ context.SaveChanges();
 
 Console.WriteLine("Projects added to the database!");
 
-var projects = context.Projects.ToList();
-foreach (var project in projects)
-{
-    Console.WriteLine($"Project Number: {project.Number}");
-    Console.WriteLine($"Project Name: {project.Name}");
-    Console.WriteLine($"Project Description: {project.Description}");
-    Console.WriteLine($"Project Contractor: {project.Contractor}");
-    Console.WriteLine($"Project Date Created: {project.DateCreated}");
-    Console.WriteLine();
-}
+//var projects = context.Projects.ToList();
+//foreach (var project in projects)
+//{
+//    Console.WriteLine($"Project Number: {project.Number}");
+//    Console.WriteLine($"Project Name: {project.Name}");
+//    Console.WriteLine($"Project Description: {project.Description}");
+//    Console.WriteLine($"Project Contractor: {project.Contractor}");
+//    Console.WriteLine($"Project Date Created: {project.DateCreated}");
+//    Console.WriteLine();
+//}
 
 context.CableTypes.Add(new CableType
 {
@@ -98,25 +98,25 @@ context.SaveChanges();
 
 Console.WriteLine("Cable Types added to the database!");
 
-var cableTypes = context.CableTypes.ToList();
-foreach (var cableType in cableTypes)
-{
-    Console.WriteLine($"Cable Type: {cableType.Type}");
-    Console.WriteLine($"Cable Description: {cableType.Description}");
-    Console.WriteLine($"Cable Purpose: {cableType.Purpose}");
-    Console.WriteLine($"Cable Voltage: {cableType.Voltage}");
-    Console.WriteLine($"Cable Conductors: {cableType.Conductors}");
-    Console.WriteLine($"Cable Delimiter: {cableType.Delimiter}");
-    Console.WriteLine($"Cable Cross Section: {cableType.CrossSection}");
-    Console.WriteLine($"Cable Grounding Delimiter: {cableType.GroundingDelimiter}");
-    Console.WriteLine($"Cable PE Conductors: {cableType.PEConductors}");
-    Console.WriteLine($"Cable PE Delimiter: {cableType.PEDelimiter}");
-    Console.WriteLine($"Cable PE Cross Section: {cableType.PECrossSection}");
-    Console.WriteLine($"Cable Diameter: {cableType.Diameter}");
-    Console.WriteLine($"Cable Shield: {cableType.Shield}");
-    Console.WriteLine($"Cable Bending Radius: {cableType.BendingRadius}");
-    Console.WriteLine($"Cable Weight Per Km: {cableType.WeightPerKm}");
-    Console.WriteLine($"Cable Manufacturer: {cableType.Manufacturer}");
-    Console.WriteLine($"Cable Part Number: {cableType.PartNumber}");
-    Console.WriteLine();
-}
+//var cableTypes = context.CableTypes.ToList();
+//foreach (var cableType in cableTypes)
+//{
+//    Console.WriteLine($"Cable Type: {cableType.Type}");
+//    Console.WriteLine($"Cable Description: {cableType.Description}");
+//    Console.WriteLine($"Cable Purpose: {cableType.Purpose}");
+//    Console.WriteLine($"Cable Voltage: {cableType.Voltage}");
+//    Console.WriteLine($"Cable Conductors: {cableType.Conductors}");
+//    Console.WriteLine($"Cable Delimiter: {cableType.Delimiter}");
+//    Console.WriteLine($"Cable Cross Section: {cableType.CrossSection}");
+//    Console.WriteLine($"Cable Grounding Delimiter: {cableType.GroundingDelimiter}");
+//    Console.WriteLine($"Cable PE Conductors: {cableType.PEConductors}");
+//    Console.WriteLine($"Cable PE Delimiter: {cableType.PEDelimiter}");
+//    Console.WriteLine($"Cable PE Cross Section: {cableType.PECrossSection}");
+//    Console.WriteLine($"Cable Diameter: {cableType.Diameter}");
+//    Console.WriteLine($"Cable Shield: {cableType.Shield}");
+//    Console.WriteLine($"Cable Bending Radius: {cableType.BendingRadius}");
+//    Console.WriteLine($"Cable Weight Per Km: {cableType.WeightPerKm}");
+//    Console.WriteLine($"Cable Manufacturer: {cableType.Manufacturer}");
+//    Console.WriteLine($"Cable Part Number: {cableType.PartNumber}");
+//    Console.WriteLine();
+//}
