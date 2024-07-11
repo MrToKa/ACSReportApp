@@ -1,112 +1,55 @@
 ﻿@using ACSReportApp.Models.Enums
-@using ACSReportApp.Services.Contracts
 @using ACSReportApp.Services.Models
+@using MudBlazor
 
-@inject ICableTypeService CableTypeService
-@inject ISnackbar Snackbar
-
-<MudDialog>
-    <TitleContent>
-        <MudText Typo="Typo.h6">
-            <MudIcon Icon="@Icons.Material.Filled.Save" Class="mr-3 mb-n1" />
-            Adding a new cable type!
-        </MudText>
-    </TitleContent>
-
-    <DialogContent>
-        <MudTextField @bind-Value="CableType.Type" Label="Cable Type" ReadOnly="false" />
-        <MudTextField @bind-Value="CableType.Description" Label="Cable Description" ReadOnly="false" />
-        <MudTextField @bind-Value="CableType.Purpose" Label="Cable Purpose" ReadOnly="false" />
-        <MudNumericField HideSpinButtons="true" @bind-Value="CableType.Voltage" Label="Cable Voltage [V]" ReadOnly="false" />
-        <MudNumericField HideSpinButtons="true" @bind-Value="CableType.Pairs" Label="Cable Pairs" ReadOnly="false" />
-        <MudNumericField HideSpinButtons="true" @bind-Value="CableType.Conductors" Label="Cable Conductors" ReadOnly="false" />
-
-        <MudSelect T="CableDelimiter?" @bind-Value="CableType.Delimiter" Label="Cable Delimiter" ReadOnly="false">
-            @foreach (var delimiter in CableDelimiters)
-            {
-                <MudSelectItem Value="@(delimiter.Value)">@GetDelimiterDisplayName(delimiter.Value)</MudSelectItem>
-            }
-        </MudSelect>
-
-        <MudNumericField T="double" HideSpinButtons="true" @bind-Value="CableType.CrossSection" Label="Cable Cross Sections" ReadOnly="false" />
-
-        <MudSelect T="CableDelimiter?" @bind-Value="CableType.GroundingDelimiter" Label="Cable Grounding Cores Delimiter" ReadOnly="false">
-            @foreach (var delimiter in CableDelimiters)
-            {
-                <MudSelectItem Value="@(delimiter.Value)">@GetDelimiterDisplayName(delimiter.Value)</MudSelectItem>
-            }
-        </MudSelect>
-
-        <MudNumericField HideSpinButtons="true" @bind-Value="CableType.PEConductors" Label="Cable PE Conductors" ReadOnly="false" />
-
-        <MudSelect T="CableDelimiter?" @bind-Value="CableType.PEDelimiter" Label="Cable PE Delimiter" ReadOnly="false">
-            @foreach (var delimiter in CableDelimiters)
-            {
-                <MudSelectItem Value="@(delimiter.Value)">@GetDelimiterDisplayName(delimiter.Value)</MudSelectItem>
-            }
-        </MudSelect>
-
-        <MudNumericField T="double?" HideSpinButtons="true" @bind-Value="CableType.PECrossSection" Label="Cable PE Cross Section" ReadOnly="false" />
-        <MudNumericField HideSpinButtons="true" @bind-Value="CableType.Diameter" Label="Cable Diameter [mm²]" ReadOnly="false" />
-
-        <MudSelect @bind-Value="CableType.Shield" Label="Cable Shield" ReadOnly="false">
-            <MudSelectItem Value="@(true)">Yes</MudSelectItem>
-            <MudSelectItem Value="@(false)">No</MudSelectItem>
-        </MudSelect>
-
-        <MudNumericField T="double?" HideSpinButtons="true" @bind-Value="CableType.BendingRadius" Label="Cable Bending Radius [mm]" ReadOnly="false" />
-        <MudNumericField T="double" HideSpinButtons="true" @bind-Value="CableType.WeightPerKm" Label="Cable Weight Per Km [kg/km]" ReadOnly="false" />
-        <MudTextField @bind-Value="CableType.Manufacturer" Label="Cable Manufacturer" ReadOnly="false" />
-        <MudTextField @bind-Value="CableType.PartNumber" Label="Cable Part Number" ReadOnly="false" />
-    </DialogContent>
-
-    <DialogActions>
-        <MudButton OnClick="Cancel">Cancel</MudButton>
-        <MudButton Color="Color.Success" Variant="Variant.Filled" OnClick="SaveChanges">Add Cable type!</MudButton>
-    </DialogActions>
-</MudDialog>
+<EditForm Model="@CableType" OnValidSubmit="(() => OnValidSubmit.InvokeAsync())">
+    <MudTextField @bind-Value="CableType.Type" Label="Cable Type" />
+    <MudTextField @bind-Value="CableType.Description" Label="Cable Description" />
+    <MudTextField @bind-Value="CableType.Purpose" Label="Cable Purpose" />
+    <MudNumericField HideSpinButtons="true" @bind-Value="CableType.Voltage" Label="Cable Voltage [V]" />
+    <MudNumericField HideSpinButtons="true" @bind-Value="CableType.Pairs" Label="Cable Pairs" />
+    <MudNumericField HideSpinButtons="true" @bind-Value="CableType.Conductors" Label="Cable Conductors" />
+    <MudSelect T="CableDelimiter?" @bind-Value="CableType.Delimiter" Label="Cable Delimiter">
+        @foreach (var delimiter in CableDelimiters)
+        {
+            <MudSelectItem Value="@(delimiter.Value)">@GetDelimiterDisplayName(delimiter.Value)</MudSelectItem>
+        }
+    </MudSelect>
+    <MudNumericField T="double" HideSpinButtons="true" @bind-Value="CableType.CrossSection" Label="Cable Cross Sections" />
+    <MudSelect T="CableDelimiter?" @bind-Value="CableType.GroundingDelimiter" Label="Cable Grounding Cores Delimiter">
+        @foreach (var delimiter in CableDelimiters)
+        {
+            <MudSelectItem Value="@(delimiter.Value)">@GetDelimiterDisplayName(delimiter.Value)</MudSelectItem>
+        }
+    </MudSelect>
+    <MudNumericField HideSpinButtons="true" @bind-Value="CableType.PEConductors" Label="Cable PE Conductors" />
+    <MudSelect T="CableDelimiter?" @bind-Value="CableType.PEDelimiter" Label="Cable PE Delimiter">
+        @foreach (var delimiter in CableDelimiters)
+        {
+            <MudSelectItem Value="@(delimiter.Value)">@GetDelimiterDisplayName(delimiter.Value)</MudSelectItem>
+        }
+    </MudSelect>
+    <MudNumericField T="double?" HideSpinButtons="true" @bind-Value="CableType.PECrossSection" Label="Cable PE Cross Section" />
+    <MudNumericField HideSpinButtons="true" @bind-Value="CableType.Diameter" Label="Cable Diameter [mm²]" />
+    <MudSelect @bind-Value="CableType.Shield" Label="Cable Shield">
+        <MudSelectItem Value="@(true)">Yes</MudSelectItem>
+        <MudSelectItem Value="@(false)">No</MudSelectItem>
+    </MudSelect>
+    <MudNumericField T="double?" HideSpinButtons="true" @bind-Value="CableType.BendingRadius" Label="Cable Bending Radius [mm]" />
+    <MudNumericField T="double" HideSpinButtons="true" @bind-Value="CableType.WeightPerKm" Label="Cable Weight Per Km [kg/km]" />
+    <MudTextField @bind-Value="CableType.Manufacturer" Label="Cable Manufacturer" />
+    <MudTextField @bind-Value="CableType.PartNumber" Label="Cable Part Number" />
+</EditForm>
 
 @code {
-    [CascadingParameter]
-    private MudDialogInstance MudDialog { get; set; }
+    [Parameter] 
+    public List<KeyValuePair<string, CableDelimiter?>> CableDelimiters { get; set; }
+
+    [Parameter] 
+    public EventCallback<string> OnValidSubmit { get; set; }
 
     [Parameter]
-    public int CableTypeId { get; set; }
-
-    private CableTypeServiceModel CableType { get; set; }
-
-    private List<KeyValuePair<string, CableDelimiter?>> CableDelimiters { get; set; }
-
-    protected override async Task OnInitializedAsync()
-    {
-        CableDelimiters = Enum.GetValues(typeof(CableDelimiter))
-                             .Cast<CableDelimiter>()
-                             .Select(e => new KeyValuePair<string, CableDelimiter?>(e.ToString(), e))
-                             .ToList();
-
-        LoadCableType();
-    }
-
-    private void LoadCableType()
-    {
-        CableType = new CableTypeServiceModel();
-    }
-
-    private void Cancel() => MudDialog.Cancel();
-
-    private async Task SaveChanges()
-    {
-        try
-        {
-            await CableTypeService.CreateCableTypeAsync(CableType);
-            Snackbar.Add("Cable type was updated", Severity.Success);
-            MudDialog.Close(DialogResult.Ok(true));
-        }
-        catch (Exception ex)
-        {
-            Snackbar.Add($"Error updating cable type: {ex.Message}", Severity.Error);
-        }
-    }
+    public CableTypeServiceModel CableType { get; set; }
 
     private string GetDelimiterDisplayName(CableDelimiter? delimiter)
     {

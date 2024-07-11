@@ -146,7 +146,9 @@
     {
         DialogParameters parameters = new DialogParameters<CableTypeDialog>
             {
-                { "CableTypeId", 0 }
+                { "DialogAction", "Add Cable" },
+                { "CableType", new CableTypeServiceModel() }
+
             };
 
         DialogOptions options = new DialogOptions
@@ -168,7 +170,9 @@
     {
         DialogParameters parameters = new DialogParameters<CableTypeDialog>
             {
-                { "CableTypeId", id }
+                { "DialogAction", "Edit Cable" },
+                { "CableTypeId", id },
+                { "CableType", await CableTypeService.GetCableTypeAsync(id) }
             };
 
         DialogOptions options = new DialogOptions
