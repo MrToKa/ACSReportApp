@@ -12,6 +12,10 @@ namespace ACSReportApp.Models
 
         public bool IsLastRevision { get; set; }
 
+        public DateTime? RevisionDate { get; set; }
+
+        public string? RevisionIssuedBy { get; set; }
+
         [Required]
         [ForeignKey(nameof(Project))]
         public Guid ProjectId { get; set; }
