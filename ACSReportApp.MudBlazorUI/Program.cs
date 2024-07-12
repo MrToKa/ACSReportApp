@@ -26,6 +26,7 @@ builder.Services.AddScoped<AuthenticationStateProvider, IdentityRevalidatingAuth
 builder.Services.AddScoped<IACSReportAppDbRepository, ACSReportAppDbRepository>();
 builder.Services.AddScoped<IProjectService, ProjectService>();
 builder.Services.AddScoped<ICableTypeService, CableTypeService>();
+builder.Services.AddScoped<ICableService, CableService>();
 
 builder.Services.AddAuthentication(options =>
     {

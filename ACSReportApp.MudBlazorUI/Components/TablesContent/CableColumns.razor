@@ -1,0 +1,37 @@
+﻿@using ACSReportApp.Services.Models
+
+<HierarchyColumn T="CableServiceModel" Hidden="@TableType" />
+<PropertyColumn T="CableServiceModel" TProperty="string" Property="x => x.Revision" Title="Revision" />
+<PropertyColumn T="CableServiceModel" TProperty="string" Property="x => x.System" Title="System or Enclosure" />
+<PropertyColumn T="CableServiceModel" TProperty="string" Property="x => x.Tag" Title="Cable Tag" />
+<PropertyColumn T="CableServiceModel" TProperty="string" Property="x => x.CableTypeId == null ? string.Empty : String.Join(' ',
+                                               x.CableType.Pairs == null ? string.Empty : (string.Join(' ', x.CableType.Pairs, 'x' )),
+                                               x.CableType.Conductors,
+                                               x.CableType.Delimiter == null ? string.Empty : ((char)x.CableType.Delimiter),
+                                               x.CableType.CrossSection,
+                                               x.CableType.GroundingDelimiter == null ? string.Empty : ((char)x.CableType.GroundingDelimiter),
+                                               x.CableType.PEConductors,
+                                               x.CableType.PEDelimiter == null ? string.Empty : ((char)x.CableType.PEDelimiter),
+                                               x.CableType.PECrossSection)" Title="Cable Type" />
+<PropertyColumn T="CableServiceModel" TProperty="double?" Property="x => x.CableTypeId == null ? Double.NaN : x.CableType.Diameter" Title="Cable diameter" />
+<PropertyColumn T="CableServiceModel" TProperty="double?" Property="x => x.CableTypeId == null ? Double.NaN : x.CableType.BendingRadius" Title="Bending radius" />
+<PropertyColumn T="CableServiceModel" TProperty="string" Property="x => x.FromLocation" Title="From Location" />
+<PropertyColumn T="CableServiceModel" TProperty="string" Property="x => x.FromDevice" Title="From device" />
+<PropertyColumn T="CableServiceModel" TProperty="string" Property="x => x.ToLocation" Title="To Location" />
+<PropertyColumn T="CableServiceModel" TProperty="string" Property="x => x.ToDevice" Title="To device" />
+<PropertyColumn T="CableServiceModel" TProperty="string" Property="x => x.Routing" Title="Routing" />
+<PropertyColumn T="CableServiceModel" TProperty="int?" Property="x => x.DesignLength" Title="Design length" />
+<PropertyColumn T="CableServiceModel" TProperty="int?" Property="x => x.InstallLength" Title="Install length" />
+<PropertyColumn T="CableServiceModel" TProperty="DateTime?" Property="x => x.PullDate" Title="Pull date" />
+<PropertyColumn T="CableServiceModel" TProperty="DateTime?" Property="x => x.ConnectedFrom" Title="Connected FROM on" />
+<PropertyColumn T="CableServiceModel" TProperty="DateTime?" Property="x => x.ConnectedTo" Title="Connected TO on" />
+<PropertyColumn T="CableServiceModel" TProperty="DateTime?" Property="x => x.TestedDate" Title="Tested on" />
+<PropertyColumn T="CableServiceModel" TProperty="string" Property="x => x.Delivery" Title="Delivery by" />
+<PropertyColumn T="CableServiceModel" TProperty="string" Property="x => x.Remarks" Title="Remarks" />
+
+@code {
+    [Parameter] 
+    public bool IsOldRevisionsTable { get; set; }
+
+    private bool TableType => IsOldRevisionsTable;
+}

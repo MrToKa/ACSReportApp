@@ -8,11 +8,15 @@ namespace ACSReportApp.Models
         [Key]
         public int Id { get; set; }
 
+        public string? Revision { get; set; }
+
+        public bool IsLastRevision { get; set; }
+
         [Required]
         [ForeignKey(nameof(Project))]
         public Guid ProjectId { get; set; }
 
-        public Project Project { get; set; }
+        public Project Project { get; set; } = null!;
 
         /// <summary>
         /// Gets or sets the TAG of the cable. Usually is the Name of the cable.
@@ -23,23 +27,23 @@ namespace ACSReportApp.Models
         /// <summary>
         /// Gets or sets the cable type. It is a foreign key to CableType table 
         /// </summary>
-        [Required]
-        [ForeignKey(nameof(CableType))]
-        public int CableTypeId { get; set; }
 
-        [Required]
-        public CableType CableType { get; set; } = null!;
+        [ForeignKey(nameof(CableType))]
+        public int? CableTypeId { get; set; }
+
+
+        public CableType? CableType { get; set; }
 
         /// <summary>
         /// Gets or sets the system of the cable. It is a part of P&ID.
         /// </summary>        
-        public string System { get; set; }
+        public string? System { get; set; }
 
         /// <summary>
         /// Gets or sets the starting location of the cable. Usually this is the KKS of the consumer.
         /// </summary>
-        [Required]
-        public string FromLocation { get; set; } = null!;
+        
+        public string? FromLocation { get; set; }
 
         /// <summary>
         /// Gets or sets description of the starting location. Usually this is the description of the consumer.
@@ -50,8 +54,8 @@ namespace ACSReportApp.Models
         /// <summary>
         /// Gets or sets the target location of the cable. Usually this is the KKS of the enclosure/device.
         /// </summary>
-        [Required]
-        public string ToLocation { get; set; } = null!;
+        
+        public string? ToLocation { get; set; }
 
         /// <summary>
         /// Gets or sets description of the target location. It consist of a descriptive text of the consumer and its purpose. It can include a system name too.
@@ -95,7 +99,7 @@ namespace ACSReportApp.Models
         /// </summary>
         public DateTime? TestedDate { get; set; }
         
-        public string Delivery { get; set; }
+        public string? Delivery { get; set; }
 
         /// <summary>
         /// Gets or sets the remarks for changes on anything unusual about the cable.
@@ -111,10 +115,6 @@ namespace ACSReportApp.Models
 
         public DateTime? LastModifiedOn { get; set; }
 
-        [Required]
-        [ForeignKey(nameof(ApplicationUserId))]
-        public ApplicationUser ModifiedBy { get; set; }
-
-        public string ApplicationUserId { get; set; }
+        public string? ModifiedBy { get; set; }
     }
 }

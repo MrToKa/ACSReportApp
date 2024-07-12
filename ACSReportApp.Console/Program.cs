@@ -120,3 +120,245 @@ Console.WriteLine("Cable Types added to the database!");
 //    Console.WriteLine($"Cable Part Number: {cableType.PartNumber}");
 //    Console.WriteLine();
 //}
+
+context.Cables.Add(new Cable
+{
+    Revision = "00",
+    IsLastRevision = true,
+    ProjectId = context.Projects.FirstOrDefault().Id,
+    Tag = "=H5=HE1=WDB1",
+    System = "Test System",
+    FromLocation = " From Location",
+    FromDevice = " From Device",
+    ToLocation = " To Location",
+    ToDevice = " To Device",
+    Routing = "Test Routing",
+    DesignLength = 100
+});
+
+context.Cables.Add(new Cable
+{
+    Revision = "00",
+    IsLastRevision = false,
+    ProjectId = context.Projects.FirstOrDefault().Id,
+    Tag = "=H5=HE1=WDB2",
+    System = "Test System",
+    FromLocation = " From Location",
+    FromDevice = " From Device",
+    ToLocation = " To Location",
+    ToDevice = " To Device",
+    Routing = "Test Routing",
+    DesignLength = 100
+});
+
+context.Cables.Add(new Cable
+{
+    Revision = "01",
+    IsLastRevision = true,
+    ProjectId = context.Projects.FirstOrDefault().Id,
+    Tag = "=H5=HE1=WDB2",
+    System = "Test System",
+    FromLocation = " From Location",
+    FromDevice = " From Device",
+    ToLocation = " To Location",
+    ToDevice = " To Device",
+    Routing = "Test Routing",
+    DesignLength = 100
+});
+
+context.Cables.Add(new Cable
+{
+    Revision = "00",
+    IsLastRevision = true,
+    ProjectId = context.Projects.FirstOrDefault().Id,
+    Tag = "=H5=HE1=WDB3",
+    CableTypeId = context.CableTypes.FirstOrDefault().Id,
+    System = "Test System",
+    FromLocation = " From Location",
+    FromDevice = " From Device",
+    ToLocation = " To Location",
+    ToDevice = " To Device",
+    Routing = "Test Routing",
+    DesignLength = 100
+});
+
+context.Cables.Add(new Cable
+{
+    Revision = "00",
+    IsLastRevision = false,
+    ProjectId = context.Projects.FirstOrDefault().Id,
+    Tag = "=H5=HE1=WDB4",
+    CableTypeId = 1,
+    System = "Test System",
+    FromLocation = " From Location",
+    FromDevice = " From Device",
+    ToLocation = " To Location",
+    ToDevice = " To Device",
+    Routing = "Test Routing",
+    DesignLength = 100
+});
+
+context.Cables.Add(new Cable
+{
+    Revision = "01",
+    IsLastRevision = false,
+    ProjectId = context.Projects.FirstOrDefault().Id,
+    Tag = "=H5=HE1=WDB4",
+    CableTypeId = 2,
+    System = "Test System",
+    FromLocation = " From Location",
+    FromDevice = " From Device",
+    ToLocation = " To Location",
+    ToDevice = " To Device",
+    Routing = "Test Routing",
+    DesignLength = 100
+});
+
+context.Cables.Add(new Cable
+{
+    Revision = "02",
+    IsLastRevision = false,
+    ProjectId = context.Projects.FirstOrDefault().Id,
+    Tag = "=H5=HE1=WDB4",
+    CableTypeId = 2,
+    System = "Test System",
+    FromLocation = " From Location",
+    FromDevice = " From Device",
+    ToLocation = " To Location",
+    ToDevice = " To Device",
+    Routing = "Test Routing",
+    DesignLength = 100
+});
+
+context.Cables.Add(new Cable
+{
+    Revision = "03",
+    IsLastRevision = false,
+    ProjectId = context.Projects.FirstOrDefault().Id,
+    Tag = "=H5=HE1=WDB4",
+    CableTypeId = 2,
+    System = "Test System",
+    FromLocation = " From Location",
+    FromDevice = " From Device",
+    ToLocation = " To Location",
+    ToDevice = " To Device",
+    Routing = "Test Routing",
+    DesignLength = 100
+});
+
+context.Cables.Add(new Cable
+{
+    Revision = "04",
+    IsLastRevision = true,
+    ProjectId = context.Projects.FirstOrDefault().Id,
+    Tag = "=H5=HE1=WDB4",
+    CableTypeId = 1,
+    System = "Test System",
+    FromLocation = " From Location",
+    FromDevice = " From Device",
+    ToLocation = " To Location",
+    ToDevice = " To Device",
+    Routing = "Test Routing",
+    DesignLength = 100
+});
+
+//Cables for another project
+
+context.Cables.Add(new Cable
+{
+    Revision = "00",
+    IsLastRevision = true,
+    ProjectId = context.Projects.Skip(1).FirstOrDefault().Id,
+    Tag = "=H5=HE1=WDB1",
+    System = "Test2 System",
+    FromLocation = " From2 Location",
+    FromDevice = " From2 Device",
+    ToLocation = " To2 Location",
+    ToDevice = " To2 Device",
+    Routing = "Test2 Routing",
+    DesignLength = 100,
+    IsDeleted = true,
+});
+
+context.Cables.Add(new Cable
+{
+    Revision = "00",
+    IsLastRevision = false,
+    ProjectId = context.Projects.Skip(1).FirstOrDefault().Id,
+    Tag = "=H5=HE1=WDB2",
+    System = "Test2 System",
+    FromLocation = " From2 Location",
+    FromDevice = " From2 Device",
+    ToLocation = " To2 Location",
+    ToDevice = " To2 Device",
+    Routing = "Test2 Routing",
+    DesignLength = 100
+});
+
+context.Cables.Add(new Cable
+{
+    Revision = "01",
+    IsLastRevision = true,
+    ProjectId = context.Projects.Skip(1).FirstOrDefault().Id,
+    Tag = "=H5=HE1=WDB2",
+    System = "Test2 System",
+    FromLocation = " From2 Location",
+    FromDevice = " From2 Device",
+    ToLocation = " To2 Location",
+    ToDevice = " To2 Device",
+    Routing = "Test2 Routing",
+    DesignLength = 100
+});
+
+context.Cables.Add(new Cable
+{
+    Revision = "00",
+    IsLastRevision = true,
+    ProjectId = context.Projects.Skip(1).FirstOrDefault().Id,
+    Tag = "=H5=HE1=WDB3",
+    CableTypeId = context.CableTypes.FirstOrDefault().Id,
+    System = "Test2 System",
+    FromLocation = " From2 Location",
+    FromDevice = " From2 Device",
+    ToLocation = " To2 Location",
+    ToDevice = " To2 Device",
+    Routing = "Test2 Routing",
+    DesignLength = 100
+});
+
+context.Cables.Add(new Cable
+{
+    Revision = "00",
+    IsLastRevision = false,
+    ProjectId = context.Projects.Skip(1).FirstOrDefault().Id,
+    Tag = "=H5=HE1=WDB4",
+    CableTypeId = 1,
+    System = "Test2 System",
+    FromLocation = " From2 Location",
+    FromDevice = " From2 Device",
+    ToLocation = " To2 Location",
+    ToDevice = " To2 Device",
+    Routing = "Test2 Routing",
+    DesignLength = 100
+});
+
+context.Cables.Add(new Cable
+{
+    Revision = "01",
+    IsLastRevision = true,
+    ProjectId = context.Projects.Skip(1).FirstOrDefault().Id,
+    Tag = "=H5=HE1=WDB4",
+    CableTypeId = 2,
+    System = "Test2 System",
+    FromLocation = " From2 Location",
+    FromDevice = " From2 Device",
+    ToLocation = " To2 Location",
+    ToDevice = " To2 Device",
+    Routing = "Test2 Routing",
+    DesignLength = 100
+});
+
+context.SaveChanges();
+
+Console.WriteLine("Cables added to the database!");
+

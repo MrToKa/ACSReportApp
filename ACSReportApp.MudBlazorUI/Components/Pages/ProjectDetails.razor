@@ -2,6 +2,7 @@
 
 @using ACSReportApp.Services.Contracts
 @using ACSReportApp.Services.Models
+@using ACSReportApp.MudBlazorUI.Components.TablesContent
 
 @inject IProjectService ProjectService
 
@@ -42,14 +43,31 @@
 </MudPaper>
 
 <MudPaper Class="d-flex justify-space-around flex-grow-1 gap-4 ma-4 pa-4" Elevation="0">
-    <MudButton Variant="Variant.Filled" Color="Color.Primary">Show project cables list</MudButton>
-    <MudButton Variant="Variant.Filled" Color="Color.Primary">Show project trays list</MudButton>
-    <MudButton Variant="Variant.Filled" Color="Color.Primary">Show project consumers list</MudButton>
-    <MudButton Variant="Variant.Filled" Color="Color.Primary">Show project instruments list</MudButton>
+    <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="ShowCablesTable">Show project cables list</MudButton>
+    <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="ShowTraysTable">Show project trays list</MudButton>
+    <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="ShowConsumersTable">Show project consumers list</MudButton>
+    <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="ShowInstrumentsTable">Show project instruments list</MudButton>
 </MudPaper>
 
+@if (showCablesTable)
+{
+    <CablesTableContent ProjectId="@ProjectId" />
+}
 
+@if (showTraysTable)
+{
+    <!-- Add TraysTableContent component here -->
+}
 
+@if (showConsumersTable)
+{
+    <!-- Add ConsumersTableContent component here -->
+}
+
+@if (showInstrumentsTable)
+{
+    <!-- Add InstrumentsTableContent component here -->
+}
 
 @code {
     [Parameter]
@@ -58,8 +76,45 @@
 
     private ProjectServiceModel CurrentProject = new ProjectServiceModel();
 
+    private bool showCablesTable;
+    private bool showTraysTable;
+    private bool showConsumersTable;
+    private bool showInstrumentsTable;
+
     protected override async Task OnInitializedAsync()
     {
         CurrentProject = await ProjectService.GetProjectAsync(ProjectId);
+    }
+
+    private void ShowCablesTable()
+    {
+        showCablesTable = true;
+        showTraysTable = false;
+        showConsumersTable = false;
+        showInstrumentsTable = false;
+    }
+
+    private void ShowTraysTable()
+    {
+        showCablesTable = false;
+        showTraysTable = true;
+        showConsumersTable = false;
+        showInstrumentsTable = false;
+    }
+
+    private void ShowConsumersTable()
+    {
+        showCablesTable = false;
+        showTraysTable = false;
+        showConsumersTable = true;
+        showInstrumentsTable = false;
+    }
+
+    private void ShowInstrumentsTable()
+    {
+        showCablesTable = false;
+        showTraysTable = false;
+        showConsumersTable = false;
+        showInstrumentsTable = true;
     }
 }

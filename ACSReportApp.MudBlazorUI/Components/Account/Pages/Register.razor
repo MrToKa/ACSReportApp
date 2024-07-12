@@ -29,6 +29,16 @@
 
             <MudGrid>
                 <MudItem md="12">
+                    <MudStaticTextField For="@(() => Input.FirstName)" @bind-Value="Input.FirstName"
+                                        Label="First name" Placeholder="John"
+                                        UserAttributes="@(new() { { "autocomplete", "true" }, { "aria-required", "true" } } )" />
+                </MudItem>
+                <MudItem md="12">
+                    <MudStaticTextField For="@(() => Input.LastName)" @bind-Value="Input.LastName"
+                                        Label="Last name" Placeholder="Doe"
+                                        UserAttributes="@(new() { { "autocomplete", "true" }, { "aria-required", "true" } } )" />
+                </MudItem>
+                <MudItem md="12">
                     <MudStaticTextField For="@(() => Input.Email)" @bind-Value="Input.Email"
                                         Label="Email" Placeholder="name@example.com"
                                         UserAttributes="@(new() { { "autocomplete", "true" }, { "aria-required", "true" } } )" />
@@ -131,6 +141,14 @@
         [EmailAddress]
         [Display(Name = "Email")]
         public string Email { get; set; } = "";
+
+        [Required]
+        [Display(Name = "First name")]
+        public string FirstName { get; set; } = "";
+
+        [Required]
+        [Display(Name = "Last Name")]
+        public string LastName { get; set; } = "";
 
         [Required]
         [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
