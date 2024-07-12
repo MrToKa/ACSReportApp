@@ -5,42 +5,14 @@
 
 @inject ICableService CableService
 
-<MudDataGrid T="CableServiceModel" Items="@CableLatestRevisions.Take(20)" ReadOnly=false
+<MudDataGrid T="CableServiceModel" @ref="grid" Items="@CableLatestRevisions" ReadOnly=false
              Bordered="true" Outlined="true" Dense="true" Filterable="true" FilterMode="@DataGridFilterMode.ColumnFilterMenu"
-             Virtualize="true" FixedHeader="true" Hover="true">
+             Virtualize="true" FixedHeader="true" Hover="true" RowStyleFunc="@StyleFunc" >
     <ToolBarContent>
         <MudText Typo="Typo.h6">Cables list</MudText>
         <MudSpacer />
     </ToolBarContent>
     <Columns>
-        @*         <HierarchyColumn T="CableServiceModel" />
-        <PropertyColumn Property="x => x.Revision" Title="Revision" />
-        <PropertyColumn Property="x => x.System" Title="System or Enclosure" />
-        <PropertyColumn Property="x => x.Tag" Title="Cable Tag" />
-        <PropertyColumn Property="x => x.CableTypeId == null ? string.Empty : String.Join(' ',
-        x.CableType.Pairs == null ? string.Empty : (string.Join(' ', x.CableType.Pairs, 'x' )),
-        x.CableType.Conductors,
-        x.CableType.Delimiter == null ? string.Empty : ((char)x.CableType.Delimiter),
-        x.CableType.CrossSection,
-        x.CableType.GroundingDelimiter == null ? string.Empty : ((char)x.CableType.GroundingDelimiter),
-        x.CableType.PEConductors,
-        x.CableType.PEDelimiter == null ? string.Empty : ((char)x.CableType.PEDelimiter),
-        x.CableType.PECrossSection)" Title="Cable Type" />
-        <PropertyColumn Property="x => x.CableTypeId == null ? Double.NaN : x.CableType.Diameter" Title="Cable diameter" />
-        <PropertyColumn Property="x => x.CableTypeId == null ? Double.NaN : x.CableType.BendingRadius" Title="Bending radius" />
-        <PropertyColumn Property="x => x.FromLocation" Title="From Location" />
-        <PropertyColumn Property="x => x.FromDevice" Title="From device" />
-        <PropertyColumn Property="x => x.ToLocation" Title="To Location" />
-        <PropertyColumn Property="x => x.ToDevice" Title="To device" />
-        <PropertyColumn Property="x => x.Routing" Title="Routing" />
-        <PropertyColumn Property="x => x.DesignLength" Title="Desing length" />
-        <PropertyColumn Property="x => x.InstallLength" Title="Install length" />
-        <PropertyColumn Property="x => x.PullDate" Title="Pull date" />
-        <PropertyColumn Property="x => x.ConnectedFrom" Title="Conected FROM on" />
-        <PropertyColumn Property="x => x.ConnectedTo" Title="Connected TO on" />
-        <PropertyColumn Property="x => x.TestedDate" Title="Tested on" />
-        <PropertyColumn Property="x => x.Delivery" Title="Delivery by" />
-        <PropertyColumn Property="x => x.Remarks" Title="Remarks" /> *@
         <CableColumns IsOldRevisionsTable="false" />
     </Columns>
     <ChildRowContent>
@@ -48,7 +20,7 @@
         {
             <MudDataGrid T="CableServiceModel" Items="@CableOldRevisions.Where(c => c.IsLastRevision == false && c.Tag == context.Item.Tag)" ReadOnly=false
                          Bordered="true" Outlined="true" Dense="true" Filterable="true" FilterMode="@DataGridFilterMode.ColumnFilterMenu"
-                         Virtualize="true" FixedHeader="true" Hover="true">
+                         Virtualize="true" FixedHeader="true" Hover="true" RowStyleFunc="@StyleFunc">
                 <ToolBarContent>
                     <MudText Typo="Typo.h6">Cables list</MudText>
                     <MudSpacer />
@@ -63,6 +35,9 @@
             <MudText Typo="Typo.h6">No old revisions for this cable</MudText>
         }
     </ChildRowContent>
+    <PagerContent>
+        <MudDataGridPager T="CableServiceModel" />
+    </PagerContent>
 </MudDataGrid>
 
 @code {
@@ -75,6 +50,8 @@
 
     private List<CableServiceModel> CableLatestRevisions = new List<CableServiceModel>();
 
+    public MudDataGrid<CableServiceModel> grid = null;
+
     protected override async Task OnInitializedAsync()
     {
         ProjectCables = await CableService.GetCablesByProjectIdAsync(ProjectId);
@@ -83,5 +60,10 @@
         .OrderByDescending(x => x.Revision).ToList();
 
         CableLatestRevisions = ProjectCables.Where(x => x.IsLastRevision == true).ToList();
+    }
+
+    private string StyleFunc(CableServiceModel cable, int index)
+    {
+        return cable.IsDeleted ? "text-decoration: line-through;" : "";
     }
 }
