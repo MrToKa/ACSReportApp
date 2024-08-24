@@ -78,16 +78,9 @@ namespace ACSReportApp.Services
                 cable.CableType = new CableTypeServiceModel()
                 {
 
-                    BendingRadius = cableType.BendingRadius,
-                    Conductors = cableType.Conductors,
+                    BendingRadius = cableType.BendingRadius,                   
                     CrossSection = cableType.CrossSection,
-                    Diameter = cableType.Diameter,
-                    Delimiter = cableType.Delimiter,
-                    GroundingDelimiter = cableType.GroundingDelimiter,
-                    Pairs = cableType.Pairs,
-                    PEConductors = cableType.PEConductors,
-                    PECrossSection = cableType.PECrossSection,
-                    PEDelimiter = cableType.PEDelimiter,
+                    Diameter = cableType.Diameter,                    
                     Type = cableType.Type,
                     Id = cableType.Id
                 };

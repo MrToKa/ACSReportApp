@@ -23,14 +23,7 @@ namespace ACSReportApp.Services
                 Description = cableType.Description,
                 Purpose = cableType.Purpose,
                 Voltage = cableType.Voltage,
-                Pairs = cableType.Pairs,
-                Conductors = cableType.Conductors,
-                Delimiter = cableType.Delimiter,
                 CrossSection = cableType.CrossSection,
-                GroundingDelimiter = cableType.GroundingDelimiter,
-                PEConductors = cableType.PEConductors,
-                PEDelimiter = cableType.PEDelimiter,
-                PECrossSection = cableType.PECrossSection,
                 Diameter = cableType.Diameter,
                 Shield = cableType.Shield,
                 BendingRadius = cableType.BendingRadius,
@@ -49,14 +42,7 @@ namespace ACSReportApp.Services
                 Description = newCableType.Description,
                 Purpose = newCableType.Purpose,
                 Voltage = newCableType.Voltage,
-                Pairs = newCableType.Pairs,
-                Conductors = newCableType.Conductors,
-                Delimiter = newCableType.Delimiter,
                 CrossSection = newCableType.CrossSection,
-                GroundingDelimiter = newCableType.GroundingDelimiter,
-                PEConductors = newCableType.PEConductors,
-                PEDelimiter = newCableType.PEDelimiter,
-                PECrossSection = newCableType.PECrossSection,
                 Diameter = newCableType.Diameter,
                 Shield = newCableType.Shield,
                 BendingRadius = newCableType.BendingRadius,
@@ -91,14 +77,7 @@ namespace ACSReportApp.Services
                     Description = c.Description,
                     Purpose = c.Purpose,
                     Voltage = c.Voltage,
-                    Pairs = c.Pairs,
-                    Conductors = c.Conductors,
-                    Delimiter = c.Delimiter,
                     CrossSection = c.CrossSection,
-                    GroundingDelimiter = c.GroundingDelimiter,
-                    PEConductors = c.PEConductors,
-                    PEDelimiter = c.PEDelimiter,
-                    PECrossSection = c.PECrossSection,
                     Diameter = c.Diameter,
                     Shield = c.Shield,
                     BendingRadius = c.BendingRadius,
@@ -107,7 +86,6 @@ namespace ACSReportApp.Services
                     PartNumber = c.PartNumber
                 })
                 .OrderBy(c => c.Type)
-                .ThenBy(c => c.Conductors)
                 .ThenBy(c => c.CrossSection)
                 .ToListAsync();
 
@@ -132,14 +110,7 @@ namespace ACSReportApp.Services
                 Description = cableType.Description,
                 Purpose = cableType.Purpose,
                 Voltage = cableType.Voltage,
-                Pairs = cableType.Pairs,
-                Conductors = cableType.Conductors,
-                Delimiter = cableType.Delimiter,
                 CrossSection = cableType.CrossSection,
-                GroundingDelimiter = cableType.GroundingDelimiter,
-                PEConductors = cableType.PEConductors,
-                PEDelimiter = cableType.PEDelimiter,
-                PECrossSection = cableType.PECrossSection,
                 Diameter = cableType.Diameter,
                 Shield = cableType.Shield,
                 BendingRadius = cableType.BendingRadius,
@@ -168,14 +139,7 @@ namespace ACSReportApp.Services
             cableTypeToUpdate.Description = cableType.Description;
             cableTypeToUpdate.Purpose = cableType.Purpose;
             cableTypeToUpdate.Voltage = cableType.Voltage;
-            cableTypeToUpdate.Pairs = cableType.Pairs;
-            cableTypeToUpdate.Conductors = cableType.Conductors;
-            cableTypeToUpdate.Delimiter = cableType.Delimiter;
             cableTypeToUpdate.CrossSection = cableType.CrossSection;
-            cableTypeToUpdate.GroundingDelimiter = cableType.GroundingDelimiter;
-            cableTypeToUpdate.PEConductors = cableType.PEConductors;
-            cableTypeToUpdate.PEDelimiter = cableType.PEDelimiter;
-            cableTypeToUpdate.PECrossSection = cableType.PECrossSection;
             cableTypeToUpdate.Diameter = cableType.Diameter;
             cableTypeToUpdate.Shield = cableType.Shield;
             cableTypeToUpdate.BendingRadius = cableType.BendingRadius;
@@ -192,14 +156,7 @@ namespace ACSReportApp.Services
                 Description = cableTypeToUpdate.Description,
                 Purpose = cableTypeToUpdate.Purpose,
                 Voltage = cableTypeToUpdate.Voltage,
-                Pairs = cableTypeToUpdate.Pairs,
-                Conductors = cableTypeToUpdate.Conductors,
-                Delimiter = cableTypeToUpdate.Delimiter,
                 CrossSection = cableTypeToUpdate.CrossSection,
-                GroundingDelimiter = cableTypeToUpdate.GroundingDelimiter,
-                PEConductors = cableTypeToUpdate.PEConductors,
-                PEDelimiter = cableTypeToUpdate.PEDelimiter,
-                PECrossSection = cableTypeToUpdate.PECrossSection,
                 Diameter = cableTypeToUpdate.Diameter,
                 Shield = cableTypeToUpdate.Shield,
                 BendingRadius = cableTypeToUpdate.BendingRadius,

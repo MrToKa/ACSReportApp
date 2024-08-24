@@ -15,9 +15,30 @@ namespace ACSReportApp.Services
             this.repo = repo;
         }
 
-        public Task<ProjectServiceModel> CreateProjectAsync(ProjectServiceModel project)
+        public async Task<ProjectServiceModel> CreateProjectAsync(ProjectServiceModel project)
         {
-            throw new NotImplementedException();
+            var newProject = new Project()
+            {
+                Id = Guid.NewGuid(),
+                Number = project.Number,
+                Name = project.Name,
+                Contractor = project.Contractor,
+                Description = project.Description,
+                DateCreated = DateTime.UtcNow
+            };
+
+            await this.repo.AddAsync(newProject);
+
+            await this.repo.SaveChangesAsync();
+
+            return new ProjectServiceModel()
+            {
+                Id = newProject.Id,
+                Number = newProject.Number,
+                Name = newProject.Name,
+                Description = newProject.Description,
+                DateCreated = newProject.DateCreated
+            };
         }
 
         public async Task<ProjectServiceModel> DeleteProjectAsync(Guid projectId)

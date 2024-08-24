@@ -44,6 +44,10 @@
             </Columns>
         </MudDataGrid>
     }
+
+    <MudButton Variant="Variant.Filled" Color="Color.Primary" Class="mt-4" OnClick="@(() => AddNewProject())">Add Project</MudButton>
+
+
 </MudPaper>
 
 @code {
@@ -62,6 +66,19 @@
             };
 
         var dialogResult = await DialogService.ShowAsync<ProjectDialog>("", parameters);
+        var result = await dialogResult.Result;
+
+        if (!result.Canceled)
+        {
+            await ReloadDataAsync();
+        }
+    }
+
+    private async Task AddNewProject()
+    {
+        DialogParameters parameters = new DialogParameters<AddProjectDialog> { };
+
+        var dialogResult = await DialogService.ShowAsync<AddProjectDialog>("", parameters);
         var result = await dialogResult.Result;
 
         if (!result.Canceled)

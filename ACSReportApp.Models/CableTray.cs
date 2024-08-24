@@ -7,7 +7,8 @@ namespace ACSReportApp.Models
     {
         public CableTray()
         {
-            Supports = new List<Support>();
+            PartAssemblies = new List<PartAssembly>();
+            Parts = new List<Part>();
         }
 
         public int Id { get; set; }
@@ -36,6 +37,8 @@ namespace ACSReportApp.Models
 
         public string PartNumber { get; set; }
 
-        public virtual List<Support> Supports { get; set; }
+        public virtual List<PartAssembly> PartAssemblies { get; set; }
+
+        public virtual List<Part> Parts { get; set; }
     }
 }

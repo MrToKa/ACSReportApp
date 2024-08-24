@@ -4,15 +4,7 @@
 <PropertyColumn T="CableServiceModel" TProperty="string" Property="x => x.Revision" Title="Revision"  />
 <PropertyColumn T="CableServiceModel" TProperty="string" Property="x => x.System" Title="System or Enclosure" />
 <PropertyColumn T="CableServiceModel" TProperty="string" Property="x => x.Tag" Title="Cable Tag" />
-<PropertyColumn T="CableServiceModel" TProperty="string" Property="x => x.CableTypeId == null ? string.Empty : String.Join(' ',
-                                               x.CableType.Pairs == null ? string.Empty : (string.Join(' ', x.CableType.Pairs, 'x' )),
-                                               x.CableType.Conductors,
-                                               x.CableType.Delimiter == null ? string.Empty : ((char)x.CableType.Delimiter),
-                                               x.CableType.CrossSection,
-                                               x.CableType.GroundingDelimiter == null ? string.Empty : ((char)x.CableType.GroundingDelimiter),
-                                               x.CableType.PEConductors,
-                                               x.CableType.PEDelimiter == null ? string.Empty : ((char)x.CableType.PEDelimiter),
-                                               x.CableType.PECrossSection)" Title="Cable Type" />
+<PropertyColumn T="CableServiceModel" TProperty="string" Property="x => x.CableTypeId == null ? string.Empty : x.CableType.CrossSection" Title="Cable Type" />
 <PropertyColumn T="CableServiceModel" TProperty="double?" Property="x => x.CableTypeId == null ? Double.NaN : x.CableType.Diameter" Title="Cable diameter" />
 <PropertyColumn T="CableServiceModel" TProperty="double?" Property="x => x.CableTypeId == null ? Double.NaN : x.CableType.BendingRadius" Title="Bending radius" />
 <PropertyColumn T="CableServiceModel" TProperty="string" Property="x => x.FromLocation" Title="From Location" />

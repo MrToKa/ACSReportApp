@@ -11,8 +11,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ACSReportApp.Models", "ACSR
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ACSReportApp.Services", "ACSReportApp.Services\ACSReportApp.Services.csproj", "{8958A80D-1CC6-4BC0-8F8D-E505A5C52C47}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ACSReportApp.Console", "ACSReportApp.Console\ACSReportApp.Console.csproj", "{FCEDAA05-9944-4BA4-AB19-AC43226CB2B8}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ACSReportApp.MudBlazorUI", "ACSReportApp.MudBlazorUI\ACSReportApp.MudBlazorUI.csproj", "{D1F87DB6-3572-44CE-A07A-8678F07CB2A8}"
 EndProject
 Global
@@ -37,10 +35,6 @@ Global
 		{8958A80D-1CC6-4BC0-8F8D-E505A5C52C47}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8958A80D-1CC6-4BC0-8F8D-E505A5C52C47}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8958A80D-1CC6-4BC0-8F8D-E505A5C52C47}.Release|Any CPU.Build.0 = Release|Any CPU
-		{FCEDAA05-9944-4BA4-AB19-AC43226CB2B8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{FCEDAA05-9944-4BA4-AB19-AC43226CB2B8}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{FCEDAA05-9944-4BA4-AB19-AC43226CB2B8}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{FCEDAA05-9944-4BA4-AB19-AC43226CB2B8}.Release|Any CPU.Build.0 = Release|Any CPU
 		{D1F87DB6-3572-44CE-A07A-8678F07CB2A8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{D1F87DB6-3572-44CE-A07A-8678F07CB2A8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D1F87DB6-3572-44CE-A07A-8678F07CB2A8}.Release|Any CPU.ActiveCfg = Release|Any CPU

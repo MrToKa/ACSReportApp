@@ -1,6 +1,5 @@
 ﻿using ACSReportApp.Data;
 using ACSReportApp.Models;
-using ACSReportApp.Models.Enums;
 
 var context = new ACSReportAppDbContext();
 context.Database.EnsureDeleted();
@@ -56,14 +55,7 @@ context.CableTypes.Add(new CableType
     Description = "Suitable for Mining applications!",
     Purpose = "Power cable",
     Voltage = 400,
-    Pairs = null,
-    Conductors = 4,
-    Delimiter = CableDelimiter.Numbers,
-    CrossSection = 1.5,
-    GroundingDelimiter = null,
-    PEConductors = null,
-    PEDelimiter = null,
-    PECrossSection = null,
+    CrossSection = "3x2.5",
     Diameter = 11.3,
     Shield = true,
     BendingRadius = 25,
@@ -78,14 +70,7 @@ context.CableTypes.Add(new CableType
     Description = "Suitable for Mining applications!",
     Purpose = "Power cable",
     Voltage = 400,
-    Pairs = null,
-    Conductors = 3,
-    Delimiter = CableDelimiter.Colors,
-    CrossSection = 2.5,
-    GroundingDelimiter = CableDelimiter.Grounding,
-    PEConductors = 3,
-    PEDelimiter = CableDelimiter.Numbers,
-    PECrossSection = 0.5,
+    CrossSection = "3x25+3x6",
     Diameter = 11.8,
     Shield = true,
     BendingRadius = 35,

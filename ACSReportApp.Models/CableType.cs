@@ -1,6 +1,4 @@
-﻿using ACSReportApp.Models.Enums;
-
-namespace ACSReportApp.Models
+﻿namespace ACSReportApp.Models
 {
     public class CableType
     {
@@ -14,21 +12,7 @@ namespace ACSReportApp.Models
 
         public int? Voltage { get; set; }
 
-        public int? Pairs { get; set; }
-
-        public int Conductors { get; set; } 
-
-        public CableDelimiter? Delimiter { get; set; }
-
-        public double CrossSection { get; set; }
-
-        public CableDelimiter? GroundingDelimiter { get; set; }
-
-        public int? PEConductors { get; set; }
-
-        public CableDelimiter? PEDelimiter { get; set; }
-
-        public double? PECrossSection { get; set; }
+        public string CrossSection { get; set; } = null!;
 
         public double? Diameter { get; set; }
 

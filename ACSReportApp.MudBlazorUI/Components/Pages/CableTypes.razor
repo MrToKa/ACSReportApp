@@ -26,15 +26,7 @@
                 <PropertyColumn Property="x => x.Description" Hidden="true" Hideable="true" />
                 <PropertyColumn Property="x => x.Purpose" />
                 <PropertyColumn Property="x => FormatVoltage(x.Voltage)" Hideable="false" />
-                <PropertyColumn Property="x => FormatCrossSection(String.Join(' ',
-                                               x.Pairs == null ? string.Empty : (string.Join(' ', x.Pairs, 'x' )),
-                                               x.Conductors,
-                                               x.Delimiter == null ? string.Empty : ((char)x.Delimiter),
-                                               x.CrossSection,
-                                               x.GroundingDelimiter == null ? string.Empty : ((char)x.GroundingDelimiter),
-                                               x.PEConductors,
-                                               x.PEDelimiter == null ? string.Empty : ((char)x.PEDelimiter),
-                                               x.PECrossSection))"
+                <PropertyColumn Property="x => FormatCrossSection(x.CrossSection)"
                                 Title="Cross section" Hideable="false" />
                 <PropertyColumn Property="x => FormatDiameter(x.Diameter)" Hideable="false" />
                 <PropertyColumn Property="x => FormatShield(x.Shield)" Hideable="false" />

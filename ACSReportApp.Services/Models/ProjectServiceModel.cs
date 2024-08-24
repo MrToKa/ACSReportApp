@@ -19,6 +19,8 @@ namespace ACSReportApp.Services.Models
 
         public string Name { get; set; } = null!;
 
+        public string? Contractor { get; set; } 
+
         public string? Description { get; set; }
 
         public DateTime DateCreated { get; set; } = DateTime.UtcNow;

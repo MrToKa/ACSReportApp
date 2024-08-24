@@ -1,6 +1,5 @@
 ﻿@page "/add-cable-type"
 
-@using ACSReportApp.Models.Enums
 @using ACSReportApp.Services.Contracts
 @using ACSReportApp.Services.Models
 
@@ -16,7 +15,7 @@
     </TitleContent>
 
     <DialogContent>
-        <CableTypeDialogContent CableType="@CableType" CableDelimiters="@CableDelimiters" OnValidSubmit="@SaveChanges" />
+        <CableTypeDialogContent CableType="@CableType" OnValidSubmit="@SaveChanges" />
     </DialogContent>
 
     <DialogActions>
@@ -38,16 +37,6 @@
     [Parameter]
     public CableTypeServiceModel CableType { get; set; }
 
-
-    private List<KeyValuePair<string, CableDelimiter?>> CableDelimiters { get; set; }
-
-    protected override async Task OnInitializedAsync()
-    {
-        CableDelimiters = Enum.GetValues(typeof(CableDelimiter))
-                             .Cast<CableDelimiter>()
-                             .Select(e => new KeyValuePair<string, CableDelimiter?>(e.ToString(), e))
-                             .ToList();
-    }
 
     private void Cancel() => MudDialog.Cancel();
 
