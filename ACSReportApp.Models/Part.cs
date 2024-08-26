@@ -1,12 +1,14 @@
 ﻿using ACSReportApp.Models.Enums;
-using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ACSReportApp.Models
 {
     public class Part
     {
+        [Key]
         public int Id { get; set; }
+        public string PartType { get; set; } = null!;
         public string OrderNumber { get; set; } = null!;
         public string Manufacturer { get; set; } = null!;
         public double? Width { get; set; }
@@ -22,9 +24,9 @@ namespace ACSReportApp.Models
         public DateTime? DeletedOn { get; set; }
         public DateTime CreatedOn { get; set; } = DateTime.UtcNow;
         public DateTime? LastModifiedOn { get; set; }
-        [Required]
+
         [ForeignKey(nameof(ApplicationUserId))]
-        public ApplicationUser ModifiedBy { get; set; }
-        public string ApplicationUserId { get; set; }
+        public ApplicationUser? ModifiedBy { get; set; }
+        public string? ApplicationUserId { get; set; }
     }
 }

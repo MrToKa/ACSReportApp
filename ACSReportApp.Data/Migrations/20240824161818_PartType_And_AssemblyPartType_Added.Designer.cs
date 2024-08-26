@@ -3,6 +3,7 @@ using System;
 using ACSReportApp.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace ACSReportApp.Data.Migrations
 {
     [DbContext(typeof(ACSReportAppDbContext))]
-    partial class ACSReportAppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240824161818_PartType_And_AssemblyPartType_Added")]
+    partial class PartType_And_AssemblyPartType_Added
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -454,6 +457,7 @@ namespace ACSReportApp.Data.Migrations
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<string>("ApplicationUserId")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<int?>("CableTrayId")
@@ -850,7 +854,9 @@ namespace ACSReportApp.Data.Migrations
                 {
                     b.HasOne("ACSReportApp.Models.ApplicationUser", "ModifiedBy")
                         .WithMany()
-                        .HasForeignKey("ApplicationUserId");
+                        .HasForeignKey("ApplicationUserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("ACSReportApp.Models.CableTray", null)
                         .WithMany("Parts")

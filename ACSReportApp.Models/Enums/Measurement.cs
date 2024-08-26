@@ -2,6 +2,7 @@
 {
     public enum Measurement
     {
+        None = 0,
         mm,
         cm,
         m,

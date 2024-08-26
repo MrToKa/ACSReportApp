@@ -1,0 +1,106 @@
+﻿@page "/parts"
+
+@using ACSReportApp.Services.Contracts
+@using ACSReportApp.Services.Models
+@using ACSReportApp.MudBlazorUI.Components.TablesContent
+@using ACSReportApp.MudBlazorUI.Components.Dialogs.Parts
+
+@inject IPartService PartService
+@inject IDialogService DialogService
+
+<PageTitle>Parts Library</PageTitle>
+
+<h2 style="text-align: center;">Parts Library</h2>
+
+<MudPaper Elevation="0" Class="d-flex justify-center flex-grow-1 gap-4 pa-4">
+    <MudItem Style="height:80px; width:380px;">
+        <MudSelect T="string" Label="Select Part Type!" AnchorOrigin="Origin.BottomCenter" SelectedValuesChanged="@(() => ReloadDataAsync())" @bind-Value="PartTypeBinder">
+            @foreach (var partType in PartsTypes)
+            {
+                <MudSelectItem Value="@partType">@partType</MudSelectItem>
+            }
+        </MudSelect>
+    </MudItem>
+
+    <MudItem xs="12" sm="6" md="4">
+        <MudAutocomplete T="string" Label="Part number" @bind-Value="PartNumberValue" SearchFunc="@Search"
+                         ResetValueOnEmptyText="true"
+                         AdornmentIcon="@Icons.Material.Filled.Search" AdornmentColor="Color.Primary" />
+    </MudItem>
+
+</MudPaper>
+
+<MudPaper Elevation="0" Class="pa-4">
+    @if (Elements == null || Elements.Count == 0)
+    {
+        <MudAlert Severity="Severity.Info">Select a part type from dropdown menu!</MudAlert>
+    }
+    else
+    {
+        <MudDataGrid T="PartServiceModel" @ref="grid" Items="@Elements" ReadOnly=false
+                     Bordered="true" Outlined="true" Dense="true" Filterable="true" FilterMode="@DataGridFilterMode.ColumnFilterMenu"
+                     Virtualize="true" FixedHeader="true" DragDropColumnReordering="true" ColumnResizeMode="ResizeMode.Container" Hideable="true">
+            <Columns>
+                <PartsTableContent Part="@Elements.FirstOrDefault()" /> <!-- This is the component that contains the columns -->
+            </Columns>
+        </MudDataGrid>
+    }
+
+</MudPaper>
+
+<MudPaper Class="d-flex justify-center gap-4 pa-4">
+    <MudItem>
+        <MudButton Color="Color.Primary" Variant="Variant.Filled" OnClick="@(() => AddNewPart())">Add part</MudButton>
+    </MudItem>
+    <MudItem>
+        <MudButton Color="Color.Primary" Variant="Variant.Filled">Add parts from file</MudButton>
+    </MudItem>
+</MudPaper>
+
+@code {
+    public MudDataGrid<PartServiceModel> grid = null;
+
+    private List<string> PartsTypes = new List<string>();
+
+    private List<PartServiceModel> Elements = new List<PartServiceModel>();
+
+    private string PartNumberValue;
+    private string PartTypeBinder;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await ReloadDataAsync();
+    }
+
+    private async Task ReloadDataAsync()
+    {
+        PartsTypes = await PartService.GetPartsTypesAsync();
+        Elements = await PartService.GetPartsAsync(PartTypeBinder);
+        StateHasChanged();
+    }
+
+    private async Task<IEnumerable<string>> Search(string value, CancellationToken token)
+    {
+        var partsOrderNumbers = await PartService.GetPartsNumbersForSearchAsync();
+
+        // if text is null or empty, don't return values (drop-down will not open)
+        if (string.IsNullOrEmpty(value))
+        {
+            return new string[0];
+        }
+        return partsOrderNumbers.Where(x => x.Contains(value, StringComparison.InvariantCultureIgnoreCase));
+    }
+
+    private async Task AddNewPart()
+    {
+        DialogParameters parameters = new DialogParameters<AddPartDialog> { };
+
+        var dialogResult = await DialogService.ShowAsync<AddPartDialog>("", parameters);
+        var result = await dialogResult.Result;
+
+        if (!result.Canceled)
+        {
+            await ReloadDataAsync();
+        }
+    }
+}

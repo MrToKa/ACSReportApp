@@ -52,7 +52,7 @@ namespace ACSReportApp.Services
             };
         }
 
-        public async Task<CableTypeServiceModel> DeleteCableTypeAsync(int cableTypeId)
+        public async Task DeleteCableTypeAsync(int cableTypeId)
         {
             var cableTypeToDelete = await this.repo.All<CableType>()
                 .FirstOrDefaultAsync(c => c.Id == cableTypeId);
@@ -62,8 +62,6 @@ namespace ACSReportApp.Services
                 cableTypeToDelete.IsDeleted = true;
                 await this.repo.SaveChangesAsync();
             }
-
-            return await Task.FromResult(new CableTypeServiceModel());
         }
 
         public async Task<List<CableTypeServiceModel>> GetCablesTypesAsync()

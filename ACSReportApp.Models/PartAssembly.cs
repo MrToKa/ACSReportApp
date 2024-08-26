@@ -10,7 +10,9 @@ namespace ACSReportApp.Models
             Parts = new List<Part>();
         }
 
+        [Key]
         public int Id { get; set; }
+        public string PartAssemblyType { get; set; } = null!;
         public string Name { get; set; } = null!;
         public string Description { get; set; } = null!;
         public string Manufacturer { get; set; } = null!;
@@ -24,6 +26,6 @@ namespace ACSReportApp.Models
         [Required]
         [ForeignKey(nameof(ApplicationUserId))]
         public ApplicationUser ModifiedBy { get; set; }
-        public string ApplicationUserId { get; set; }
+        public string? ApplicationUserId { get; set; }
     }
 }

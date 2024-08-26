@@ -1,5 +1,6 @@
 ﻿@page "/cabletypes"
 
+@using ACSReportApp.MudBlazorUI.Components.Dialogs.CableTypes
 @using ACSReportApp.MudBlazorUI.Components.Dialogs
 @using ACSReportApp.Services.Contracts
 @using ACSReportApp.Services.Models
@@ -7,9 +8,9 @@
 @inject ICableTypeService CableTypeService
 @inject IDialogService DialogService
 
-<PageTitle>Cable Types</PageTitle>
+<PageTitle>Cable Types Library</PageTitle>
 
-<h2 style="text-align: center;">Cable Types</h2>
+<h2 style="text-align: center;">Cable Types Library</h2>
 
 <MudPaper Elevation="0" Class="pa-4">
     @if (Elements == null || Elements.Count == 0)

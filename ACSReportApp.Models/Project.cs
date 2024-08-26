@@ -36,7 +36,7 @@ namespace ACSReportApp.Models
         /// <summary>
         /// Gets or sets contractor name.
         /// </summary>
-        [Required]
+        //[Required]
         //[MaxLength(ProjectConstants.ContractorMaxLength)]
         public string Contractor { get; set; }
 

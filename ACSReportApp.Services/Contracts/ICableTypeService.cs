@@ -12,7 +12,7 @@ namespace ACSReportApp.Services.Contracts
 
         Task<CableTypeServiceModel> UpdateCableTypeAsync(CableTypeServiceModel cableType, int cableTypeId);
 
-        Task<CableTypeServiceModel> DeleteCableTypeAsync(int cableTypeId);
+        Task DeleteCableTypeAsync(int cableTypeId);
 
         Task<List<CableTypeServiceModel>> GetCableTypesByProjectIdAsync(Guid projectId);
     }

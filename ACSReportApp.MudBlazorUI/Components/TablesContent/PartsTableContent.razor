@@ -1,0 +1,42 @@
+﻿@using ACSReportApp.Services.Models
+
+<PropertyColumn T="PartServiceModel" TProperty="string" Property="x => x.Manufacturer" Title="Manufacturer" />
+<PropertyColumn T="PartServiceModel" TProperty="string" Property="x => x.OrderNumber" Title="Order Number" />
+<PropertyColumn T="PartServiceModel" TProperty="string" Property="x => x.Description" Title="Description" />
+<PropertyColumn T="PartServiceModel" TProperty="double?" Property="x => x.Width" Title="Width" Hidden="@ColumnVisibility(Part.Width)" />
+<PropertyColumn T="PartServiceModel" TProperty="double?" Property="x => x.Height" Title="Height" Hidden="@ColumnVisibility(Part.Height)" />
+<PropertyColumn T="PartServiceModel" TProperty="double?" Property="x => x.Length" Title="Length" Hidden="@ColumnVisibility(Part.Length)" />
+<PropertyColumn T="PartServiceModel" TProperty="double?" Property="x => x.Weight" Title="Weight" Hidden="@ColumnVisibility(Part.Weight)" />
+<PropertyColumn T="PartServiceModel" TProperty="double?" Property="x => x.Diameter" Title="Diameter" Hidden="@ColumnVisibility(Part.Diameter)" />
+<PropertyColumn T="PartServiceModel" TProperty="string" Property="x => x.Measurement" Title="Measurement" Hidden="@ColumnVisibility(Part.Measurement)" />
+<PropertyColumn T="PartServiceModel" TProperty="string" Property="x => x.Remarks" Title="Remarks" Hidden="@ColumnVisibility(Part.Remarks)" />
+
+@code {
+    [Parameter]
+    public PartServiceModel Part { get; set; }
+
+    public bool ColumnVisibility<T>(T value)
+    {
+        if (value == null)
+        {
+            return true;
+        }
+        return false;
+    }
+}
+
+
+@*     public string PartType { get; set; } = null!;
+        public string OrderNumber { get; set; } = null!;
+        public string Manufacturer { get; set; } = null!;
+        public double? Width { get; set; }
+        public double? Height { get; set; }
+        public double? Length { get; set; }
+        public double? Weight { get; set; }
+        public double? Diameter { get; set; }
+        public string Description { get; set; } = null!;
+        public string? Measurement { get; set; }
+        public string? Picture { get; set; }
+        public string? Remarks { get; set; } *@
+
+

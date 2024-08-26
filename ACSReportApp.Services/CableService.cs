@@ -15,7 +15,7 @@ namespace ACSReportApp.Services
             this.repo = repo;
         }
 
-        public Task<CableServiceModel> CreateCableAsync(CableServiceModel cable)
+        public async Task<CableServiceModel> CreateCableAsync(CableServiceModel cable)
         {
             throw new NotImplementedException();
         }
@@ -77,7 +77,6 @@ namespace ACSReportApp.Services
 
                 cable.CableType = new CableTypeServiceModel()
                 {
-
                     BendingRadius = cableType.BendingRadius,                   
                     CrossSection = cableType.CrossSection,
                     Diameter = cableType.Diameter,                    

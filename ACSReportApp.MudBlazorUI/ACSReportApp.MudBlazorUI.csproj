@@ -27,7 +27,7 @@
 
 
 	<ItemGroup>
-	  <None Include="Components\Pages\CableTypes.razor" />
+	  <None Include="Components\Pages\Libraries\Cables\CableTypes.razor" />
 	</ItemGroup>
 
 </Project>

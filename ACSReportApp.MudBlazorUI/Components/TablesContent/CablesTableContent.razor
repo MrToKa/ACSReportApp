@@ -7,7 +7,7 @@
 
 <MudDataGrid T="CableServiceModel" @ref="grid" Items="@CableLatestRevisions" ReadOnly=false
              Bordered="true" Outlined="true" Dense="true" Filterable="true" FilterMode="@DataGridFilterMode.ColumnFilterMenu"
-             Virtualize="true" FixedHeader="true" Hover="true" RowStyleFunc="@StyleFunc" >
+             Virtualize="true" FixedHeader="true" Hover="true" RowStyleFunc="@StyleFunc">
     <ToolBarContent>
         <MudText Typo="Typo.h6">Cables list</MudText>
         <MudSpacer />
@@ -39,6 +39,21 @@
         <MudDataGridPager T="CableServiceModel" />
     </PagerContent>
 </MudDataGrid>
+
+<MudGrid Spacing="3" Justify="Justify.Center">
+    <MudItem>
+        <MudButtonGroup Color="Color.Primary" Variant="Variant.Filled">
+            <MudButton>Add cable manually</MudButton>
+            <MudButton>Add cables from file</MudButton>
+        </MudButtonGroup>
+    </MudItem>
+    <MudItem>
+        <MudButton Color="Color.Primary" Variant="Variant.Filled">Edit cable</MudButton>
+    </MudItem>
+    <MudItem>
+        <MudButton Color="Color.Primary" Variant="Variant.Filled">Export cables list</MudButton>
+    </MudItem>
+</MudGrid>
 
 @code {
     [Parameter]
