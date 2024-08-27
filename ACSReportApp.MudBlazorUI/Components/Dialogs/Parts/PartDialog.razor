@@ -1,0 +1,118 @@
+﻿@using ACSReportApp.Services.Contracts
+@using ACSReportApp.Services.Models
+
+@inject IPartService PartService
+@inject ISnackbar Snackbar
+
+<MudDialog>
+    <TitleContent>
+        <MudText Typo="Typo.h6">
+            <MudIcon Icon="@Icons.Material.Filled.Save" Class="mr-3 mb-n1" />
+            @DialogTitle
+        </MudText>
+    </TitleContent>
+
+    <DialogContent>
+        <MudAutocomplete T="string" Label="Part Type" @bind-Value="Part.PartType" SearchFunc="@Search"
+                         ResetValueOnEmptyText="@resetValueOnEmptyText"
+                         AdornmentIcon="@Icons.Material.Filled.Search" AdornmentColor="Color.Primary" ReadOnly="@TextFieldsReadOnly" />
+        <MudTextField @bind-Value="Part.Manufacturer" Label="Manufacturer" ReadOnly="@TextFieldsReadOnly" />
+        <MudTextField @bind-Value="Part.OrderNumber" Label="Order Number" ReadOnly="@TextFieldsReadOnly" />
+        <MudTextField @bind-Value="Part.Description" Label="Description" ReadOnly="@TextFieldsReadOnly" />
+        <MudTextField @bind-Value="Part.Width" Label="Width" ReadOnly="@TextFieldsReadOnly" />
+        <MudTextField @bind-Value="Part.Height" Label="Height" ReadOnly="@TextFieldsReadOnly" />
+        <MudTextField @bind-Value="Part.Length" Label="Length" ReadOnly="@TextFieldsReadOnly" />
+        <MudTextField @bind-Value="Part.Weight" Label="Weight" ReadOnly="@TextFieldsReadOnly" />
+        <MudTextField @bind-Value="Part.Diameter" Label="Diameter" ReadOnly="@TextFieldsReadOnly" />
+        <MudTextField @bind-Value="Part.Measurement" Label="Measurement" ReadOnly="@TextFieldsReadOnly" />
+        <MudTextField @bind-Value="Part.Remarks" Label="Remarks" ReadOnly="@TextFieldsReadOnly" />
+    </DialogContent>
+
+    <DialogActions>
+        <MudButton OnClick="Cancel">Cancel</MudButton>
+        <MudButton Color="Color.Success" Variant="Variant.Filled" OnClick="SaveChanges">@SucessButton</MudButton>
+    </DialogActions>
+</MudDialog>
+
+@code {
+    [CascadingParameter]
+    private MudDialogInstance MudDialog { get; set; }
+
+    [Parameter]
+    public string DialogTitle { get; set; }
+
+    [Parameter]
+    public string SucessButton { get; set; }
+
+    [Parameter]
+    public bool TextFieldsReadOnly { get; set; }
+
+    [Parameter]
+    public int PartId { get; set; } 
+
+    [Parameter]
+    public string? CRUDAction { get; set; }
+
+    private string PartTypeValue;
+    private bool resetValueOnEmptyText;
+
+    private PartServiceModel Part { get; set; } = new PartServiceModel();
+
+    private void Cancel() => MudDialog.Cancel();
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (CRUDAction == "Edit")
+        {
+            await LoaderPart();
+        }
+    }
+
+    private async Task LoaderPart()
+    {
+        try
+        {
+            Part = await PartService.GetPartAsync(PartId);
+        }
+        catch (Exception ex)
+        {
+            Snackbar.Add($"Error loading part: {ex.Message}", Severity.Error);
+            MudDialog.Cancel();
+        }
+    }
+
+    private async Task SaveChanges()
+    {
+        try
+        {
+            if (CRUDAction == "Edit")
+            {
+                await PartService.UpdatePartAsync(Part);
+                Snackbar.Add("Part was updated!", Severity.Success);
+                MudDialog.Close(DialogResult.Ok(true));
+            }
+            else if (CRUDAction == "Add")
+            {
+                await PartService.CreatePartAsync(Part);
+                Snackbar.Add("Part was added to the database", Severity.Success);
+                MudDialog.Close(DialogResult.Ok(true));                
+            }
+        }
+        catch (Exception ex)
+        {
+            Snackbar.Add($"Error adding part: {ex.Message}", Severity.Error);
+        }
+    }
+
+    private async Task<IEnumerable<string>> Search(string value, CancellationToken token)
+    {
+        var partsTypes = await PartService.GetPartsTypesAsync();
+
+        // if text is null or empty, don't return values (drop-down will not open)
+        if (string.IsNullOrEmpty(value))
+        {
+            return new string[0];
+        }
+        return partsTypes.Where(x => x.Contains(value, StringComparison.InvariantCultureIgnoreCase));
+    }
+}

@@ -112,6 +112,7 @@ namespace ACSReportApp.Services
         {
             return await this.repo.All<Part>()
                 .Where(p => p.PartType == partType)
+                .Where(p => p.IsDeleted == false)
                 .Select(p => new PartServiceModel()
                 {
                     Id = p.Id,

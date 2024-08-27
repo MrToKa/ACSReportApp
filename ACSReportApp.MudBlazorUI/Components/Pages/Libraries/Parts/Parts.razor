@@ -1,5 +1,6 @@
 ﻿@page "/parts"
 
+@using ACSReportApp.MudBlazorUI.Components.Dialogs
 @using ACSReportApp.Services.Contracts
 @using ACSReportApp.Services.Models
 @using ACSReportApp.MudBlazorUI.Components.TablesContent
@@ -41,7 +42,17 @@
                      Bordered="true" Outlined="true" Dense="true" Filterable="true" FilterMode="@DataGridFilterMode.ColumnFilterMenu"
                      Virtualize="true" FixedHeader="true" DragDropColumnReordering="true" ColumnResizeMode="ResizeMode.Container" Hideable="true">
             <Columns>
-                <PartsTableContent Part="@Elements.FirstOrDefault()" /> <!-- This is the component that contains the columns -->
+                <PartsTableContent Part="@Elements.FirstOrDefault()" />
+                <TemplateColumn Title="Actions" CellClass="d-flex justify-end">
+                    <CellTemplate>
+                        <MudTooltip Text="Edit">
+                            <MudIconButton Size="@Size.Small" Icon="@Icons.Material.Outlined.Edit" OnClick="@(() => OpenEditDialogAsync(context.Item.Id))" />
+                        </MudTooltip>
+                        <MudTooltip Text="Delete">
+                            <MudIconButton Size="@Size.Small" Icon="@Icons.Material.Outlined.Delete" OnClick="@(() => DeletePartAsync(context.Item.Id))" />
+                        </MudTooltip>
+                    </CellTemplate>
+                </TemplateColumn>
             </Columns>
         </MudDataGrid>
     }
@@ -93,13 +104,59 @@
 
     private async Task AddNewPart()
     {
-        DialogParameters parameters = new DialogParameters<AddPartDialog> { };
+        DialogParameters parameters = new DialogParameters<PartDialog>
+        {
+            { "PartId", 0 },
+            { "DialogTitle", "Add New Part" },
+            { "SucessButton", "Add Part" },
+            { "TextFieldsReadOnly", false },
+            { "CRUDAction", "Add" }
+        };
 
-        var dialogResult = await DialogService.ShowAsync<AddPartDialog>("", parameters);
+        var dialogResult = await DialogService.ShowAsync<PartDialog>("", parameters);
         var result = await dialogResult.Result;
 
         if (!result.Canceled)
         {
+            await ReloadDataAsync();
+        }
+    }
+
+    private async Task OpenEditDialogAsync(int id)
+    {
+        DialogParameters parameters = new DialogParameters<PartDialog>
+        {
+            { "PartId", id },
+            { "DialogTitle", "Edit Part" },
+            { "SucessButton", "Save Changes" },
+            { "TextFieldsReadOnly", false },
+            { "CRUDAction", "Edit" }
+        };
+
+        var dialogResult = await DialogService.ShowAsync<PartDialog>("", parameters);
+        var result = await dialogResult.Result;
+
+        if (!result.Canceled)
+        {
+            await ReloadDataAsync();
+        }
+    }
+
+    private async Task DeletePartAsync(int id)
+    {
+        DialogParameters parameters = new DialogParameters<DeleteDialog>
+        {
+            { x => x.Title , "Delete Part?" },
+            { x => x.Content, "Are you sure you want to delete this part?" },
+            { x => x.Result, "Part was deleted!" }
+        };
+
+        IDialogReference dialogResult = await DialogService.ShowAsync<DeleteDialog>("", parameters);
+        DialogResult result = await dialogResult.Result;
+
+        if (!result.Canceled)
+        {
+            await PartService.DeletePartAsync(id);
             await ReloadDataAsync();
         }
     }
