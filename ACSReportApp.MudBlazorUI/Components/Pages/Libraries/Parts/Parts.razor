@@ -15,7 +15,7 @@
 
 <MudPaper Elevation="0" Class="d-flex justify-center flex-grow-1 gap-4 pa-4">
     <MudItem Style="height:80px; width:380px;">
-        <MudSelect T="string" Label="Select Part Type!" AnchorOrigin="Origin.BottomCenter" SelectedValuesChanged="@(() => ReloadDataAsync())" @bind-Value="PartTypeBinder">
+        <MudSelect T="string" Label="Search for Part Type" AnchorOrigin="Origin.BottomCenter" SelectedValuesChanged="@(() => ReloadDataAsync())" @bind-Value="PartTypeBinder">
             @foreach (var partType in PartsTypes)
             {
                 <MudSelectItem Value="@partType">@partType</MudSelectItem>
@@ -24,9 +24,10 @@
     </MudItem>
 
     <MudItem xs="12" sm="6" md="4">
-        <MudAutocomplete T="string" Label="Part number" @bind-Value="PartNumberValue" SearchFunc="@Search"
-                         ResetValueOnEmptyText="true"
-                         AdornmentIcon="@Icons.Material.Filled.Search" AdornmentColor="Color.Primary" />
+        <MudAutocomplete T="string" Label="Search by Part Number" SearchFunc="@Search"
+                         ResetValueOnEmptyText="true" @bind-Value="PartNumberValue"
+                         AdornmentIcon="@Icons.Material.Filled.Search" AdornmentColor="Color.Primary" OnAdornmentClick="@(() => PartSearch())" Clearable="true" OnClearButtonClick="@(() => ReloadDataAsync())" />
+
     </MudItem>
 
 </MudPaper>
@@ -40,7 +41,14 @@
     {
         <MudDataGrid T="PartServiceModel" @ref="grid" Items="@Elements" ReadOnly=false
                      Bordered="true" Outlined="true" Dense="true" Filterable="true" FilterMode="@DataGridFilterMode.ColumnFilterMenu"
-                     Virtualize="true" FixedHeader="true" DragDropColumnReordering="true" ColumnResizeMode="ResizeMode.Container" Hideable="true">
+                     Virtualize="true" FixedHeader="true" DragDropColumnReordering="true" ColumnResizeMode="ResizeMode.Container" Hideable="true" QuickFilter="@QuickFilter" FilterCaseSensitivity="DataGridFilterCaseSensitivity.CaseInsensitive">
+
+            <ToolBarContent>
+                <MudText Typo="Typo.h6">@PartTypeBinder</MudText>
+                <MudSpacer />
+                <MudTextField @bind-Value="@SearchString" Placeholder="Search" Adornment="Adornment.Start" Immediate="true" Clearable="true" OnClearButtonClick="@(() => ReloadDataAsync())"
+                              AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>
+            </ToolBarContent>
             <Columns>
                 <PartsTableContent Part="@Elements.FirstOrDefault()" />
                 <TemplateColumn Title="Actions" CellClass="d-flex justify-end">
@@ -77,6 +85,7 @@
 
     private string PartNumberValue;
     private string PartTypeBinder;
+    private string SearchString;
 
     protected override async Task OnInitializedAsync()
     {
@@ -87,6 +96,17 @@
     {
         PartsTypes = await PartService.GetPartsTypesAsync();
         Elements = await PartService.GetPartsAsync(PartTypeBinder);
+        SearchString = String.Empty;
+        PartNumberValue = String.Empty;
+        StateHasChanged();
+    }
+
+    private async Task PartSearch()
+    {
+        var searchedPart = await PartService.GetPartAsync(PartNumberValue);
+        Elements = await PartService.GetPartsAsync(searchedPart.PartType);
+        SearchString = searchedPart.OrderNumber;
+        PartTypeBinder = searchedPart.PartType;
         StateHasChanged();
     }
 
@@ -160,4 +180,15 @@
             await ReloadDataAsync();
         }
     }
+
+    private Func<PartServiceModel, bool> QuickFilter => x =>
+    {
+        if (string.IsNullOrWhiteSpace(SearchString))
+            return true;
+
+        if (x.OrderNumber.Contains(SearchString, StringComparison.OrdinalIgnoreCase))
+            return true;
+
+        return false;
+    };
 }

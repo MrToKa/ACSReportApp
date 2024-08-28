@@ -19,12 +19,17 @@
         <MudTextField @bind-Value="Part.Manufacturer" Label="Manufacturer" ReadOnly="@TextFieldsReadOnly" />
         <MudTextField @bind-Value="Part.OrderNumber" Label="Order Number" ReadOnly="@TextFieldsReadOnly" />
         <MudTextField @bind-Value="Part.Description" Label="Description" ReadOnly="@TextFieldsReadOnly" />
-        <MudTextField @bind-Value="Part.Width" Label="Width" ReadOnly="@TextFieldsReadOnly" />
-        <MudTextField @bind-Value="Part.Height" Label="Height" ReadOnly="@TextFieldsReadOnly" />
-        <MudTextField @bind-Value="Part.Length" Label="Length" ReadOnly="@TextFieldsReadOnly" />
-        <MudTextField @bind-Value="Part.Weight" Label="Weight" ReadOnly="@TextFieldsReadOnly" />
-        <MudTextField @bind-Value="Part.Diameter" Label="Diameter" ReadOnly="@TextFieldsReadOnly" />
-        <MudTextField @bind-Value="Part.Measurement" Label="Measurement" ReadOnly="@TextFieldsReadOnly" />
+        <MudTextField @bind-Value="Part.Width" Label="Width [mm]" ReadOnly="@TextFieldsReadOnly" />
+        <MudTextField @bind-Value="Part.Height" Label="Height [mm]" ReadOnly="@TextFieldsReadOnly" />
+        <MudTextField @bind-Value="Part.Length" Label="Length [mm]" ReadOnly="@TextFieldsReadOnly" />
+        <MudTextField @bind-Value="Part.Weight" Label="Weight [kg]" ReadOnly="@TextFieldsReadOnly" />
+        <MudTextField @bind-Value="Part.Diameter" Label="Diameter [mm]" ReadOnly="@TextFieldsReadOnly" />
+        <MudSelect T="string" AnchorOrigin="Origin.BottomCenter" @bind-Value="Part.Measurement" Label="Delivery Measurement" ReadOnly="@TextFieldsReadOnly">
+            @foreach (var measurement in measurements)
+            {
+                <MudSelectItem Value="@measurement">@measurement</MudSelectItem>
+            }
+        </MudSelect>
         <MudTextField @bind-Value="Part.Remarks" Label="Remarks" ReadOnly="@TextFieldsReadOnly" />
     </DialogContent>
 
@@ -55,6 +60,7 @@
 
     private string PartTypeValue;
     private bool resetValueOnEmptyText;
+    private List<string> measurements = new List<string>();
 
     private PartServiceModel Part { get; set; } = new PartServiceModel();
 
@@ -66,6 +72,8 @@
         {
             await LoaderPart();
         }
+
+        measurements = await PartService.GetMeasurementAsync();
     }
 
     private async Task LoaderPart()

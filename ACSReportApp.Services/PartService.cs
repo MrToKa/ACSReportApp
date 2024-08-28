@@ -84,10 +84,10 @@ namespace ACSReportApp.Services
             await this.repo.SaveChangesAsync();
         }
 
-        public async Task<PartServiceModel> GetPartAsync(int id)
+        public async Task<PartServiceModel> GetPartAsync(string partNumber)
         {
             var partToReturn = await this.repo.All<Part>()
-                .FirstOrDefaultAsync(p => p.Id == id) 
+                .FirstOrDefaultAsync(p => p.OrderNumber.Contains(partNumber)) 
                 ?? throw new ArgumentException("Part not found.");
 
             return new PartServiceModel()
@@ -148,6 +148,11 @@ namespace ACSReportApp.Services
                 .ToListAsync();
         }
 
+        public async Task<List<string>> GetMeasurementAsync()
+        {
+            return await Task.FromResult(Enum.GetNames(typeof(Measurement)).ToList());
+        }
+
         public async Task<PartServiceModel> UpdatePartAsync(PartServiceModel part)
         {
             var updatedPart = await this.repo.All<Part>()
@@ -179,6 +184,30 @@ namespace ACSReportApp.Services
             await this.repo.SaveChangesAsync();
 
             return await this.GetPartAsync(part.Id);
+        }
+
+        public async Task<PartServiceModel> GetPartAsync(int id)
+        {
+            var partToReturn = await this.repo.All<Part>()
+                .FirstOrDefaultAsync(p => p.Id == id)
+                ?? throw new ArgumentException("Part not found.");
+
+            return new PartServiceModel()
+            {
+                Id = partToReturn.Id,
+                PartType = partToReturn.PartType,
+                OrderNumber = partToReturn.OrderNumber,
+                Manufacturer = partToReturn.Manufacturer,
+                Width = partToReturn.Width,
+                Height = partToReturn.Height,
+                Length = partToReturn.Length,
+                Weight = partToReturn.Weight,
+                Diameter = partToReturn.Diameter,
+                Description = partToReturn.Description,
+                Measurement = partToReturn.Measurement.ToString(),
+                Picture = partToReturn.Picture,
+                Remarks = partToReturn.Remarks
+            };
         }
     }
 }
