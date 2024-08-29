@@ -28,6 +28,7 @@ builder.Services.AddScoped<IProjectService, ProjectService>();
 builder.Services.AddScoped<ICableTypeService, CableTypeService>();
 builder.Services.AddScoped<ICableService, CableService>();
 builder.Services.AddScoped<IPartService, PartService>();
+builder.Services.AddScoped<IImageService, ImageService>();
 
 builder.Services.AddAuthentication(options =>
     {

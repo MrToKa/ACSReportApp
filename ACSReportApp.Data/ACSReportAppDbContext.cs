@@ -19,13 +19,13 @@ namespace ACSReportApp.Data
         private string BuildConnectionString()
         {
             //Home settings environment
-            var configuration = new ConfigurationBuilder()
-                .AddJsonFile(@"C:\Users\TOKA\source\repos\ACSReportApp\ACSReportApp\appsettings.json")
-                .Build();
-
             //var configuration = new ConfigurationBuilder()
-            //    .AddJsonFile(@"C:\Users\todor.chankov\source\repos\ACSReportApp\ACSReportApp\appsettings.json")
+            //    .AddJsonFile(@"C:\Users\TOKA\source\repos\ACSReportApp\ACSReportApp\appsettings.json")
             //    .Build();
+
+            var configuration = new ConfigurationBuilder()
+                .AddJsonFile(@"C:\Users\todor.chankov\source\repos\ACSReportApp\ACSReportApp\appsettings.json")
+                .Build();
 
             var connectionString = configuration.GetConnectionString("DefaultConnection");
 
@@ -48,6 +48,7 @@ namespace ACSReportApp.Data
         public DbSet<UserProject> UserProjects { get; set; }
         public DbSet<Part> Parts { get; set; }
         public DbSet<PartAssembly> PartAssemblies { get; set; }
+        public DbSet<Image> Images { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
