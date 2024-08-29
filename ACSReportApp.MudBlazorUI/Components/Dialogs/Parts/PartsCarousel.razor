@@ -1,0 +1,62 @@
+﻿@using ACSReportApp.MudBlazorUI.Components.Pages.Libraries.Gallery
+@using ACSReportApp.Services
+@using ACSReportApp.Services.Contracts
+@using ACSReportApp.Services.Models
+
+@inject IImageService ImageService
+@inject ISnackbar Snackbar
+
+<MudCarousel Class="mud-width-full" @ref="_carousel" ItemsSource="@Elements" Style="height:400px; width:400px" ShowArrows="true" AutoCycle="false" ShowBullets="false">
+	<ItemTemplate>
+		<div class="d-flex flex-column flex-column justify-center" style="height:100%">
+			<ImagesCard PartTypeBinder="@Elements.First().ImageType" />
+		</div>
+	</ItemTemplate>
+</MudCarousel>
+
+<br />
+
+@* <MudAutocomplete T="string" Label="Picture Type" @bind-Value="Elements.First().ImageType" SearchFunc="@Search"
+				 ResetValueOnEmptyText="false" CoerceValue="true" @bind-SearchText="PartTypeBinder"
+				 AdornmentColor="Color.Primary" ReadOnly="true" /> *@
+
+@code {
+    [Parameter]
+    public string PartTypeBinder { get; set; }
+
+    private string PartTypeValue;
+
+    private MudCarousel<ImageServiceModel> _carousel;
+
+    private IEnumerable<ImageServiceModel> Elements = new List<ImageServiceModel>();
+
+    // protected override async Task OnInitializedAsync()
+    // {
+    //     await LoaderPart();
+    // }
+
+    // private async Task LoaderPart()
+    // {
+    //     try
+    //     {
+    //         Elements = await ImageService.GetAllImagesAsync();
+    //     }
+    //     catch (Exception ex)
+    //     {
+    //         Snackbar.Add(ex.Message, Severity.Error);
+    //     }
+    // }
+
+    // private async Task<IEnumerable<string>> Search(string value, CancellationToken token)
+    // {
+    //     var imagesTipes = await ImageService.GetImagesTypesAsync(value);
+
+    //     // if text is null or empty, don't return values (drop-down will not open)
+    //     if (string.IsNullOrEmpty(value))
+    //     {
+    //         return new string[0];
+    //     }
+    //     return imagesTipes.Where(x => x.Contains(value, StringComparison.InvariantCultureIgnoreCase));
+    // }
+
+}

@@ -10,7 +10,8 @@ namespace ACSReportApp.Services
     public class ImageService : IImageService
     {
         private readonly IACSReportAppDbRepository repo;
-        private const string UploadPath = "C:\\Users\\todor.chankov\\source\\repos\\ACSReportApp\\ACSReportApp.MudBlazorUI\\wwwroot\\";
+        //private const string UploadPath = "C:\\Users\\todor.chankov\\source\\repos\\ACSReportApp\\ACSReportApp.MudBlazorUI\\wwwroot\\";
+        private const string UploadPath = "C:\\Users\\TOKA\\source\\repos\\ACSReportApp\\ACSReportApp.MudBlazorUI\\wwwroot\\";
 
         public ImageService(IACSReportAppDbRepository repo)
         {
@@ -130,6 +131,14 @@ namespace ACSReportApp.Services
                     ImagePath = i.ImagePath,
                     CableTrayId = i.CableTrayId,
                 })
+                .ToListAsync();
+        }
+
+        public async Task<IEnumerable<string>> GetImagesTypesAsync(string imageType)
+        {
+            return await this.repo.All<Image>()
+                .Where(i => i.ImageType == imageType)
+                .Select(i => i.ImageTag)
                 .ToListAsync();
         }
     }

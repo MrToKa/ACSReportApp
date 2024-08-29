@@ -11,5 +11,6 @@ namespace ACSReportApp.Services.Contracts
         Task DeleteImageAsync(string imageTag);
         Task<ImageServiceModel> GetImageAsync(string imageTag);
         Task<IEnumerable<ImageServiceModel>> GetAllImagesAsync();
+        Task<IEnumerable<string>> GetImagesTypesAsync(string imageType);
     }
 }

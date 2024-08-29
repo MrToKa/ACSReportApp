@@ -14,5 +14,6 @@ namespace ACSReportApp.Services.Contracts
         Task<List<string>> GetPartsTypesAsync();
         Task<List<string>> GetPartsNumbersForSearchAsync();
         Task<List<string>> GetMeasurementAsync();
+        Task AssignImageAsync(int partId, string imageTag);
     }
 }

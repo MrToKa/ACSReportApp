@@ -30,17 +30,9 @@
     else
     {
         <MudStack Row="true" Justify="Justify.SpaceEvenly">
-            @foreach (var image in Elements)
-            {
-                <MudCard>
-                    <MudCardMedia Image="@($"{image.ImageType}/{image.Name}")" Style="width: 300px; height: 300px; flex-shrink:inherit; background-size: contain; background-position: center; background-repeat: no-repeat;" />
-                    <MudCardContent>
-                        <MudText Typo="Typo.h6">@image.ImageTag</MudText>
-                        <MudText Typo="Typo.body2">@image.ImageType</MudText>
-                    </MudCardContent>
-                </MudCard>
-            }
+            <ImagesCard PartTypeBinder=""  />
         </MudStack>
+
     }
 </MudPaper>
 
@@ -73,5 +65,4 @@
         Elements = await ImageService.GetAllImagesAsync();
         StateHasChanged();
     }
-
 }

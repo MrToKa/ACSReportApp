@@ -29,7 +29,6 @@
                          AdornmentIcon="@Icons.Material.Filled.Search" AdornmentColor="Color.Primary" OnAdornmentClick="@(() => PartSearch())" Clearable="true" OnClearButtonClick="@(() => ReloadDataAsync())" />
 
     </MudItem>
-
 </MudPaper>
 
 <MudPaper Elevation="0" Class="pa-4">
@@ -53,6 +52,9 @@
                 <PartsTableContent Part="@Elements.FirstOrDefault()" />
                 <TemplateColumn Title="Actions" CellClass="d-flex justify-end">
                     <CellTemplate>
+                        <MudTooltip Text="Picture">
+                            <MudIconButton Size="@Size.Small" Icon="@Icons.Material.Filled.Image" OnClick="@(() => AssignPictureAsync(context.Item.Id))" />
+                        </MudTooltip>
                         <MudTooltip Text="Edit">
                             <MudIconButton Size="@Size.Small" Icon="@Icons.Material.Outlined.Edit" OnClick="@(() => OpenEditDialogAsync(context.Item.Id))" />
                         </MudTooltip>
@@ -191,4 +193,24 @@
 
         return false;
     };
+
+    private async Task AssignPictureAsync(int id)
+    {
+        DialogParameters parameters = new DialogParameters<AssignImageDialog>
+        {
+            { "PartId", id },
+            { "DialogTitle", "Assign Picture" },
+            { "SucessButton", "Assign Picture" },
+            { "TextFieldsReadOnly", true },
+            { "CRUDAction", "Assign" }
+        };
+
+        var dialogResult = await DialogService.ShowAsync<AssignImageDialog>("", parameters);
+        var result = await dialogResult.Result;
+
+        if (!result.Canceled)
+        {
+            await ReloadDataAsync();
+        }
+    }
 }

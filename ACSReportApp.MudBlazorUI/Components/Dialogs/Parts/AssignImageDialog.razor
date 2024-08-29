@@ -1,0 +1,84 @@
+﻿@using ACSReportApp.Services.Contracts
+@using ACSReportApp.Services.Models
+
+@inject IPartService PartService
+@inject ISnackbar Snackbar
+
+<MudDialog>
+
+    <TitleContent>
+        <MudText Typo="Typo.h6">
+            <MudIcon Icon="@Icons.Material.Filled.Save" Class="mr-3 mb-n1" />
+            @DialogTitle
+        </MudText>
+    </TitleContent>
+
+    <DialogContent>
+        <PartsCarousel PartTypeBinder="" />
+    </DialogContent>
+
+    <DialogActions>
+        <MudButton OnClick="Cancel">Cancel</MudButton>
+        <MudButton Color="Color.Success" Variant="Variant.Filled" OnClick="SaveChanges">@SucessButton</MudButton>
+    </DialogActions>
+</MudDialog>
+
+@code {
+    [CascadingParameter]
+    private MudDialogInstance MudDialog { get; set; }
+
+    [Parameter]
+    public string DialogTitle { get; set; }
+
+    [Parameter]
+    public string SucessButton { get; set; }
+
+    [Parameter]
+    public bool TextFieldsReadOnly { get; set; }
+
+    [Parameter]
+    public int PartId { get; set; }
+
+    [Parameter]
+    public string? CRUDAction { get; set; }
+
+    private string ImmageTag;
+    private bool resetValueOnEmptyText;
+    private List<string> measurements = new List<string>();
+
+    private PartServiceModel Part { get; set; } = new PartServiceModel();
+
+    private void Cancel() => MudDialog.Cancel();
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoaderPart();
+    }
+
+    private async Task LoaderPart()
+    {
+        try
+        {
+            Part = await PartService.GetPartAsync(PartId);
+        }
+        catch (Exception ex)
+        {
+            Snackbar.Add($"Error loading part: {ex.Message}", Severity.Error);
+            MudDialog.Cancel();
+        }
+    }
+
+    private async Task SaveChanges()
+    {
+        try
+        {
+            await PartService.AssignImageAsync(Part.Id, ImmageTag);
+            Snackbar.Add("Part image was updated!", Severity.Success);
+            MudDialog.Close(DialogResult.Ok(true));
+        }
+        catch (Exception ex)
+        {
+            Snackbar.Add($"Error adding part image: {ex.Message}", Severity.Error);
+        }
+    }
+}

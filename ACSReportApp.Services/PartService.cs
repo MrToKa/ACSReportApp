@@ -211,5 +211,15 @@ namespace ACSReportApp.Services
                 Remarks = partToReturn.Remarks
             };
         }
+
+        public async Task AssignImageAsync(int partId, string imageTag)
+        {
+            var part = await this.repo.All<Part>()
+                .FirstOrDefaultAsync(p => p.Id == partId)
+                ?? throw new ArgumentException("Part not found.");
+
+            part.Picture = imageTag;
+            await this.repo.SaveChangesAsync();
+        }
     }
 }
