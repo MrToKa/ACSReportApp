@@ -14,8 +14,8 @@
 
     <DialogContent>
         <MudAutocomplete T="string" Label="Part Type" @bind-Value="Part.PartType" SearchFunc="@Search"
-                         ResetValueOnEmptyText="@resetValueOnEmptyText"
-                         AdornmentIcon="@Icons.Material.Filled.Search" AdornmentColor="Color.Primary" ReadOnly="@TextFieldsReadOnly" />
+                         ResetValueOnEmptyText="false" CoerceValue="true" @bind-SearchText="PartTypeValue"
+                         AdornmentColor="Color.Primary" ReadOnly="@TextFieldsReadOnly" />
         <MudTextField @bind-Value="Part.Manufacturer" Label="Manufacturer" ReadOnly="@TextFieldsReadOnly" />
         <MudTextField @bind-Value="Part.OrderNumber" Label="Order Number" ReadOnly="@TextFieldsReadOnly" />
         <MudTextField @bind-Value="Part.Description" Label="Description" ReadOnly="@TextFieldsReadOnly" />
@@ -121,6 +121,7 @@
         {
             return new string[0];
         }
+
         return partsTypes.Where(x => x.Contains(value, StringComparison.InvariantCultureIgnoreCase));
     }
 }

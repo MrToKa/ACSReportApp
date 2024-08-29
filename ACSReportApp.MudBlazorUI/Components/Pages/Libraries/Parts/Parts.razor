@@ -15,7 +15,7 @@
 
 <MudPaper Elevation="0" Class="d-flex justify-center flex-grow-1 gap-4 pa-4">
     <MudItem Style="height:80px; width:380px;">
-        <MudSelect T="string" Label="Search for Part Type" AnchorOrigin="Origin.BottomCenter" SelectedValuesChanged="@(() => ReloadDataAsync())" @bind-Value="PartTypeBinder">
+        <MudSelect T="string" Label="Search for Part Type" AnchorOrigin="Origin.BottomCenter" SelectedValuesChanged="@(() => ReloadDataAsync())" @bind-Value="PartTypeBinder" Clearable="true">
             @foreach (var partType in PartsTypes)
             {
                 <MudSelectItem Value="@partType">@partType</MudSelectItem>
