@@ -135,6 +135,7 @@ namespace ACSReportApp.Services
         public async Task<List<string>> GetPartsNumbersForSearchAsync()
         {
             return await this.repo.All<Part>()
+                .Where(p => p.IsDeleted == false)
                 .Select(p => p.OrderNumber)
                 .Distinct()
                 .ToListAsync();
@@ -143,6 +144,7 @@ namespace ACSReportApp.Services
         public async Task<List<string>> GetPartsTypesAsync()
         {
             return await this.repo.All<Part>()
+                .Where(p => p.IsDeleted == false)
                 .Select(p => p.PartType)
                 .Distinct()
                 .ToListAsync();
