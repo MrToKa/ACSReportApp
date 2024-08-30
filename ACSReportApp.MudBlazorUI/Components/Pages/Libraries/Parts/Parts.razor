@@ -10,6 +10,7 @@
 @inject IPartService PartService
 @inject IImageService ImageService
 @inject IDialogService DialogService
+@inject ISnackbar Snackbar
 
 <PageTitle>Parts Library</PageTitle>
 
@@ -228,6 +229,12 @@
             return;
 
         var imageTag = selectedItem.Picture;
+
+        if (string.IsNullOrEmpty(imageTag))
+        {
+            Snackbar.Add("No image assigned to this part!", Severity.Error);
+            return;
+        }
 
         DialogParameters parameters = new DialogParameters<ShowImageDialog>
         {

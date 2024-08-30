@@ -13,7 +13,7 @@
 <MudPaper Elevation="0" Class="d-flex justify-center flex-grow-1 gap-4 pa-4">
     <MudTextField @bind-Value="ImageType" Label="Image type" Variant="Variant.Text"></MudTextField>
     <MudTextField @bind-Value="ImageTag" Label="Image tag" Variant="Variant.Text"></MudTextField>
-    <MudFileUpload T="IBrowserFile" FilesChanged="UploadFiles">
+    <MudFileUpload T="IBrowserFile" FilesChanged="UploadFiles" Accept=".jpg,.jpeg">
         <ActivatorContent>
             <MudFab Color="Color.Primary"
                     StartIcon="@Icons.Material.Filled.Image"
