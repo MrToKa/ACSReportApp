@@ -6,57 +6,60 @@
 @inject IImageService ImageService
 @inject ISnackbar Snackbar
 
-<MudCarousel Class="mud-width-full" @ref="_carousel" ItemsSource="@Elements" Style="height:400px; width:400px" ShowArrows="true" AutoCycle="false" ShowBullets="false">
-	<ItemTemplate>
-		<div class="d-flex flex-column flex-column justify-center" style="height:100%">
-			<ImagesCard PartTypeBinder="@Elements.First().ImageType" />
-		</div>
-	</ItemTemplate>
+<MudCarousel Class="mud-width-full" @ref="_carousel" ItemsSource="@Elements" Style="height:400px; width:400px" ShowArrows="@(Elements.Count() > 1)" AutoCycle="false" ShowBullets="false" @bind-SelectedIndex="selectedIndex">
+    <ItemTemplate>
+        <div class="d-flex flex-column flex-column justify-center" style="height:100%">
+            <ImagesCard Image="@context" />
+        </div>
+    </ItemTemplate>
 </MudCarousel>
 
 <br />
 
-@* <MudAutocomplete T="string" Label="Picture Type" @bind-Value="Elements.First().ImageType" SearchFunc="@Search"
-				 ResetValueOnEmptyText="false" CoerceValue="true" @bind-SearchText="PartTypeBinder"
-				 AdornmentColor="Color.Primary" ReadOnly="true" /> *@
+<MudAutocomplete T="string" Label="Picture Type" @bind-Value="@PartTypeBinder" SearchFunc="@Search"
+                 ResetValueOnEmptyText="false" CoerceValue="true" @bind-SearchText="@PartTypeBinder"
+                 AdornmentColor="Color.Primary" ReadOnly="true" />
 
 @code {
     [Parameter]
     public string PartTypeBinder { get; set; }
 
-    private string PartTypeValue;
+    [Parameter]
+    public IEnumerable<ImageServiceModel> Elements { get; set; }
 
-    private MudCarousel<ImageServiceModel> _carousel;
+    [Parameter]
+    public EventCallback<string> ImageTagChanged { get; set; }
 
-    private IEnumerable<ImageServiceModel> Elements = new List<ImageServiceModel>();
+    private int selectedIndex = 0;
 
-    // protected override async Task OnInitializedAsync()
-    // {
-    //     await LoaderPart();
-    // }
+    private MudCarousel<ImageServiceModel> _carousel = new MudCarousel<ImageServiceModel>();
 
-    // private async Task LoaderPart()
-    // {
-    //     try
-    //     {
-    //         Elements = await ImageService.GetAllImagesAsync();
-    //     }
-    //     catch (Exception ex)
-    //     {
-    //         Snackbar.Add(ex.Message, Severity.Error);
-    //     }
-    // }
+    private async Task<IEnumerable<string>> Search(string value, CancellationToken token)
+    {
+        var partsOrderNumbers = await ImageService.GetImagesTypesAsync(value);
 
-    // private async Task<IEnumerable<string>> Search(string value, CancellationToken token)
-    // {
-    //     var imagesTipes = await ImageService.GetImagesTypesAsync(value);
+        // if text is null or empty, don't return values (drop-down will not open)
+        if (string.IsNullOrEmpty(value))
+        {
+            return new string[0];
+        }
+        return partsOrderNumbers.Where(x => x.Contains(value, StringComparison.InvariantCultureIgnoreCase));
+    }
 
-    //     // if text is null or empty, don't return values (drop-down will not open)
-    //     if (string.IsNullOrEmpty(value))
-    //     {
-    //         return new string[0];
-    //     }
-    //     return imagesTipes.Where(x => x.Contains(value, StringComparison.InvariantCultureIgnoreCase));
-    // }
+    private void OnSelectedIndexChanged()
+    {
+        ImageTagChanged.InvokeAsync(Elements.ElementAt(selectedIndex).ImageTag);
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await Task.Delay(100);            
+        }
+
+        OnSelectedIndexChanged();
+    }
+
 
 }

@@ -8,6 +8,7 @@ namespace ACSReportApp.Models
         public string Name { get; set; }
         public string ImageTag { get; set; }
         public string ImageType { get; set; }
+        public string? ImageDescription { get; set; }
         public string? ImagePath { get; set; }
         public CableTray CableTray { get; set; }
 

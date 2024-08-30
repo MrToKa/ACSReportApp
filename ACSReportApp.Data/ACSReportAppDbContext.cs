@@ -19,13 +19,14 @@ namespace ACSReportApp.Data
         private string BuildConnectionString()
         {
             //Home settings environment
-            var configuration = new ConfigurationBuilder()
-                .AddJsonFile(@"C:\Users\TOKA\source\repos\ACSReportApp\ACSReportApp\appsettings.json")
-                .Build();
-
             //var configuration = new ConfigurationBuilder()
-            //    .AddJsonFile(@"C:\Users\todor.chankov\source\repos\ACSReportApp\ACSReportApp\appsettings.json")
+            //    .AddJsonFile(@"C:\Users\TOKA\source\repos\ACSReportApp\ACSReportApp\appsettings.json")
             //    .Build();
+
+            //Work settings environment
+            var configuration = new ConfigurationBuilder()
+                .AddJsonFile(@"C:\Users\todor.chankov\source\repos\ACSReportApp\ACSReportApp\appsettings.json")
+                .Build();
 
             var connectionString = configuration.GetConnectionString("DefaultConnection");
 

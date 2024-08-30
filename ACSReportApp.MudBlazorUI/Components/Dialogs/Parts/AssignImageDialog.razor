@@ -1,11 +1,12 @@
-﻿@using ACSReportApp.Services.Contracts
+﻿@using ACSReportApp.Services
+@using ACSReportApp.Services.Contracts
 @using ACSReportApp.Services.Models
 
 @inject IPartService PartService
+@inject IImageService ImageService
 @inject ISnackbar Snackbar
 
 <MudDialog>
-
     <TitleContent>
         <MudText Typo="Typo.h6">
             <MudIcon Icon="@Icons.Material.Filled.Save" Class="mr-3 mb-n1" />
@@ -14,7 +15,7 @@
     </TitleContent>
 
     <DialogContent>
-        <PartsCarousel PartTypeBinder="" />
+        <PartsCarousel PartTypeBinder="@PartTypeBinder" Elements="@ImagesElements" ImageTagChanged="ImageTagChanged" />
     </DialogContent>
 
     <DialogActions>
@@ -42,17 +43,20 @@
     [Parameter]
     public string? CRUDAction { get; set; }
 
-    private string ImmageTag;
-    private bool resetValueOnEmptyText;
-    private List<string> measurements = new List<string>();
+    private string ImageTag { get; set; }
+
+    private string PartTypeBinder { get; set; }
+    
 
     private PartServiceModel Part { get; set; } = new PartServiceModel();
+    private IEnumerable<ImageServiceModel> ImagesElements = new List<ImageServiceModel>();
 
     private void Cancel() => MudDialog.Cancel();
 
     protected override async Task OnInitializedAsync()
     {
         await LoaderPart();
+        await GetImagesAsync();
     }
 
     private async Task LoaderPart()
@@ -60,6 +64,7 @@
         try
         {
             Part = await PartService.GetPartAsync(PartId);
+            PartTypeBinder = Part.PartType;
         }
         catch (Exception ex)
         {
@@ -69,10 +74,10 @@
     }
 
     private async Task SaveChanges()
-    {
+    {   
         try
         {
-            await PartService.AssignImageAsync(Part.Id, ImmageTag);
+            await PartService.AssignImageAsync(Part.Id, ImageTag);
             Snackbar.Add("Part image was updated!", Severity.Success);
             MudDialog.Close(DialogResult.Ok(true));
         }
@@ -80,5 +85,15 @@
         {
             Snackbar.Add($"Error adding part image: {ex.Message}", Severity.Error);
         }
+    }
+
+    private async Task GetImagesAsync()
+    {
+        ImagesElements = await ImageService.GetImagesAsync(PartTypeBinder);        
+    }
+
+    private void ImageTagChanged(string imageTag)
+    {
+        ImageTag = imageTag;
     }
 }

@@ -30,7 +30,10 @@
     else
     {
         <MudStack Row="true" Justify="Justify.SpaceEvenly">
-            <ImagesCard PartTypeBinder=""  />
+        @foreach (var image in Elements)
+        {
+                <ImagesCard Image="@image" />
+        }
         </MudStack>
 
     }

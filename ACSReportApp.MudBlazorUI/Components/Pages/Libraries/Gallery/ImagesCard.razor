@@ -1,48 +1,15 @@
-﻿@using ACSReportApp.Services
-@using ACSReportApp.Services.Contracts
-@using ACSReportApp.Services.Models
+﻿@using ACSReportApp.Services.Models
 
-@inject IImageService ImageService
+<MudCard>
+    <MudCardMedia Image="@($"{Image.ImageType}/{Image.Name}")" Style="width: 300px; height: 300px; flex-shrink:inherit; background-size: contain; background-position: center; background-repeat: no-repeat;" />
+    <MudCardContent>
+        <MudText Typo="Typo.h6">@Image.ImageTag</MudText>
+        <MudText Typo="Typo.body2">@Image.ImageType</MudText>
+    </MudCardContent>
+</MudCard>
 
-@foreach (var image in Elements)
-{
-    <MudCard>
-        <MudCardMedia Image="@($"{image.ImageType}/{image.Name}")" Style="width: 300px; height: 300px; flex-shrink:inherit; background-size: contain; background-position: center; background-repeat: no-repeat;" />
-        <MudCardContent>
-            <MudText Typo="Typo.h6">@image.ImageTag</MudText>
-            <MudText Typo="Typo.body2">@image.ImageType</MudText>
-        </MudCardContent>
-    </MudCard>
-}
 @code
 {
     [Parameter]
-    public string PartTypeBinder { get; set; }
-
-    private string ImageType { get; set; }
-    private string ImageTag { get; set; }
-
-    private IList<IBrowserFile> _files = new List<IBrowserFile>();
-
-    private IEnumerable<ImageServiceModel> Elements = new List<ImageServiceModel>();
-
-    protected override async Task OnInitializedAsync()
-    {
-        await ReloadDataAsync();
-    }
-
-    private async Task ReloadDataAsync()
-    {
-        if(string.IsNullOrEmpty(PartTypeBinder))
-        {
-            Elements = await ImageService.GetAllImagesAsync();
-        }
-        else
-        {
-            Elements = await ImageService.GetImagesAsync(PartTypeBinder);
-        }
-
-        StateHasChanged();
-    }
-
+    public ImageServiceModel Image { get; set; }
 }
