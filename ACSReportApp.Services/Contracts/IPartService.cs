@@ -1,4 +1,5 @@
 ﻿using ACSReportApp.Services.Models;
+using Microsoft.AspNetCore.Components.Forms;
 
 namespace ACSReportApp.Services.Contracts
 {
@@ -15,5 +16,7 @@ namespace ACSReportApp.Services.Contracts
         Task<List<string>> GetPartsNumbersForSearchAsync();
         Task<List<string>> GetMeasurementAsync();
         Task AssignImageAsync(int partId, string imageTag);
+        Task UploadFromFileAsync(IBrowserFile file);
+        Task<PartServiceModel> RestorePart(PartServiceModel part);
     }
 }

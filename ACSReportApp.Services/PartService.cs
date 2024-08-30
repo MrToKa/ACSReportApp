@@ -4,6 +4,9 @@ using ACSReportApp.Services.Models;
 using ACSReportApp.Models;
 using ACSReportApp.Models.Enums;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Components.Forms;
+using DocumentFormat.OpenXml.Packaging;
+using DocumentFormat.OpenXml.Spreadsheet;
 
 namespace ACSReportApp.Services
 {
@@ -23,6 +26,14 @@ namespace ACSReportApp.Services
 
         public async Task<PartServiceModel> CreatePartAsync(PartServiceModel part)
         {
+            var partExists = await this.repo.All<Part>()
+                .AnyAsync(p => p.OrderNumber == part.OrderNumber);
+
+            if (partExists)
+            {
+                return await RestorePart(part);
+            }
+
             var newPart = new Part()
             {
                 PartType = part.PartType,
@@ -70,6 +81,33 @@ namespace ACSReportApp.Services
                 Measurement = newPart.Measurement.ToString(),
                 Picture = newPart.Picture,
                 Remarks = newPart.Remarks
+            };
+        }
+
+        public async Task<PartServiceModel> RestorePart(PartServiceModel part)
+        {
+            Part? restorePart = await repo.All<Part>()
+                .FirstOrDefaultAsync(p => p.OrderNumber == part.OrderNumber);
+
+            restorePart!.IsDeleted = false;
+
+            await this.repo.SaveChangesAsync();
+
+            return new PartServiceModel()
+            {
+                Id = restorePart.Id,
+                PartType = restorePart.PartType,
+                OrderNumber = restorePart.OrderNumber,
+                Manufacturer = restorePart.Manufacturer,
+                Width = restorePart.Width,
+                Height = restorePart.Height,
+                Length = restorePart.Length,
+                Weight = restorePart.Weight,
+                Diameter = restorePart.Diameter,
+                Description = restorePart.Description,
+                Measurement = restorePart.Measurement.ToString(),
+                Picture = restorePart.Picture,
+                Remarks = restorePart.Remarks
             };
         }
 
@@ -220,6 +258,140 @@ namespace ACSReportApp.Services
 
             part.Picture = imageTag;
             await this.repo.SaveChangesAsync();
+        }
+
+        public async Task UploadFromFileAsync(IBrowserFile file)
+        {
+            List<PartServiceModel> parts = new List<PartServiceModel>();
+            string? value = null;
+
+            //using Stream stream = new FileStream(file.Name, FileMode.Open);
+            using MemoryStream memoryStream = new MemoryStream();
+            await file.OpenReadStream().CopyToAsync(memoryStream);
+            memoryStream.Position = 0;
+            MemoryStream stream = memoryStream;
+
+            using SpreadsheetDocument document = SpreadsheetDocument.Open(stream, false);
+
+            if (document is not null)
+            {
+                WorkbookPart workbookPart = document.WorkbookPart;
+                WorksheetPart worksheetPart = workbookPart.WorksheetParts.First();
+                SheetData sheetData = worksheetPart.Worksheet.Elements<SheetData>().First();
+
+                for (int i = 1; i < sheetData.Elements<Row>().Count(); i++)
+                {
+                    PartServiceModel part = new PartServiceModel();
+                    Row row = sheetData.Elements<Row>().ElementAt(i);
+                    // get the row number from outerxml
+                    int rowNumber = int.Parse(row.RowIndex);
+
+
+                    foreach (Cell cell in row.Elements<Cell>())
+                    {
+                        value = cell.InnerText;
+
+                        if (cell.DataType != null && cell.DataType == CellValues.SharedString)
+                        {
+                            SharedStringTablePart stringTablePart = workbookPart.GetPartsOfType<SharedStringTablePart>().FirstOrDefault();
+                            if (stringTablePart != null)
+                            value = stringTablePart.SharedStringTable.ElementAt(int.Parse(value)).InnerText;
+                        }
+
+                        if (cell.CellReference == "A" + rowNumber)
+                        {
+                            part.PartType = value;
+                        }
+                        else if (cell.CellReference == "B" + rowNumber)
+                        {
+                            part.OrderNumber = value;
+                        }
+                        else if (cell.CellReference == "C" + rowNumber)
+                        {
+                            part.Manufacturer = value;
+                        }
+                        else if (cell.CellReference == "D" + rowNumber)
+                        {
+                            if (value == null || value == string.Empty)
+                            {
+                                part.Width = null;
+                            }
+                            else
+                            {
+                                part.Width = double.Parse(value);
+                            }
+                        }
+                        else if (cell.CellReference == "E" + rowNumber)
+                        {
+                            if (value == null || value == string.Empty)
+                            {
+                                part.Height = null;
+                            }
+                            else
+                            {
+                                part.Height = double.Parse(value);
+                            }
+                        }
+                        else if (cell.CellReference == "F" + rowNumber)
+                        {
+                            if (value == null || value == string.Empty)
+                            {
+                                part.Length = null;
+                            }
+                            else
+                            {
+                                part.Length = double.Parse(value);
+                            }
+                        }
+                        else if (cell.CellReference == "G" + rowNumber)
+                        {
+                            if (value == null || value == string.Empty)
+                            {
+                                part.Weight = null;
+                            }
+                            else
+                            {
+                                part.Weight = double.Parse(value);
+                            }
+                        }
+                        else if (cell.CellReference == "H" + rowNumber)
+                        {
+                            if (value == null || value == string.Empty)
+                            {
+                                part.Diameter = null;
+                            }
+                            else
+                            {
+                                part.Diameter = double.Parse(value);
+                            }
+                        }
+                        else if (cell.CellReference == "I" + rowNumber  )
+                        {
+                            part.Description = value;
+                        }
+                        else if (cell.CellReference == "J" + rowNumber)
+                        {
+                            part.Measurement = value;
+                        }
+                        else if (cell.CellReference == "K" + rowNumber)
+                        {
+                            part.Picture = value;
+                        }
+                        else if (cell.CellReference == "L" + rowNumber)
+                        {
+                            part.Remarks = value;
+                        }
+                    }
+
+                    parts.Add(part);
+                }
+
+                foreach (var part in parts)
+                {                    
+                    await this.CreatePartAsync(part);
+                }
+            }
+
         }
     }
 }

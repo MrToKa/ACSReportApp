@@ -77,11 +77,24 @@
         <MudButton Color="Color.Primary" Variant="Variant.Filled" OnClick="@(() => AddNewPart())">Add part</MudButton>
     </MudItem>
     <MudItem>
-        <MudButton Color="Color.Primary" Variant="Variant.Filled">Add parts from file</MudButton>
+        <MudFileUpload @ref="@_fileUpload" T="IBrowserFile" OnFilesChanged="UploadFile" Accept=".xlsx">
+            <ActivatorContent>
+                <MudButton Variant="Variant.Filled"
+                           Color="Color.Primary"
+                           StartIcon="@Icons.Material.Filled.CloudUpload">
+                    Add parts from file
+                </MudButton>
+            </ActivatorContent>
+        </MudFileUpload>
     </MudItem>
 </MudPaper>
 
 @code {
+    private MudFileUpload<IBrowserFile> _fileUpload;
+
+    private Task ClearAsync()
+        => _fileUpload?.ClearAsync() ?? Task.CompletedTask;
+
     public MudDataGrid<PartServiceModel> grid = new MudDataGrid<PartServiceModel>();
 
     private List<string> PartsTypes = new List<string>();
@@ -248,5 +261,12 @@
         {
             await ReloadDataAsync();
         }
+    }
+
+    private async Task UploadFile(InputFileChangeEventArgs e)
+    {
+        await PartService.UploadFromFileAsync(e.File);
+        await ClearAsync();
+        await ReloadDataAsync();
     }
 }
