@@ -10,7 +10,7 @@
         <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="@ToggleDrawer" />
         <MudSpacer />
         <MudSwitch @bind-Value="_isDarkMode" Color="Color.Primary" Class="ma-4" T="bool" Label="Toggle Light/Dark Mode" />
-        <MudIconButton Icon="@Icons.Material.Filled.Person" Color="Color.Inherit" Href="" Target="_blank" />
+        <MudIconButton Icon="@Icons.Material.Filled.Fingerprint" Color="Color.Inherit" Href="" Target="_blank" />
     </MudAppBar>
     <MudDrawer @bind-Open="@_open" ClipMode="_clipMode" Breakpoint="Breakpoint.Xxl" Elevation="1" Variant="@DrawerVariant.Responsive">
         <MudDrawerHeader>
@@ -25,7 +25,7 @@
 
 @code{
     private MudTheme _theme = new();
-    private bool _isDarkMode;
+    private bool _isDarkMode = true;
     private bool _open = false;
     private DrawerClipMode _clipMode = DrawerClipMode.Docked;
 
