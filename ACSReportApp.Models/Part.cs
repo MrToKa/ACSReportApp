@@ -6,6 +6,11 @@ namespace ACSReportApp.Models
 {
     public class Part
     {
+        public Part()
+        {
+            PartAssemblies = new List<PartAssemblyPart>();
+        }
+
         [Key]
         public int Id { get; set; }
         public string PartType { get; set; } = null!;
@@ -28,5 +33,7 @@ namespace ACSReportApp.Models
         [ForeignKey(nameof(ApplicationUserId))]
         public ApplicationUser? ModifiedBy { get; set; }
         public string? ApplicationUserId { get; set; }
+
+        public virtual ICollection<PartAssemblyPart> PartAssemblies { get; set; }
     }
 }

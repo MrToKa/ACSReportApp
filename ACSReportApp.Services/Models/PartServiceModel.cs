@@ -15,5 +15,7 @@
         public string? Measurement { get; set; }
         public string? Picture { get; set; }
         public string? Remarks { get; set; }
+        public int Quantity { get; set; }
     }
+
 }

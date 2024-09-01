@@ -7,7 +7,7 @@ namespace ACSReportApp.Models
     {
         public PartAssembly()
         {
-            Parts = new List<Part>();
+            PartAssemblyParts = new List<PartAssemblyPart>();
         }
 
         [Key]
@@ -17,7 +17,6 @@ namespace ACSReportApp.Models
         public string Description { get; set; } = null!;
         public string Manufacturer { get; set; } = null!;
         public string? Picture { get; set; }
-        public virtual List<Part> Parts { get; set; }
         public string? Remarks { get; set; }
         public bool IsDeleted { get; set; }
         public DateTime? DeletedOn { get; set; }
@@ -25,7 +24,9 @@ namespace ACSReportApp.Models
         public DateTime? LastModifiedOn { get; set; }
         [Required]
         [ForeignKey(nameof(ApplicationUserId))]
-        public ApplicationUser ModifiedBy { get; set; }
+        public ApplicationUser? ModifiedBy { get; set; }
         public string? ApplicationUserId { get; set; }
+
+        public virtual ICollection<PartAssemblyPart> PartAssemblyParts { get; set; }
     }
 }

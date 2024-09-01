@@ -22,20 +22,17 @@
     </MudFileUpload>
 </MudPaper>
 
-<MudPaper>
+<MudPaper Class="d-flex flex-wrap gap-4 overflow-auto" Elevation="0">
     @if (Elements.Count() == 0)
     {
         <MudText Typo="Typo.h6">No images found</MudText>
     }
     else
-    {
-        <MudStack Row="true" Justify="Justify.SpaceEvenly">
+    {        
         @foreach (var image in Elements)
         {
                 <ImagesCard Image="@image" />
-        }
-        </MudStack>
-
+        }   
     }
 </MudPaper>
 

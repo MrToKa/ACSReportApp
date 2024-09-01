@@ -50,6 +50,7 @@ namespace ACSReportApp.Data
         public DbSet<Part> Parts { get; set; }
         public DbSet<PartAssembly> PartAssemblies { get; set; }
         public DbSet<Image> Images { get; set; }
+        public DbSet<PartAssemblyPart> PartAssemblyParts { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -67,6 +68,16 @@ namespace ACSReportApp.Data
                 .HasOne(up => up.Project)
                 .WithMany(p => p.UsersProjects)
                 .HasForeignKey(up => up.ProjectId);
+
+            builder.Entity<Part>()
+                .HasMany(p => p.PartAssemblies)
+                .WithOne(pa => pa.Part)
+                .HasForeignKey(pa => pa.PartId);
+
+            builder.Entity<PartAssembly>()
+                .HasMany(pa => pa.PartAssemblyParts)
+                .WithOne(pap => pap.PartAssembly)
+                .HasForeignKey(pap => pap.PartAssemblyId);
 
             base.OnModelCreating(builder);
         }
