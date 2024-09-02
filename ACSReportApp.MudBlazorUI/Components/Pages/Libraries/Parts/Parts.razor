@@ -52,7 +52,7 @@
                               AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>
             </ToolBarContent>
             <Columns>
-                <PartsTableContent Part="@Elements.FirstOrDefault()" />
+                <PartsTableContent Part="@Elements.FirstOrDefault()" IsFullTable="true" />
                 <TemplateColumn Title="Actions" CellClass="d-flex justify-end">
                     <CellTemplate>
                         <MudTooltip Text="Picture">
@@ -67,6 +67,9 @@
                     </CellTemplate>
                 </TemplateColumn>
             </Columns>
+            <PagerContent>
+                <MudDataGridPager T="PartServiceModel" />
+            </PagerContent>
         </MudDataGrid>
     }
 

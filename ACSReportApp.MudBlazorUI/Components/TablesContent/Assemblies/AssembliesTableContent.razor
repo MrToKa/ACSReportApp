@@ -1,0 +1,37 @@
+﻿@using ACSReportApp.Services.Contracts
+@using ACSReportApp.Services.Models
+
+@inject IPartAssemblyService AssemblyService
+
+<MudDataGrid T="PartAssemblyModel" @ref="grid" Items="@Elements" ReadOnly=false
+             Bordered="true" Outlined="true" Dense="true" Filterable="true" FilterMode="@DataGridFilterMode.ColumnFilterMenu"
+             Virtualize="true" FixedHeader="true" Hover="true">
+    <ToolBarContent>
+        <MudText Typo="Typo.h6">Cables list</MudText>
+        <MudSpacer />
+    </ToolBarContent>
+    <Columns>
+        <AssembliesTableColumns />
+    </Columns>
+    <ChildRowContent>
+
+    </ChildRowContent>
+    <PagerContent>
+        <MudDataGridPager T="PartAssemblyModel" />
+    </PagerContent>
+</MudDataGrid>
+
+
+@code {
+
+    private MudDataGrid<PartAssemblyModel> grid = new MudDataGrid<PartAssemblyModel>();
+
+    private List<PartAssemblyModel> Elements = new List<PartAssemblyModel>();
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        Elements = await AssemblyService.GetPartAssembliesAsync();
+    }
+
+}

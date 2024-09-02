@@ -19,19 +19,14 @@ namespace ACSReportApp.Services
             this.repo = repo;
         }
 
-        public Task AddPartsFromFileAsync(Stream stream)
-        {
-            throw new NotImplementedException();
-        }
-
         public async Task<PartServiceModel> CreatePartAsync(PartServiceModel part)
         {
-            var partExists = await this.repo.All<Part>()
-                .AnyAsync(p => p.OrderNumber == part.OrderNumber);
+            bool partExists = await this.repo.All<Part>()
+                .AnyAsync(p => p.OrderNumber == part.OrderNumber && p.IsDeleted == true);
 
             if (partExists)
             {
-                return await RestorePart(part);
+                return await RestorePartAsync(part);
             }
 
             var newPart = new Part()
@@ -51,7 +46,7 @@ namespace ACSReportApp.Services
                 CreatedOn = DateTime.UtcNow,
                 LastModifiedOn = null,
                 ApplicationUserId = null,
-                Measurement = part.Measurement == null ? Measurement.None : Enum.Parse<Measurement>(part.Measurement)      
+                Measurement = part.Measurement == null ? Measurement.None : Enum.Parse<Measurement>(part.Measurement)
             };
 
             if (string.IsNullOrWhiteSpace(part.Measurement))
@@ -84,7 +79,7 @@ namespace ACSReportApp.Services
             };
         }
 
-        public async Task<PartServiceModel> RestorePart(PartServiceModel part)
+        public async Task<PartServiceModel> RestorePartAsync(PartServiceModel part)
         {
             Part? restorePart = await repo.All<Part>()
                 .FirstOrDefaultAsync(p => p.OrderNumber == part.OrderNumber);
@@ -114,7 +109,7 @@ namespace ACSReportApp.Services
         public async Task DeletePartAsync(int id)
         {
             var partToDelete = await this.repo.All<Part>()
-                .FirstOrDefaultAsync(p => p.Id == id) 
+                .FirstOrDefaultAsync(p => p.Id == id)
                 ?? throw new ArgumentException("Part not found.");
             partToDelete.IsDeleted = true;
             partToDelete.LastModifiedOn = DateTime.UtcNow;
@@ -125,7 +120,7 @@ namespace ACSReportApp.Services
         public async Task<PartServiceModel> GetPartAsync(string partNumber)
         {
             var partToReturn = await this.repo.All<Part>()
-                .FirstOrDefaultAsync(p => p.OrderNumber.Contains(partNumber)) 
+                .FirstOrDefaultAsync(p => p.OrderNumber.Contains(partNumber))
                 ?? throw new ArgumentException("Part not found.");
 
             return new PartServiceModel()
@@ -295,7 +290,7 @@ namespace ACSReportApp.Services
                         {
                             SharedStringTablePart stringTablePart = workbookPart.GetPartsOfType<SharedStringTablePart>().FirstOrDefault();
                             if (stringTablePart != null)
-                            value = stringTablePart.SharedStringTable.ElementAt(int.Parse(value)).InnerText;
+                                value = stringTablePart.SharedStringTable.ElementAt(int.Parse(value)).InnerText;
                         }
 
                         if (cell.CellReference == "A" + rowNumber)
@@ -365,7 +360,7 @@ namespace ACSReportApp.Services
                                 part.Diameter = double.Parse(value);
                             }
                         }
-                        else if (cell.CellReference == "I" + rowNumber  )
+                        else if (cell.CellReference == "I" + rowNumber)
                         {
                             part.Description = value;
                         }
@@ -387,11 +382,25 @@ namespace ACSReportApp.Services
                 }
 
                 foreach (var part in parts)
-                {                    
+                {
                     await this.CreatePartAsync(part);
                 }
             }
 
+        }
+
+        public async Task<List<PartServiceModel>> GetAllPartsAsync()
+        {
+            return await this.repo.All<Part>()
+                .Where(p => p.IsDeleted == false)
+                .Select(p => new PartServiceModel()
+                {
+                    Id = p.Id,
+                    PartType = p.PartType,
+                    Manufacturer = p.Manufacturer,
+                    OrderNumber = p.OrderNumber,
+                    Description = p.Description                    
+                }).ToListAsync();
         }
     }
 }

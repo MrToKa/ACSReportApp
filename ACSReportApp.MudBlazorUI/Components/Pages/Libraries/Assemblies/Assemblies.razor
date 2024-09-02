@@ -1,7 +1,46 @@
 ﻿@page "/assemblies"
 
-<h3>Assemblies</h3>
+@using ACSReportApp.Services.Contracts
+@using ACSReportApp.Services.Models
+@using ACSReportApp.MudBlazorUI.Components.TablesContent.Assemblies
+
+@inject IPartAssemblyService AssemblyService
+@inject NavigationManager NavigationManager
+
+
+<PageTitle>Assemblies Library</PageTitle>
+
+<h2 style="text-align: center;">Assemblies list</h2>
+
+<MudPaper Elevation="0" Class="pa-4">
+
+    @if (Elements == null || Elements.Count == 0)
+    {
+        <MudAlert Severity="Severity.Info">No assemblies found.</MudAlert>
+    }
+    else
+    {
+        <AssembliesTableContent />
+    }
+</MudPaper>
+
+<MudGrid Spacing="3" Justify="Justify.Center">
+    <MudItem>
+        <MudButton Color="Color.Primary" Variant="Variant.Filled" OnClick="@(() => AddNewAssembly())">Add Assembly</MudButton>
+    </MudItem>
+</MudGrid>
 
 @code {
+    private List<PartAssemblyModel> Elements = new List<PartAssemblyModel>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        Elements = await AssemblyService.GetPartAssembliesAsync();
+    }
+
+    private void AddNewAssembly()
+    {
+        NavigationManager.NavigateTo("/assemblies/add");
+    }
 
 }

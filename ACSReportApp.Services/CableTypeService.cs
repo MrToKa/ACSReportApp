@@ -2,6 +2,7 @@
 using ACSReportApp.Models;
 using ACSReportApp.Services.Contracts;
 using ACSReportApp.Services.Models;
+using DocumentFormat.OpenXml.InkML;
 using Microsoft.EntityFrameworkCore;
 
 namespace ACSReportApp.Services
@@ -18,7 +19,7 @@ namespace ACSReportApp.Services
         public async Task<CableTypeServiceModel> CreateCableTypeAsync(CableTypeServiceModel cableType)
         {
             var newCableType = new CableType()
-            {                
+            {
                 Type = cableType.Type,
                 Description = cableType.Description,
                 Purpose = cableType.Purpose,
@@ -129,7 +130,7 @@ namespace ACSReportApp.Services
                 .FirstOrDefaultAsync(c => c.Id == cableTypeId);
 
             if (cableTypeToUpdate == null)
-                {
+            {
                 throw new ArgumentException("Cable type not found.");
             }
 

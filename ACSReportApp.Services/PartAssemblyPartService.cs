@@ -1,6 +1,7 @@
 ﻿using ACSReportApp.Data.Repositories;
 using ACSReportApp.Models;
 using ACSReportApp.Services.Contracts;
+using ACSReportApp.Services.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace ACSReportApp.Services
@@ -16,7 +17,7 @@ namespace ACSReportApp.Services
 
         public async Task AddPartToAssembly(int partAssemblyId, int partId, int quantity)
         {
-            var partAssemblyPart = new PartAssemblyPart
+            PartAssemblyPart? partAssemblyPart = new PartAssemblyPart
             {
                 PartAssemblyId = partAssemblyId,
                 PartId = partId,
@@ -25,6 +26,40 @@ namespace ACSReportApp.Services
 
             await repo.AddAsync(partAssemblyPart);
             await repo.SaveChangesAsync();
+        }
+
+        public async Task<PartAssemblyPart> CreateAssemblyPart(int partAssemblyId, int partId, int quantity)
+        {
+            var existingPart = await repo.All<PartAssemblyPart>()
+        .FirstOrDefaultAsync(pap => pap.PartId == partId && pap.PartAssemblyId == partAssemblyId);
+
+            if (existingPart != null)
+            {
+                existingPart.Quantity += quantity;
+                repo.Update(existingPart);
+            }
+            else
+            {
+                var newPart = new PartAssemblyPart
+                {
+                    PartId = partId,
+                    PartAssemblyId = partAssemblyId,
+                    Quantity = quantity
+                };
+                await repo.AddAsync(newPart);
+                existingPart = newPart;
+            }
+
+            await repo.SaveChangesAsync();
+            return existingPart;
+        }
+
+        public async Task<List<PartAssemblyPart>> GetPartsInAssembly(int partAssemblyId)
+        {
+            return await repo.All<PartAssemblyPart>()
+                .Where(pap => pap.PartAssemblyId == partAssemblyId)
+                .Include(pap => pap.Part)
+                .ToListAsync();
         }
 
         public async Task RemovePartFromAssembly(int partAssemblyId, int partId)

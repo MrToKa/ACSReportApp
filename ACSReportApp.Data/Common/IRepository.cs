@@ -10,6 +10,8 @@
 
         Task AddAsync<T>(T entity) where T : class;
 
+        Task AddRangeAsync<T>(IEnumerable<T> entities) where T : class;
+
         void Update<T>(T entity) where T : class;
 
         void UpdateRange<T>(IEnumerable<T> entities) where T : class;

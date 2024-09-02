@@ -9,6 +9,7 @@ namespace ACSReportApp.Models
         public Part()
         {
             PartAssemblies = new List<PartAssemblyPart>();
+            CableTrays = new List<CableTray>();
         }
 
         [Key]
@@ -33,7 +34,7 @@ namespace ACSReportApp.Models
         [ForeignKey(nameof(ApplicationUserId))]
         public ApplicationUser? ModifiedBy { get; set; }
         public string? ApplicationUserId { get; set; }
-
-        public virtual ICollection<PartAssemblyPart> PartAssemblies { get; set; }
+        public virtual List<PartAssemblyPart> PartAssemblies { get; set; }
+        public virtual List<CableTray> CableTrays { get; set; }
     }
 }

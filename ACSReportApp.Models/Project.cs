@@ -12,30 +12,17 @@ namespace ACSReportApp.Models
         [Key]
         public Guid Id { get; set; }
 
-        /// <summary>
-        /// Gets or sets project number. The pattern for name is "P######", where # is a single digit.
-        /// </summary>
         [Required]
         //[MaxLength(ProjectConstants.NumberMaxLength)]
         //[RegularExpression(ProjectConstants.NameRegex)]
         public string Number { get; set; }
 
-        /// <summary>
-        /// Gets or sets project name.
-        /// </summary>
-        [Required]
-        //[MaxLength(ProjectConstants.NameMaxName)]
+        [Required] 
         public string Name { get; set; }
 
-        /// <summary>
-        /// Gets or sets a short description of the project. It can include base requirements about the design, manufacturing, erection or commissioning of the project.
-        /// </summary>
         //[MaxLength(ProjectConstants.DescriptionMaxLength)]
         public string? Description { get; set; }
 
-        /// <summary>
-        /// Gets or sets contractor name.
-        /// </summary>
         //[Required]
         //[MaxLength(ProjectConstants.ContractorMaxLength)]
         public string Contractor { get; set; }

@@ -3,17 +3,23 @@
 <PropertyColumn T="PartServiceModel" TProperty="string" Property="x => x.Manufacturer" Title="Manufacturer" />
 <PropertyColumn T="PartServiceModel" TProperty="string" Property="x => x.OrderNumber" Title="Order Number" />
 <PropertyColumn T="PartServiceModel" TProperty="string" Property="x => x.Description" Title="Description" />
-<PropertyColumn T="PartServiceModel" TProperty="double?" Property="x => x.Width" Title="Width [mm]" Hidden="@ColumnVisibility(Part.Width)" />
-<PropertyColumn T="PartServiceModel" TProperty="double?" Property="x => x.Height" Title="Height [mm]" Hidden="@ColumnVisibility(Part.Height)" />
-<PropertyColumn T="PartServiceModel" TProperty="double?" Property="x => x.Length" Title="Length [mm]" Hidden="@ColumnVisibility(Part.Length)" />
-<PropertyColumn T="PartServiceModel" TProperty="double?" Property="x => x.Weight" Title="Weight [kg]" Hidden="@ColumnVisibility(Part.Weight)" />
-<PropertyColumn T="PartServiceModel" TProperty="double?" Property="x => x.Diameter" Title="Diameter [mm]" Hidden="@ColumnVisibility(Part.Diameter)" />
-<PropertyColumn T="PartServiceModel" TProperty="string" Property="x => x.Measurement" Title="Delivery Measurement" Hidden="@ColumnVisibility(Part.Measurement)" />
-<PropertyColumn T="PartServiceModel" TProperty="string" Property="x => x.Remarks" Title="Remarks" Hidden="@ColumnVisibility(Part.Remarks)" />
+@if (IsFullTable)
+{
+    <PropertyColumn T="PartServiceModel" TProperty="double?" Property="x => x.Width" Title="Width [mm]" Hidden="@(ColumnVisibility(Part.Width))" />
+    <PropertyColumn T="PartServiceModel" TProperty="double?" Property="x => x.Height" Title="Height [mm]" Hidden="@(ColumnVisibility(Part.Height))" />
+    <PropertyColumn T="PartServiceModel" TProperty="double?" Property="x => x.Length" Title="Length [mm]" Hidden="@(ColumnVisibility(Part.Length))" />
+    <PropertyColumn T="PartServiceModel" TProperty="double?" Property="x => x.Weight" Title="Weight [kg]" Hidden="@(ColumnVisibility(Part.Weight))" />
+    <PropertyColumn T="PartServiceModel" TProperty="double?" Property="x => x.Diameter" Title="Diameter [mm]" Hidden="@(ColumnVisibility(Part.Diameter))" />
+    <PropertyColumn T="PartServiceModel" TProperty="string" Property="x => x.Measurement" Title="Delivery Measurement" Hidden="@(ColumnVisibility(Part.Measurement))" />
+}
+<PropertyColumn T="PartServiceModel" TProperty="string" Property="x => x.Remarks" Title="Remarks" Hidden="@(ColumnVisibility(Part.Remarks))" />
 
 @code {
     [Parameter]
     public PartServiceModel Part { get; set; }
+
+    [Parameter]
+    public bool IsFullTable { get; set; }
 
     public bool ColumnVisibility<T>(T value)
     {

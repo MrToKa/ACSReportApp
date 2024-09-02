@@ -8,6 +8,7 @@ namespace ACSReportApp.Models
         public PartAssembly()
         {
             PartAssemblyParts = new List<PartAssemblyPart>();
+            CableTrays = new List<CableTray>();
         }
 
         [Key]
@@ -18,15 +19,15 @@ namespace ACSReportApp.Models
         public string Manufacturer { get; set; } = null!;
         public string? Picture { get; set; }
         public string? Remarks { get; set; }
-        public bool IsDeleted { get; set; }
+        public bool IsDeleted { get; set; } = false;
         public DateTime? DeletedOn { get; set; }
         public DateTime CreatedOn { get; set; } = DateTime.UtcNow;
         public DateTime? LastModifiedOn { get; set; }
-        [Required]
+        
         [ForeignKey(nameof(ApplicationUserId))]
         public ApplicationUser? ModifiedBy { get; set; }
         public string? ApplicationUserId { get; set; }
-
-        public virtual ICollection<PartAssemblyPart> PartAssemblyParts { get; set; }
+        public virtual List<PartAssemblyPart> PartAssemblyParts { get; set; }
+        public virtual List<CableTray> CableTrays { get; set; }
     }
 }

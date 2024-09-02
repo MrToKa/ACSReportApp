@@ -11,12 +11,12 @@ namespace ACSReportApp.Services.Contracts
         Task<PartServiceModel> CreatePartAsync(PartServiceModel part);
         Task<PartServiceModel> UpdatePartAsync(PartServiceModel part);
         Task DeletePartAsync(int id);
-        Task AddPartsFromFileAsync(Stream stream);
         Task<List<string>> GetPartsTypesAsync();
         Task<List<string>> GetPartsNumbersForSearchAsync();
         Task<List<string>> GetMeasurementAsync();
         Task AssignImageAsync(int partId, string imageTag);
         Task UploadFromFileAsync(IBrowserFile file);
-        Task<PartServiceModel> RestorePart(PartServiceModel part);
+        Task<PartServiceModel> RestorePartAsync(PartServiceModel part);
+        Task<List<PartServiceModel>> GetAllPartsAsync();
     }
 }

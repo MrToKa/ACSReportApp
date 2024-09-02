@@ -69,6 +69,9 @@ namespace ACSReportApp.Data
                 .WithMany(p => p.UsersProjects)
                 .HasForeignKey(up => up.ProjectId);
 
+            builder.Entity<PartAssemblyPart>()
+                .HasKey(pap => new { pap.PartId, pap.PartAssemblyId });
+
             builder.Entity<Part>()
                 .HasMany(p => p.PartAssemblies)
                 .WithOne(pa => pa.Part)

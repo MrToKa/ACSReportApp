@@ -17,6 +17,11 @@ namespace ACSReportApp.Data.Common
             await DbSet<T>().AddAsync(entity);
         }
 
+        public async Task AddRangeAsync<T>(IEnumerable<T> entities) where T : class
+        {
+            await DbSet<T>().AddRangeAsync(entities);
+        }
+
         public IQueryable<T> All<T>() where T : class
         {
             return DbSet<T>().AsQueryable();

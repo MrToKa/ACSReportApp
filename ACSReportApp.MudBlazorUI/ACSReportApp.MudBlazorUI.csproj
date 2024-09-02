@@ -34,9 +34,4 @@
 	  <None Include="Components\Pages\Libraries\Cables\CableTypes.razor" />
 	</ItemGroup>
 
-
-	<ItemGroup>
-	  <Folder Include="Components\TablesContent\Assemblies\" />
-	</ItemGroup>
-
 </Project>
