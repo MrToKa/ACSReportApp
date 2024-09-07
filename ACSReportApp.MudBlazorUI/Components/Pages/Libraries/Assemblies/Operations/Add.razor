@@ -67,9 +67,10 @@ else
                 </MudExpansionPanels>
             </MudPaper>
 
-
-
-            <MudButton Variant="Variant.Filled" Color="Color.Primary" Disabled="@(!success)" Class="ml-auto" OnClick="@(() => AddAssembly())">Create Assembly</MudButton>
+            <MudPaper>
+                <MudButton Variant="Variant.Filled" Color="Color.Primary" Disabled="@(!success)" Class="ml-auto" OnClick="@(() => AddAssembly())">Create Assembly</MudButton>
+                <MudButton Variant="Variant.Outlined" Color="Color.Secondary" Class="ml-auto" OnClick="@(() => RedirectToAssemblies())">Cancel</MudButton>
+            </MudPaper>
         </MudForm>
     </MudPaper>
 
@@ -127,14 +128,14 @@ else
             var createAssemblyResult = await AssemblyService.CreatePartAssemblyAsync(Assembly);
             await AssemblyService.AddPartsToAssemblyAsync(createAssemblyResult.Id, partsAssemblyList);
 
-            NavigationManager.NavigateTo("/assemblies", forceLoad: true);
+            RedirectToAssemblies();
             isRedirecting = true;
         }
         finally
         {
-            if(!isRedirecting)
+            if (!isRedirecting)
                 isLoading = false;
-                StateHasChanged();
+            StateHasChanged();
         }
     }
 
@@ -194,5 +195,10 @@ else
     {
         partsAssemblyList = updatedList;
         StateHasChanged();
+    }
+
+    private void RedirectToAssemblies()
+    {
+        NavigationManager.NavigateTo("/assemblies", forceLoad: true);
     }
 }

@@ -20,7 +20,7 @@
 
     <DialogActions>
         <MudButton OnClick="Cancel">Cancel</MudButton>
-        <MudButton Color="Color.Success" Variant="Variant.Filled" OnClick="SaveChanges">@SucessButton</MudButton>
+        <MudButton Color="Color.Success" Variant="Variant.Filled" OnClick="SaveChanges" Disabled="@(ImagesElements == null || ImagesElements.Count() <= 0)">@SucessButton</MudButton>
     </DialogActions>
 </MudDialog>
 
@@ -89,7 +89,15 @@
 
     private async Task GetImagesAsync()
     {
-        ImagesElements = await ImageService.GetImagesAsync(PartTypeBinder);        
+        try
+        {
+            ImagesElements = await ImageService.GetImagesAsync(PartTypeBinder);
+        }
+        catch (Exception ex)
+        {
+            Snackbar.Add($"Error loading images: {ex.Message}", Severity.Error);
+            MudDialog.Cancel();
+        }
     }
 
     private void ImageTagChanged(string imageTag)

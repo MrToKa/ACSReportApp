@@ -6,19 +6,26 @@
 @inject IImageService ImageService
 @inject ISnackbar Snackbar
 
-<MudCarousel Class="mud-width-full" @ref="_carousel" ItemsSource="@Elements" Style="height:400px; width:400px" ShowArrows="@(Elements.Count() > 1)" AutoCycle="false" ShowBullets="false" @bind-SelectedIndex="selectedIndex">
-    <ItemTemplate>
-        <div class="d-flex flex-column flex-column justify-center" style="height:100%">
-            <ImagesCard Image="@context" />
-        </div>
-    </ItemTemplate>
-</MudCarousel>
+@if (Elements == null || Elements.Count() == 0)
+{
+    <MudAlert Severity="Severity.Info">No images found for this type of parts.</MudAlert>
+}
+else
+{
+    <MudCarousel Class="mud-width-full" @ref="_carousel" ItemsSource="@Elements" Style="height:400px; width:400px" ShowArrows="@(Elements.Count() > 1)" AutoCycle="false" ShowBullets="false" @bind-SelectedIndex="selectedIndex">
+        <ItemTemplate>
+            <div class="d-flex flex-column flex-column justify-center" style="height:100%">
+                <ImagesCard Image="@context" />
+            </div>
+        </ItemTemplate>
+    </MudCarousel>
+}
 
 <br />
 
 <MudAutocomplete T="string" Label="Picture Type" @bind-Value="@PartTypeBinder" SearchFunc="@Search"
                  ResetValueOnEmptyText="false" CoerceValue="true" @bind-SearchText="@PartTypeBinder"
-                 AdornmentColor="Color.Primary" ReadOnly="true" />
+                 AdornmentColor="Color.Primary" Adornment="Adornment.None" ReadOnly="true" />
 
 @code {
     [Parameter]
@@ -48,6 +55,10 @@
 
     private void OnSelectedIndexChanged()
     {
+        if (Elements == null || Elements.Count() == 0)
+        {
+            return;
+        }
         ImageTagChanged.InvokeAsync(Elements.ElementAt(selectedIndex).ImageTag);
     }
 
@@ -55,11 +66,9 @@
     {
         if (firstRender)
         {
-            await Task.Delay(100);            
+            await Task.Delay(100);
         }
 
         OnSelectedIndexChanged();
     }
-
-
 }

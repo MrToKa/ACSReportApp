@@ -13,10 +13,13 @@ namespace ACSReportApp.Services
     public class PartService : IPartService
     {
         private readonly IACSReportAppDbRepository repo;
+        private readonly IImageService imageService;
 
-        public PartService(IACSReportAppDbRepository repo)
+        public PartService(IACSReportAppDbRepository repo,
+            IImageService imageService)
         {
             this.repo = repo;
+            this.imageService = imageService;
         }
 
         public async Task<PartServiceModel> CreatePartAsync(PartServiceModel part)
@@ -260,7 +263,6 @@ namespace ACSReportApp.Services
             List<PartServiceModel> parts = new List<PartServiceModel>();
             string? value = null;
 
-            //using Stream stream = new FileStream(file.Name, FileMode.Open);
             using MemoryStream memoryStream = new MemoryStream();
             await file.OpenReadStream().CopyToAsync(memoryStream);
             memoryStream.Position = 0;
@@ -370,7 +372,15 @@ namespace ACSReportApp.Services
                         }
                         else if (cell.CellReference == "K" + rowNumber)
                         {
-                            part.Picture = value;
+                            var img = await imageService.GetImageAsync(value);
+                            if (img != null)
+                            {
+                                part.Picture = value;
+                            }
+                            else
+                            {
+                                part.Picture = null;
+                            }
                         }
                         else if (cell.CellReference == "L" + rowNumber)
                         {

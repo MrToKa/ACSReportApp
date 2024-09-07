@@ -48,7 +48,7 @@ namespace ACSReportApp.Services
 
         public async Task<IEnumerable<ImageServiceModel>> GetImagesAsync(string imageType)
         {
-            return await this.repo.All<Image>()
+            List<ImageServiceModel>? images = await this.repo.All<Image>()
                 .Where(i => i.ImageType == imageType)
                 .Select(i => new ImageServiceModel()
                 {
@@ -60,6 +60,8 @@ namespace ACSReportApp.Services
                     CableTrayId = i.CableTrayId,
                 })
                 .ToListAsync();
+
+            return images;
         }
 
         public async Task<ImageServiceModel> UpdateImageAsync(ImageServiceModel image)
