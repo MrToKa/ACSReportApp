@@ -1,0 +1,22 @@
+﻿@using ACSReportApp.Services.Models
+
+<MudForm @ref="form" @bind-IsValid="@success" @bind-Errors="@errors">
+    <MudTextField T="string" Label="Assembly Name" Required="true" RequiredError="Assembly name is required!" @bind-Value="@Assembly.Name" />
+    <MudTextField T="string" Label="Assembly Type" Required="true" RequiredError="Assembly type is required!" @bind-Value="@Assembly.PartAssemblyType" />
+    <MudTextField T="string" Label="Description" Required="true" RequiredError="Assembly description is required!" @bind-Value="@Assembly.Description" />
+    <MudTextField T="string" Label="Manufacturer" Required="true" RequiredError="Assembly manufacturer is required!" @bind-Value="@Assembly.Manufacturer" />
+    <MudTextField T="string" Label="Remarks" @bind-Value="@Assembly.Remarks" />
+</MudForm>
+
+@code {
+    [Parameter]
+    public PartAssemblyModel Assembly { get; set; }
+
+    private MudForm form;
+
+    private bool success = false;
+
+    private string[] errors = { };
+
+    private RenderFragment _panelContent;
+}

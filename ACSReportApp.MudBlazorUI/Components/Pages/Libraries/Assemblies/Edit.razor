@@ -1,0 +1,66 @@
+﻿@page "/assemblies/edit"
+
+@using ACSReportApp.MudBlazorUI.Components.Pages.Libraries.Assemblies.Fragments
+@using ACSReportApp.Services.Contracts
+@using ACSReportApp.Services.Models
+@using Microsoft.EntityFrameworkCore
+@using ACSReportApp.Models
+
+@inject NavigationManager NavigationManager
+@inject IPartAssemblyService AssemblyService
+@inject IPartService PartService
+
+<PageTitle>Edit</PageTitle>
+
+<h2 style="text-align: center;">Edit Assembly</h2>
+
+<hr />
+
+<AssemblyForm Assembly="@Assembly" />
+
+<ExpansionPartsDropdown Id="@Assembly.Id" Elements="@Elements" Parts="@Assembly.Parts" OnAssemblyPartsChanged="HandlePartsChanged" />
+ 
+<AssemblyAssignedParts Parts="@Assembly.Parts" OnAssemblyPartsChanged="HandlePartsChanged" IsFullTable="true" />
+
+<MudGrid Spacing="3" Justify="Justify.Center">
+    <MudItem>
+        <MudButton Color="Color.Primary" Variant="Variant.Filled" OnClick="@(() => UpdateAssembly())">Update Assembly</MudButton>
+    </MudItem>
+    <MudItem>
+        <MudButton Color="Color.Secondary" Variant="Variant.Filled" OnClick="@(() => ReturnToAssemblies())">Cancel</MudButton>
+    </MudItem>
+</MudGrid>
+
+
+
+@code {
+    [SupplyParameterFromQuery]
+    public int Id { get; set; }
+
+    public PartAssemblyModel Assembly = new PartAssemblyModel();
+    public List<PartServiceModel> Elements = new List<PartServiceModel>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        Assembly = await AssemblyService.GetPartAssemblyAsync(Id);
+        Elements = await PartService.GetAllPartsAsync();
+    }
+
+    private async Task UpdateAssembly()
+    {
+        var updateAssemblyResult = await AssemblyService.UpdatePartAssemblyAsync(Assembly, Id);
+
+        ReturnToAssemblies();
+    }
+
+    private void ReturnToAssemblies()
+    {
+        NavigationManager.NavigateTo("/assemblies");
+    }
+
+    private void HandlePartsChanged(List<PartServiceModel> parts)
+    {
+        Assembly.Parts = parts;
+        StateHasChanged();
+    }
+}

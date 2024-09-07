@@ -1,37 +1,86 @@
-﻿@using ACSReportApp.Services.Contracts
+﻿@using ACSReportApp.MudBlazorUI.Components.Dialogs
+@using ACSReportApp.MudBlazorUI.Components.Pages.Libraries.Assemblies.Fragments
+@using ACSReportApp.Services.Contracts
 @using ACSReportApp.Services.Models
 
 @inject IPartAssemblyService AssemblyService
+@inject IPartAssemblyPartService AssemblyPartService
+@inject IPartService PartService
+@inject IDialogService DialogService
+@inject NavigationManager NavigationManager
 
 <MudDataGrid T="PartAssemblyModel" @ref="grid" Items="@Elements" ReadOnly=false
              Bordered="true" Outlined="true" Dense="true" Filterable="true" FilterMode="@DataGridFilterMode.ColumnFilterMenu"
              Virtualize="true" FixedHeader="true" Hover="true">
     <ToolBarContent>
-        <MudText Typo="Typo.h6">Cables list</MudText>
+        <MudText Typo="Typo.h6">Assemblies list</MudText>
         <MudSpacer />
     </ToolBarContent>
     <Columns>
         <AssembliesTableColumns />
+        <TemplateColumn Title="Actions" CellClass="d-flex justify-end">
+            <CellTemplate>
+                <MudTooltip Text="Edit">
+                    <MudIconButton Size="@Size.Small" Icon="@Icons.Material.Outlined.Edit" Href="@($"/assemblies/edit?id={context.Item.Id}")" />
+                </MudTooltip>
+                <MudTooltip Text="Delete">
+                    <MudIconButton Size="@Size.Small" Icon="@Icons.Material.Outlined.Delete" OnClick="@(() => DeleteAssemblyAsync(context.Item.Id))" />
+                </MudTooltip>
+            </CellTemplate>
+        </TemplateColumn>
     </Columns>
     <ChildRowContent>
-
+        <AssemblyAssignedParts Parts="GetPartsForAssembly(context.Item.Id)" IsFullTable="false" />
     </ChildRowContent>
     <PagerContent>
         <MudDataGridPager T="PartAssemblyModel" />
     </PagerContent>
 </MudDataGrid>
 
-
 @code {
-
     private MudDataGrid<PartAssemblyModel> grid = new MudDataGrid<PartAssemblyModel>();
 
     private List<PartAssemblyModel> Elements = new List<PartAssemblyModel>();
 
+    private List<PartServiceModel> Parts = new List<PartServiceModel>();
 
     protected override async Task OnInitializedAsync()
     {
         Elements = await AssemblyService.GetPartAssembliesAsync();
     }
 
+    private void OpenEditAssembly(int id)
+    {
+        NavigationManager.NavigateTo($"/assemblies/edit");
+    }
+
+    private async Task DeleteAssemblyAsync(int id)
+    {
+        DialogParameters parameters = new DialogParameters<DeleteDialog>
+        {
+            { x => x.Title , "Delete Assembly?" },
+            { x => x.Content, "Are you sure you want to delete this Assembly?" },
+            { x => x.Result, "Assembly was deleted!" }
+        };
+
+        IDialogReference dialogResult = await DialogService.ShowAsync<DeleteDialog>("", parameters);
+        DialogResult result = await dialogResult.Result;
+        if (!result.Canceled)
+        {
+            await AssemblyService.DeletePartAssemblyAsync(id);
+            Elements = await AssemblyService.GetPartAssembliesAsync();
+            StateHasChanged();
+        }
+    }
+
+    private List<PartServiceModel> GetPartsForAssembly(int id)
+    {
+        var parts = Elements.FirstOrDefault(x => x.Id == id)?.Parts;
+
+        if (parts == null)
+        {
+            return new List<PartServiceModel>();
+        }
+        return parts;
+    }
 }

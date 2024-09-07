@@ -10,6 +10,6 @@ namespace ACSReportApp.Services.Contracts
         Task<PartAssemblyModel> UpdatePartAssemblyAsync(PartAssemblyModel partAssembly, int partAssemblyId);
         Task DeletePartAssemblyAsync(int partAssemblyId);
         Task<PartAssemblyModel> RestoreAssemblyAsync(PartAssemblyModel partAssemblyId);
-        Task AddPartsToAssemblyAsync(int partAssemblyId, List<PartAssemblyPartModel> parts);
+        Task AddPartToAssemblyAsync(int partAssemblyId, PartAssemblyPartModel part);
     }
 }

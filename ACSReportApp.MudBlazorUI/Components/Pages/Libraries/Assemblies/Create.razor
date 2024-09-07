@@ -1,0 +1,44 @@
+﻿@page "/assemblies/add"
+
+@using ACSReportApp.MudBlazorUI.Components.Pages.Libraries.Assemblies.Fragments
+@using ACSReportApp.Services.Contracts
+@using ACSReportApp.Services.Models
+@using Microsoft.EntityFrameworkCore
+@using ACSReportApp.Models
+
+@inject NavigationManager NavigationManager
+@inject IPartAssemblyService AssemblyService
+
+<PageTitle>Create</PageTitle>
+
+<h2 style="text-align: center;">Create Assembly</h2>
+
+<hr />
+
+<MudPaper Elevation="0" Class="pa-4">
+    <AssemblyForm Assembly="Assembly" />
+</MudPaper>
+
+<MudGrid Spacing="3" Justify="Justify.Center">
+    <MudItem>
+        <MudButton Color="Color.Primary" Variant="Variant.Filled" OnClick="@(() => SaveAssembly())">Save Assembly</MudButton>
+    </MudItem>
+    <MudItem>
+        <MudButton Color="Color.Secondary" Variant="Variant.Filled" OnClick="@(() => NavigationManager.NavigateTo("/assemblies"))">Cancel</MudButton>
+    </MudItem>
+</MudGrid>
+
+
+
+@code {
+    public PartAssemblyModel Assembly = new PartAssemblyModel();
+
+    private async Task SaveAssembly()
+    {
+        var createAssemblyResult = await AssemblyService.CreatePartAssemblyAsync(Assembly);
+
+        Task.Delay(100).Wait();
+        NavigationManager.NavigateTo("/assemblies");
+    }
+
+}

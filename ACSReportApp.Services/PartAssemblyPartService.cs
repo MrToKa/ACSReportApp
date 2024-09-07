@@ -15,7 +15,7 @@ namespace ACSReportApp.Services
             this.repo = repo;
         }
 
-        public async Task AddPartToAssembly(int partAssemblyId, int partId, int quantity)
+        public async Task AddPartToAssemblyAsync(int partAssemblyId, int partId, int quantity)
         {
             PartAssemblyPart? partAssemblyPart = new PartAssemblyPart
             {
@@ -28,7 +28,7 @@ namespace ACSReportApp.Services
             await repo.SaveChangesAsync();
         }
 
-        public async Task<PartAssemblyPart> CreateAssemblyPart(int partAssemblyId, int partId, int quantity)
+        public async Task<PartAssemblyPart> CreateAssemblyPartAsync(int partAssemblyId, int partId, int quantity)
         {
             var existingPart = await repo.All<PartAssemblyPart>()
         .FirstOrDefaultAsync(pap => pap.PartId == partId && pap.PartAssemblyId == partAssemblyId);
@@ -54,15 +54,28 @@ namespace ACSReportApp.Services
             return existingPart;
         }
 
-        public async Task<List<PartAssemblyPart>> GetPartsInAssembly(int partAssemblyId)
+        public async Task<List<PartAssemblyPartModel>> GetPartsInAssemblyAsync(int partAssemblyId)
         {
-            return await repo.All<PartAssemblyPart>()
+            var partsInAssembly = await repo.All<PartAssemblyPart>()
                 .Where(pap => pap.PartAssemblyId == partAssemblyId)
                 .Include(pap => pap.Part)
                 .ToListAsync();
+
+            var partAssemblyParts = new List<PartAssemblyPartModel>();
+            foreach (var part in partsInAssembly)
+            {
+                partAssemblyParts.Add(new PartAssemblyPartModel
+                {
+                    PartId = part.PartId,
+                    PartAssemblyId = part.PartAssemblyId,
+                    Quantity = part.Quantity
+                });
+            }
+
+            return partAssemblyParts;
         }
 
-        public async Task RemovePartFromAssembly(int partAssemblyId, int partId)
+        public async Task RemovePartFromAssemblyAsync(int partAssemblyId, int partId)
         {
             var partAssemblyPart = await repo.All<PartAssemblyPart>()
                 .FirstOrDefaultAsync(pap => pap.PartAssemblyId == partAssemblyId && pap.PartId == partId);
@@ -74,7 +87,7 @@ namespace ACSReportApp.Services
             }
         }
 
-        public async Task UpdatePartQuantity(int partAssemblyId, int partId, int quantity)
+        public async Task UpdatePartQuantityAsync(int partAssemblyId, int partId, int quantity)
         {
             var partAssemblyPart = await repo.All<PartAssemblyPart>()
                 .FirstOrDefaultAsync(pap => pap.PartAssemblyId == partAssemblyId && pap.PartId == partId);

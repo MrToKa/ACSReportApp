@@ -5,10 +5,10 @@ namespace ACSReportApp.Services.Contracts
 {
     public interface IPartAssemblyPartService
     {
-        Task AddPartToAssembly(int partAssemblyId, int partId, int quantity);
-        Task RemovePartFromAssembly(int partAssemblyId, int partId);
-        Task UpdatePartQuantity(int partAssemblyId, int partId, int quantity);
-        Task<List<PartAssemblyPart>> GetPartsInAssembly(int partAssemblyId);
-        Task<PartAssemblyPart> CreateAssemblyPart(int partAssemblyId, int partId ,int quantity);
+        Task AddPartToAssemblyAsync(int partAssemblyId, int partId, int quantity);
+        Task RemovePartFromAssemblyAsync(int partAssemblyId, int partId);
+        Task UpdatePartQuantityAsync(int partAssemblyId, int partId, int quantity);
+        Task<List<PartAssemblyPartModel>> GetPartsInAssemblyAsync(int partAssemblyId);
+        Task<PartAssemblyPart> CreateAssemblyPartAsync(int partAssemblyId, int partId ,int quantity);
     }
 }

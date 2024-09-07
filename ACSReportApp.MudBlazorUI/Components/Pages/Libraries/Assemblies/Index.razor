@@ -1,12 +1,14 @@
 ﻿@page "/assemblies"
 
+@using ACSReportApp.MudBlazorUI.Components.TablesContent.Assemblies
 @using ACSReportApp.Services.Contracts
 @using ACSReportApp.Services.Models
-@using ACSReportApp.MudBlazorUI.Components.TablesContent.Assemblies
+@using Microsoft.EntityFrameworkCore
+@using Microsoft.AspNetCore.Components.QuickGrid
+@using ACSReportApp.Data
 
 @inject IPartAssemblyService AssemblyService
 @inject NavigationManager NavigationManager
-
 
 <PageTitle>Assemblies Library</PageTitle>
 

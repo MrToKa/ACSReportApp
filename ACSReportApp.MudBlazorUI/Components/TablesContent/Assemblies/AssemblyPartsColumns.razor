@@ -1,0 +1,14 @@
+﻿@using ACSReportApp.Services.Models
+
+<PropertyColumn T="PartServiceModel" TProperty="string" Property="x => x.PartType" Title="Part Type" Editable="false" />
+<PropertyColumn T="PartServiceModel" TProperty="string" Property="x => x.OrderNumber" Title="Order Number" Editable="false" />
+<PropertyColumn T="PartServiceModel" TProperty="string" Property="x => x.Manufacturer" Title="Manufacturer" Editable="false" />
+<PropertyColumn T="PartServiceModel" TProperty="string" Property="x => x.Description" Title="Description" Editable="false" />
+<PropertyColumn T="PartServiceModel" TProperty="int" Property="x => x.Quantity" Title="Quantity" Editable="IsFullTable" />
+<PropertyColumn T="PartServiceModel" TProperty="string" Property="x => x.Remarks" Title="Remarks" Editable="false" />
+
+@code {
+    [Parameter]
+    public bool IsFullTable { get; set; }
+}
+
