@@ -1,0 +1,20 @@
+﻿@using ACSReportApp.Services.Models
+
+<PropertyColumn T="CableTypeServiceModel" TProperty="string" Property="x => x.Type" Title="Cable type" Hideable="false" />
+<PropertyColumn T="CableTypeServiceModel" TProperty="string" Property="x => x.Description" Hidden="true" Hideable="true" />
+<PropertyColumn T="CableTypeServiceModel" TProperty="string" Property="x => x.Purpose" />
+<PropertyColumn T="CableTypeServiceModel" TProperty="int?" Property="x => x.Voltage" Title="Voltage [V]" Hideable="false" />
+<PropertyColumn T="CableTypeServiceModel" TProperty="string" Property="x => x.CrossSection" Title="Cross section [mm²]" Hideable="false" />
+<PropertyColumn T="CableTypeServiceModel" TProperty="double?" Property="x => x.Diameter" Title="Diameter [mm]" Hideable="false" />
+<PropertyColumn T="CableTypeServiceModel" TProperty="string" Property="x => FormatShield(x.Shield)" Hideable="false" />
+<PropertyColumn T="CableTypeServiceModel" TProperty="double?" Property="x => x.BendingRadius" Title="Bending radius [mm]" Hideable="false" />
+<PropertyColumn T="CableTypeServiceModel" TProperty="double" Property="x => x.WeightPerKm" Title="Weight per km [kg/km]" Hideable="false" />
+<PropertyColumn T="CableTypeServiceModel" TProperty="string" Property="x => x.Manufacturer" Hidden="true" Hideable="true" />
+<PropertyColumn T="CableTypeServiceModel" TProperty="string" Property="x => x.PartNumber" Title="Part number" Hidden="true" Hideable="true" />
+
+@code{
+    private string FormatShield(bool shield)
+    {
+        return shield ? "Yes" : "No";
+    }
+}

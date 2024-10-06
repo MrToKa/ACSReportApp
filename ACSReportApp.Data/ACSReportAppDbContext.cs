@@ -51,6 +51,7 @@ namespace ACSReportApp.Data
         public DbSet<PartAssembly> PartAssemblies { get; set; }
         public DbSet<Image> Images { get; set; }
         public DbSet<PartAssemblyPart> PartAssemblyParts { get; set; }
+        public DbSet<Template> Templates { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {

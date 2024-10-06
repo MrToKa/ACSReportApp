@@ -1,0 +1,136 @@
+﻿@page "/templates"
+
+@using ACSReportApp.Services.Contracts
+@using ACSReportApp.Services.Models
+@using ACSReportApp.MudBlazorUI.Components.Dialogs
+@using ACSReportApp.MudBlazorUI.Components.Dialogs.Templates
+
+
+@inject ITemplateService TemplateService
+@inject NavigationManager NavigationManager
+@inject IDialogService DialogService
+@inject ISnackbar Snackbar
+
+<PageTitle>Templates for uploads</PageTitle>
+
+<h2 style="text-align: center;">Templates files table</h2>
+
+@if (Elements.Count() == 0)
+{
+    <MudText Typo="Typo.h6">No templates found</MudText>
+}
+else
+{
+    <MudDataGrid T="TemplateServiceModel" Items="@Elements" PageSize="10" Class="d-flex flex-wrap gap-4 overflow-auto">
+        <Columns>
+            <TemplateColumn Title="Actions" CellClass="d-flex justify-end">
+                <CellTemplate>
+                    <MudTooltip Text="Edit">
+                        <MudIconButton Size="@Size.Small" Icon="@Icons.Material.Outlined.Edit" OnClick="@(() => OpenEditDialogAsync(context.Item.Id))" />
+                    </MudTooltip>
+                    <MudTooltip Text="Delete">
+                        <MudIconButton Size="@Size.Small" Icon="@Icons.Material.Outlined.Delete" OnClick="@(() => DeletePartAsync(context.Item.Id))" />
+                    </MudTooltip>
+                </CellTemplate>
+            </TemplateColumn>
+            <TemplateColumn Title="Template type">
+                <CellTemplate>
+                    <MudLink Href="@($"/Templates/{context.Item.TemplateTag}/{context.Item.Name}")">@context.Item.TemplateType</MudLink>
+                </CellTemplate>
+            </TemplateColumn>
+            <PropertyColumn Property="x => x.TemplateTag" Title="Template" />
+            <PropertyColumn Property="x => x.TemplateDescription" Title="Description" />
+        </Columns>
+    </MudDataGrid>
+}
+
+<h2 style="text-align: center;">Upload a template</h2>
+
+<MudPaper Elevation="0" Class="d-flex justify-center flex-grow-1 gap-4 pa-4">
+    <MudTextField @bind-Value="TemplateType" Label="Template name" Variant="Variant.Text"></MudTextField>
+    <MudTextField @bind-Value="TemplateTag" Label="Template type" Variant="Variant.Text"></MudTextField>
+    <MudTextField @bind-Value="TemplateDesc" Label="Template description" Variant="Variant.Text"></MudTextField>
+    <MudFileUpload T="IBrowserFile" FilesChanged="UploadFile" Accept=".xlsx">
+        <ActivatorContent>
+            <MudFab Color="Color.Primary"
+                    StartIcon="@Icons.Material.Filled.Image"
+                    Label="Upload template" />
+        </ActivatorContent>
+    </MudFileUpload>
+</MudPaper>
+
+
+
+@code {
+    private string TemplateType { get; set; }
+    private string TemplateTag { get; set; }
+    private string TemplateDesc { get; set; }
+
+    private IList<IBrowserFile> _files = new List<IBrowserFile>();
+
+    private IEnumerable<TemplateServiceModel> Elements = new List<TemplateServiceModel>();
+
+    private async void UploadFile(IBrowserFile file)
+    {
+        _files.Add(file);
+
+        await TemplateService.UploadTemplateAsync(file, TemplateType, TemplateTag, TemplateDesc);
+        await ReloadDataAsync();
+        TemplateType = string.Empty;
+        TemplateTag = string.Empty;
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        await ReloadDataAsync();
+    }
+
+    private async Task ReloadDataAsync()
+    {
+        Elements = await TemplateService.GetTemplatesAsync();
+        StateHasChanged();
+    }
+
+    private async Task OpenEditDialogAsync(string id)
+    {
+        DialogParameters parameters = new DialogParameters<TemplateDialog>
+        {
+            { "TemplateId", id },
+            { "DialogTitle", "Edit Template" },
+            { "SucessButton", "Save Changes" }
+        };
+
+        DialogOptions options = new DialogOptions
+            {
+                MaxWidth = MaxWidth.Large,
+                FullWidth = true
+            };
+
+        var dialogResult = await DialogService.ShowAsync<TemplateDialog>("", parameters, options);
+        var result = await dialogResult.Result;
+
+        if (!result.Canceled)
+        {
+            await ReloadDataAsync();
+        }
+    }
+
+    private async Task DeletePartAsync(string id)
+    {
+        DialogParameters parameters = new DialogParameters<DeleteDialog>
+        {
+            { x => x.Title , "Delete Template?" },
+            { x => x.Content, "Are you sure you want to delete this template?" },
+            { x => x.Result, "Template was deleted!" }
+        };
+
+        IDialogReference dialogResult = await DialogService.ShowAsync<DeleteDialog>("", parameters);
+        DialogResult result = await dialogResult.Result;
+
+        if (!result.Canceled)
+        {
+            await TemplateService.DeleteTemplateAsync(id);
+            await ReloadDataAsync();
+        }
+    }
+}

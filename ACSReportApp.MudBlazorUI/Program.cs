@@ -31,6 +31,7 @@ builder.Services.AddScoped<IPartService, PartService>();
 builder.Services.AddScoped<IImageService, ImageService>();
 builder.Services.AddScoped<IPartAssemblyService, PartAssemblyService>();
 builder.Services.AddScoped<IPartAssemblyPartService, PartAssemblyPartService>();
+builder.Services.AddScoped<ITemplateService, TemplateService>();
 
 builder.Services.AddAuthentication(options =>
     {
@@ -47,6 +48,7 @@ builder.Services.AddQuickGridEntityFrameworkAdapter();
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
 builder.Services.AddIdentityCore<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
+    .AddRoles<IdentityRole>()
     .AddEntityFrameworkStores<ACSReportAppDbContext>()
     .AddSignInManager()
     .AddDefaultTokenProviders();

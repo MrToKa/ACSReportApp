@@ -4,6 +4,7 @@
 @using ACSReportApp.MudBlazorUI.Components.Dialogs
 @using ACSReportApp.Services.Contracts
 @using ACSReportApp.Services.Models
+@using ACSReportApp.MudBlazorUI.Components.TablesContent.Cables
 
 @inject ICableTypeService CableTypeService
 @inject IDialogService DialogService
@@ -23,18 +24,8 @@
                      Bordered="true" Outlined="true" Dense="true" Filterable="true" FilterMode="@DataGridFilterMode.ColumnFilterMenu"
                      Virtualize="true" FixedHeader="true" DragDropColumnReordering="true" ColumnResizeMode="ResizeMode.Container" Hideable="true">
             <Columns>
-                <PropertyColumn Property="x => x.Type" Title="Cable type" Hideable="false" />
-                <PropertyColumn Property="x => x.Description" Hidden="true" Hideable="true" />
-                <PropertyColumn Property="x => x.Purpose" />
-                <PropertyColumn Property="x => FormatVoltage(x.Voltage)" Hideable="false" />
-                <PropertyColumn Property="x => FormatCrossSection(x.CrossSection)"
-                                Title="Cross section" Hideable="false" />
-                <PropertyColumn Property="x => FormatDiameter(x.Diameter)" Hideable="false" />
-                <PropertyColumn Property="x => FormatShield(x.Shield)" Hideable="false" />
-                <PropertyColumn Property="x => FormatBendingRadius(x.BendingRadius)" Hideable="false" />
-                <PropertyColumn Property="x => FormatWpK(x.WeightPerKm)" Title="Weight per km" Hideable="false" />
-                <PropertyColumn Property="x => x.Manufacturer" Hidden="true" Hideable="true" />
-                <PropertyColumn Property="x => x.PartNumber" Title="Part number" Hidden="true" Hideable="true" />
+
+                <CableColumns />
 
                 <TemplateColumn Title="Actions" CellClass="d-flex justify-end">
                     <CellTemplate>
@@ -53,61 +44,41 @@
         </MudDataGrid>
 
     }
-
-    <div class="d-flex flex-wrap mt-4 gap-1">
-        <MudButton OnClick="@(() => HideColumnsAsync(false))" Variant="Variant.Filled" Color="Color.Primary">Show All Columns</MudButton>
-        <MudButton OnClick="@(() => HideColumnsAsync(true))" Variant="Variant.Filled" Color="Color.Primary">Hide Secondary Columns</MudButton>
-        <MudButton OnClick="@(() => AddNewCableTypeAsync())" Variant="Variant.Filled" Color="Color.Primary">Add New Cable Type</MudButton>
-    </div>
-
 </MudPaper>
 
+<MudPaper Class="d-flex justify-center gap-4 pa-4">
+    <MudItem>
+        <MudButton OnClick="@(() => HideColumnsAsync(false))" Variant="Variant.Filled" Color="Color.Primary">Show All Columns</MudButton>
+        <MudButton OnClick="@(() => HideColumnsAsync(true))" Variant="Variant.Filled" Color="Color.Primary">Hide Secondary Columns</MudButton>
+    </MudItem>
+    <MudItem>
+        <MudButton OnClick="@(() => AddNewCableTypeAsync())" Variant="Variant.Filled" Color="Color.Primary">Add New Cable Type</MudButton>
+    </MudItem>
+    <MudItem>
+        <MudFileUpload @ref="@_fileUpload" T="IBrowserFile" OnFilesChanged="UploadFile" Accept=".xlsx">
+            <ActivatorContent>
+                <MudButton Variant="Variant.Filled"
+                           Color="Color.Primary"
+                           StartIcon="@Icons.Material.Filled.CloudUpload">
+                    Add cable types from file
+                </MudButton>
+            </ActivatorContent>
+        </MudFileUpload>
+    </MudItem>
+</MudPaper>
+
+
+
 @code {
+    private MudFileUpload<IBrowserFile> _fileUpload;
+
+    private Task ClearAsync()
+        => _fileUpload?.ClearAsync() ?? Task.CompletedTask;
+
     public MudDataGrid<CableTypeServiceModel> grid = new MudDataGrid<CableTypeServiceModel>();
 
     private List<CableTypeServiceModel> Elements = new List<CableTypeServiceModel>();
 
-    private string FormatBendingRadius(double? radius)
-    {
-        if (radius == null)
-        {
-            return string.Empty;
-        }
-        return $"{radius} [mm]";
-    }
-
-    private string FormatCrossSection(string crossSection)
-    {
-        return $"{crossSection} [mm²]";
-    }
-
-    private string FormatShield(bool shield)
-    {
-        return shield ? "Yes" : "No";
-    }
-
-    private string FormatVoltage(double? voltage)
-    {
-        if (voltage == null)
-        {
-            return string.Empty;
-        }
-        return $"{voltage} [V]";
-    }
-
-    private string FormatWpK(double wpk)
-    {
-        return $"{wpk} [kg/km]";
-    }
-
-    private string FormatDiameter(double? diameter)
-    {
-        if (diameter == null)
-        {
-            return string.Empty;
-        }
-        return $"{diameter} [mm²]";
-    }
 
     private async Task HideColumnsAsync(bool hide)
     {
@@ -145,10 +116,10 @@
             };
 
         DialogOptions options = new DialogOptions
-        {
-            MaxWidth = MaxWidth.Large,
-            FullWidth = true
-        };
+            {
+                MaxWidth = MaxWidth.Large,
+                FullWidth = true
+            };
 
         var dialogResult = await DialogService.ShowAsync<CableTypeDialog>("", parameters, options);
         var result = await dialogResult.Result;
@@ -169,10 +140,10 @@
             };
 
         DialogOptions options = new DialogOptions
-        {
-            MaxWidth = MaxWidth.Large,
-            FullWidth = true
-        };
+            {
+                MaxWidth = MaxWidth.Large,
+                FullWidth = true
+            };
 
         var dialogResult = await DialogService.ShowAsync<CableTypeDialog>("", parameters, options);
         var result = await dialogResult.Result;
@@ -200,5 +171,12 @@
             await CableTypeService.DeleteCableTypeAsync(cableTypeId);
             await ReloadDataAsync();
         }
+    }
+
+    private async Task UploadFile(InputFileChangeEventArgs e)
+    {
+        await CableTypeService.UploadFromFileAsync(e.File);
+        await ClearAsync();
+        await ReloadDataAsync();
     }
 }

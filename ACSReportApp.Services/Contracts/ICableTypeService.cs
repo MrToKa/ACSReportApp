@@ -1,4 +1,5 @@
 ﻿using ACSReportApp.Services.Models;
+using Microsoft.AspNetCore.Components.Forms;
 
 namespace ACSReportApp.Services.Contracts
 {
@@ -15,5 +16,9 @@ namespace ACSReportApp.Services.Contracts
         Task DeleteCableTypeAsync(int cableTypeId);
 
         Task<List<CableTypeServiceModel>> GetCableTypesByProjectIdAsync(Guid projectId);
+
+        Task UploadFromFileAsync(IBrowserFile file);
+
+        Task<CableTypeServiceModel> RestoreCableTypeAsync(CableTypeServiceModel cableType);
     }
 }

@@ -1,0 +1,80 @@
+﻿@using ACSReportApp.Services.Contracts
+@using ACSReportApp.Services.Models
+
+@inject ITemplateService TemplateService
+@inject ISnackbar Snackbar
+
+<MudDialog>
+    <TitleContent>
+        <MudText Typo="Typo.h6">
+            <MudIcon Icon="@Icons.Material.Filled.Save" Class="mr-3 mb-n1" />
+            @DialogTitle
+        </MudText>
+    </TitleContent>
+
+    <DialogContent>
+        <MudTextField @bind-Value="Template.TemplateType" Label="Template type" Variant="Variant.Text"></MudTextField>
+        <MudTextField @bind-Value="Template.TemplateTag" Label="Template tag" Variant="Variant.Text"></MudTextField>
+        <MudTextField @bind-Value="Template.TemplateDescription" Label="Template description" Variant="Variant.Text"></MudTextField>
+    </DialogContent>
+
+    <DialogActions>
+        <MudButton OnClick="Cancel">Cancel</MudButton>
+        <MudButton Color="Color.Success" Variant="Variant.Filled" OnClick="SaveChanges">@SucessButton</MudButton>
+    </DialogActions>
+</MudDialog>
+
+@code {
+    [CascadingParameter]
+    private MudDialogInstance MudDialog { get; set; }
+
+    [Parameter]
+    public string DialogTitle { get; set; }
+
+    [Parameter]
+    public string SucessButton { get; set; }    
+
+    [Parameter]
+    public string TemplateId { get; set; }
+
+    private TemplateServiceModel Template { get; set; } = new TemplateServiceModel();
+
+    private void Cancel() => MudDialog.Cancel();
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoaderPart();
+    }
+
+    private async Task LoaderPart()
+    {
+        try
+        {
+            Template = await TemplateService.GetTemplateByIdAsync(TemplateId);
+            if (Template == null)
+            {
+                Snackbar.Add("Template not found!", Severity.Error);
+                MudDialog.Cancel();
+            }
+        }
+        catch (Exception ex)
+        {
+            Snackbar.Add($"Error loading Template: {ex.Message}", Severity.Error);
+            MudDialog.Cancel();
+        }
+    }
+
+    private async Task SaveChanges()
+    {
+        try
+        {
+            await TemplateService.UpdateTemplateAsync(Template);
+            Snackbar.Add("Template was updated!", Severity.Success);
+            MudDialog.Close(DialogResult.Ok(true));
+        }
+        catch (Exception ex)
+        {
+            Snackbar.Add($"Error updateing Template: {ex.Message}", Severity.Error);
+        }
+    }
+}
