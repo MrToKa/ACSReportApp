@@ -33,12 +33,12 @@ else
                     </MudTooltip>
                 </CellTemplate>
             </TemplateColumn>
-            <TemplateColumn Title="Template type">
+            <TemplateColumn Title="Template Name">
                 <CellTemplate>
-                    <MudLink Href="@($"/Templates/{context.Item.TemplateTag}/{context.Item.Name}")">@context.Item.TemplateType</MudLink>
+                    <MudLink Href="@($"/Templates/{context.Item.TemplateName}/{context.Item.Name}")">@context.Item.TemplateName</MudLink>
                 </CellTemplate>
             </TemplateColumn>
-            <PropertyColumn Property="x => x.TemplateTag" Title="Template" />
+            <PropertyColumn Property="x => x.TemplateType" Title="Template Type" />
             <PropertyColumn Property="x => x.TemplateDescription" Title="Description" />
         </Columns>
     </MudDataGrid>
@@ -47,8 +47,8 @@ else
 <h2 style="text-align: center;">Upload a template</h2>
 
 <MudPaper Elevation="0" Class="d-flex justify-center flex-grow-1 gap-4 pa-4">
-    <MudTextField @bind-Value="TemplateType" Label="Template name" Variant="Variant.Text"></MudTextField>
-    <MudTextField @bind-Value="TemplateTag" Label="Template type" Variant="Variant.Text"></MudTextField>
+    <MudTextField @bind-Value="TemplateName" Label="Template name" Variant="Variant.Text"></MudTextField>
+    <MudTextField @bind-Value="TemplateType" Label="Template type" Variant="Variant.Text"></MudTextField>
     <MudTextField @bind-Value="TemplateDesc" Label="Template description" Variant="Variant.Text"></MudTextField>
     <MudFileUpload T="IBrowserFile" FilesChanged="UploadFile" Accept=".xlsx">
         <ActivatorContent>
@@ -62,8 +62,8 @@ else
 
 
 @code {
+    private string TemplateName { get; set; }
     private string TemplateType { get; set; }
-    private string TemplateTag { get; set; }
     private string TemplateDesc { get; set; }
 
     private IList<IBrowserFile> _files = new List<IBrowserFile>();
@@ -74,10 +74,11 @@ else
     {
         _files.Add(file);
 
-        await TemplateService.UploadTemplateAsync(file, TemplateType, TemplateTag, TemplateDesc);
-        await ReloadDataAsync();
+        await TemplateService.UploadTemplateAsync(file, TemplateName, TemplateType, TemplateDesc);
+        TemplateName = string.Empty;
         TemplateType = string.Empty;
-        TemplateTag = string.Empty;
+        TemplateDesc = string.Empty;
+        await ReloadDataAsync();
     }
 
     protected override async Task OnInitializedAsync()

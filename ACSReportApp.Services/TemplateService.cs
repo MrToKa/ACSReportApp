@@ -24,9 +24,9 @@ namespace ACSReportApp.Services
                 {
                     Id = t.Id.ToString(),
                     Name = t.Name,
-                    TemplateType = t.TemplateType,
+                    TemplateName = t.TemplateName,
                     TemplatePath = t.TemplatePath,
-                    TemplateTag = t.TemplateTag,
+                    TemplateType = t.TemplateType,
                     TemplateDescription = t.TemplateDescription
                 })
                 .ToListAsync();
@@ -40,8 +40,8 @@ namespace ACSReportApp.Services
                 {
                     Id = t.Id.ToString(),
                     Name = t.Name,
+                    TemplateName = t.TemplateName,
                     TemplateType = t.TemplateType,
-                    TemplateTag = t.TemplateTag,
                     TemplateDescription = t.TemplateDescription,
                     TemplatePath = t.TemplatePath,
                 })
@@ -52,21 +52,19 @@ namespace ACSReportApp.Services
         {
             var templateToUpdate = await this.repo.All<Template>().FirstOrDefaultAsync(t => t.Id == Guid.Parse(template.Id));
 
-
             if (templateToUpdate != null)
             {
-                templateToUpdate.Name = template.Name;
-                templateToUpdate.TemplateType = template.TemplateType;
-                if (templateToUpdate.TemplateTag != template.TemplateTag)
+                templateToUpdate.TemplateName = template.TemplateName;
+                if (templateToUpdate.TemplateType != template.TemplateType)
                 {
-                    string uploadFolder = Path.Combine(UploadPath, template.TemplateTag);
+                    string uploadFolder = Path.Combine(UploadPath, template.TemplateType);
 
                     if (!Directory.Exists(uploadFolder))
                     {
                         Directory.CreateDirectory(uploadFolder);
                     }
 
-                    string uniqueFileName = template.TemplateType + ".xlsx";
+                    string uniqueFileName = template.TemplateName + ".xlsx";
                     string filePath = Path.Combine(uploadFolder, uniqueFileName);
 
                     File.Move(templateToUpdate.TemplatePath, filePath);
@@ -96,17 +94,17 @@ namespace ACSReportApp.Services
 
         }
 
-        public async Task<TemplateServiceModel> UploadTemplateAsync(IBrowserFile file, string templateType, string templateTag, string templateDesc)
+        public async Task<TemplateServiceModel> UploadTemplateAsync(IBrowserFile file, string templateName, string templateType, string templateDesc)
         {
-            string uploadFolder = Path.Combine(UploadPath, templateTag);
+            string uploadFolder = Path.Combine(UploadPath, templateType);
 
             if (!Directory.Exists(uploadFolder))
             {
                 Directory.CreateDirectory(uploadFolder);
             }
 
-            string uniqueFileName = templateType + ".xlsx";
-            string filePath = Path.Combine(uploadFolder, uniqueFileName);
+            string fileName = templateName + ".xlsx";
+            string filePath = Path.Combine(uploadFolder, fileName);
 
             using (var fileStream = new FileStream(filePath, FileMode.Create))
             {
@@ -115,9 +113,9 @@ namespace ACSReportApp.Services
 
             var template = new Template()
             {
-                Name = uniqueFileName,
+                Name = fileName,
+                TemplateName = templateName,
                 TemplateType = templateType,
-                TemplateTag = templateTag,
                 TemplatePath = filePath,
                 TemplateDescription = templateDesc
             };
@@ -129,9 +127,9 @@ namespace ACSReportApp.Services
             {
                 Id = template.Id.ToString(),
                 Name = template.Name,
-                TemplateType = template.TemplateType,
+                TemplateName = template.TemplateName,
                 TemplatePath = template.TemplatePath,
-                TemplateTag = template.TemplateTag,
+                TemplateType = template.TemplateType,
                 TemplateDescription = template.TemplateDescription
             };
         }

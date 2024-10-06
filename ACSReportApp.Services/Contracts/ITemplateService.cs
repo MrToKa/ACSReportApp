@@ -9,6 +9,6 @@ namespace ACSReportApp.Services.Contracts
         Task<TemplateServiceModel?> GetTemplateByIdAsync(string id);
         Task<TemplateServiceModel> UpdateTemplateAsync(TemplateServiceModel template);
         Task DeleteTemplateAsync(string id);
-        Task<TemplateServiceModel> UploadTemplateAsync(IBrowserFile file, string templateType, string templateTag, string templateDesc);
+        Task<TemplateServiceModel> UploadTemplateAsync(IBrowserFile file, string templateName, string templateType, string templateDesc);
     }
 }
